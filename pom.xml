@@ -20,7 +20,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Dalston.SR2</spring-cloud.version>
-		<start-class>com.xapi.AccountPaymentSettingsApplication</start-class>
+		<start-class>com.xapi.AccountPaymentSettingsServerApplication</start-class>
 		<docker.image.name>xapi/account-payment-settings</docker.image.name>
 		<docker.image.tag>first</docker.image.tag>
 	</properties>
