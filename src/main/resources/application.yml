@@ -1,0 +1,9 @@
+server:
+  port: 8080
+  contextPath: /ipay
+  ## http://localhost:8080/ipay/settings/country
+  ## otherwise it will be 
+  ## http://localhost:8080/settings/country
+  
+  ## http://localhost:8080/ipay/i-pay/settings/country - OLD
+  ## http://localhost:8080/i-pay/settings/country - OLD
