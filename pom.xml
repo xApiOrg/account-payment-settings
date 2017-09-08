@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xapi-account-payment-settings</name>
 	<description>Microservices all together - account, payment and settings for international payment services</description>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
