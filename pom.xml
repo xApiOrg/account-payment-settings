@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xapi-account-payment-settings</name>
 	<description>Microservices all together - account, payment and settings for international payment services</description>
-	<packaging>war</packaging>
+	<packaging>${p.type}</packaging>
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -23,6 +23,7 @@
 		<start-class>com.xapi.AccountPaymentSettingsServerApplication</start-class>
 		<docker.image.name>xapi/account-payment-settings</docker.image.name>
 		<docker.image.tag>first</docker.image.tag>
+		<p.type>jar</p.type>
 	</properties>
 
 	<dependencies>
