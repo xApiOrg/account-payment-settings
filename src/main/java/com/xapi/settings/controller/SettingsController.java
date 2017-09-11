@@ -28,6 +28,7 @@ public class SettingsController {
 		/settings/country				GET		- getAllCountrySettings		All Country Settings		http://localhost:10001/ipay/settings/country
 		/settings/country/{country}		GET		- getCountrySettingsById	One Country Settings		http://localhost:10001/ipay/settings/country/10
 
+NB!!! New ONES. Needs to be discussed and agreed
 		/settings/country/list			GET		- getCountryList			List of all countries		http://localhost:10001/ipay/settings/country/list
 		/settings/						GET		- getElements				All elements and country	http://localhost:10001/ipay/settings
 
