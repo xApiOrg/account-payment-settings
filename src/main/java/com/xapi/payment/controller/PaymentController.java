@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xapi.payment.model.Payment;
 import com.xapi.payment.service.PaymentService;
 
 
@@ -39,14 +40,14 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/calculation", method = RequestMethod.POST)
-	public ResponseEntity<?> calculatePayment(@RequestBody Object paymentDetails){ //ResponseEntity<Collection<PaymentAccounts>>
+	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment paymentDetails){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod calculatePayment( Object paymentDetails) NOT IMPLEMENTED YET" + 
 				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + paymentDetails.toString();
 		
 		logger.info(info);
 		
-		Object calculatedResult = paymentService.calculate(paymentDetails);
-		return new ResponseEntity<Object>(info + "\n" + calculatedResult.toString(), HttpStatus.I_AM_A_TEAPOT);
+		Payment calculatedResult = paymentService.calculate(paymentDetails, true);
+		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
@@ -65,7 +66,7 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST) //value = "", 
-	public ResponseEntity<?> placePayment(@RequestBody Object payment){ //ResponseEntity<Collection<PaymentAccounts>>
+	public ResponseEntity<?> placePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod placePayment( Object payment) NOT IMPLEMENTED YET" + 
 				"\nPlace to execute User's placed PAYMENT by payment object" + "\n Parameters, payment = " + payment.toString();
 		
@@ -77,14 +78,15 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUserPayments(@PathVariable("user_id") Long userId, HttpServletRequest request){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getUserPayments( Long userId) NOT IMPLEMENTED YET" + 
-				"\nGet ALL User's placed PAYMENTS by user Id" + "\n Parameters, user Id = " + userId
-				+ "\n" + "method = " + request.getMethod() +  ", URI - " + request.getRequestURI() + ", URL - " + request.getRequestURL() + ", -->" + RequestMethod.GET.toString();
+	public ResponseEntity<Collection<Payment>> getUserPayments(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>> //, HttpServletRequest request
+		String info = "\nMetod getUserPayments( Long userId) NOT IMPLEMENTED YET" + 
+				"\nGet ALL User's placed PAYMENTS by user Id" + "\n Parameters, user Id = " + userId;
+//				+ "\n" + "method = " + request.getMethod() +  ", URI - " + request.getRequestURI() + ", URL - " + request.getRequestURL() + ", -->" + RequestMethod.GET.toString();
 		
 		logger.info(info);
 		
-		Collection<?> placedPayments = paymentService.getAll( userId );
-		return new ResponseEntity<String>(info + "\n" + placedPayments.toString(), HttpStatus.I_AM_A_TEAPOT);
+		Collection<Payment> placedPayments = paymentService.getAll( userId );
+		logger.info( placedPayments.toString() );
+		return new ResponseEntity<Collection<Payment>>(placedPayments, HttpStatus.OK);
 	}	
 }

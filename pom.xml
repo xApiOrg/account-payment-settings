@@ -83,7 +83,25 @@
     		<groupId>com.fasterxml.jackson.dataformat</groupId>
     		<artifactId>jackson-dataformat-xml</artifactId>
             <scope>provided</scope>
-		</dependency>
+		</dependency>        
+		
+		<!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>        
+        
+        <!-- Use MySQL Connector-J -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 		
 <!-- Suppose to run alone with embedded Tomcat, otherwise uncoment spring-boot-starter-tomcat dependency and 
 	substitute above spring-boot-starter with spring-boot-starter-web dependency
