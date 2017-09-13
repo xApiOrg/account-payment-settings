@@ -49,3 +49,4 @@ if "%~1"=="/KT" (
     ::pause
     SCHTASKS /Run /TN %taskName%_K
 )
+exit 0
