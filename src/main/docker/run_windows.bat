@@ -5,7 +5,7 @@ IF "%~1"=="/E" GOTO echoDP0
 exit 0
 
 :echoDP0
-echo "%~dp0"
+cmd /k "echo '%~dp0'"
 pause
 exit 0
 
