@@ -1,8 +1,8 @@
 @echo off
 Set cmdTitle=ipay
 Set taskName=ipayService
-if "%~1"=="/R" (
-    echo * Param /R
+if "%~1"=="/S" (
+	echo * Param /S
     ::pause
     echo * Terminating all instances of the Server (Windows with title containing %cmdTitle%^)*
     ::pause
@@ -10,6 +10,10 @@ if "%~1"=="/R" (
     echo * Ending previous Task
     ::pause
     SCHTASKS /END /TN %taskName%
+)
+if "%~1"=="/R" (
+    echo * Param /R
+    ::pause
     echo * Creating new Task with command "cmd /K '%~dp0run_windows.bat' /D"
     ::pause
     SCHTASKS /CREATE /TN %taskName% /SC ONCE /ST 00:00 /TR "cmd /K '%~dp0run_windows.bat' /D" /F
