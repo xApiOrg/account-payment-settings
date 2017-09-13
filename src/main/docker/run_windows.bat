@@ -21,6 +21,9 @@ if "%~1"=="/DT" (
     echo * CD "%~dp0"
     ::pause
     cd "%~dp0"
+    echo * Ending task %taskName%_D
+    ::pause
+    SCHTASKS /End /TN %taskName%_D
     echo * Creating task %taskName%_D
     ::pause
     SCHTASKS /Create /TN %taskName%_D /SC ONCE /ST 00:00 /TR "'%~dp0run_windows.bat' /D" /F
@@ -42,6 +45,9 @@ if "%~1"=="/KT" (
     echo * CD "%~dp0"
     ::pause
     cd "%~dp0"
+    echo * Ending task %taskName%_K
+    ::pause
+    SCHTASKS /End /TN %taskName%_K
     echo * Creating task %taskName%_K
     ::pause
     SCHTASKS /Create /TN %taskName%_K /SC ONCE /ST 00:00 /TR "'%~dp0run_windows.bat' /K" /F
