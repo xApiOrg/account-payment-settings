@@ -73,8 +73,12 @@ public class PaymentServiceImpl implements PaymentService {
 	public Payment createPayment(Payment payment){
 		paymentRepository.saveAndFlush(payment);
 		return payment;
-	}
-	
+	}	
+
+	@Override
+	public List<Payment> findByUserId(Long userId){
+		return paymentRepository.findByUserId(userId);
+	}	
 }
 
 /*

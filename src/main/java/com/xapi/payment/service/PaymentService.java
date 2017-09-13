@@ -1,6 +1,7 @@
 package com.xapi.payment.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.xapi.payment.model.Payment;
 
@@ -14,4 +15,6 @@ public interface PaymentService {
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Object paymentPayeeAmounts);
 
 	public Payment createPayment(Payment payment);
+	
+	public List<Payment> findByUserId(Long userId);
 }

@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 //	JpaRepository, CrudRepository
-	List<Payment> findByUserId(Long userId);
+	public List<Payment> findByUserId(Long userId);
 }
