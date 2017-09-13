@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.xapi.rate.model.Rates;
 
-@Service
+@Service("fxRateService")
 public class FXRateService {
 	public static final Double PERCENTAGE_CHARGE = 1.0;
 	public static final Set<String> EUR_CURRENCIES = new HashSet<>(Arrays.asList(
@@ -54,7 +54,7 @@ public class FXRateService {
 		return new Rates();
 	}
 	
-	public Double getRate(String currency, String currencyTo){
+	public static Double getRate(String currency, String currencyTo){
 		Rates currencyRates = rates.get(currency);
 		if(currencyRates != null && currencyRates.getRates() != null)
 			return currencyRates.getRates().get(currencyTo);
@@ -62,7 +62,7 @@ public class FXRateService {
 		return 1.0;		
 	}
 	
-	public Double getCharge(String currencyFrom, String currencyTo, Double amount){
+	public static Double getCharge(String currencyFrom, String currencyTo, Double amount){
 		if(! (EUR_CURRENCIES.contains(currencyFrom) && EUR_CURRENCIES.contains(currencyTo)) ){
 			return (amount * PERCENTAGE_CHARGE)/100;
 		}			

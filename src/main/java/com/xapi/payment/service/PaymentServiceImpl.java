@@ -4,12 +4,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.xapi.payment.model.Payment;
 import com.xapi.payment.model.PaymentRepository;
+import com.xapi.rate.service.FXRateService;
 
 //import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 //import com.xapi.payment.config.ServiceConfig;
@@ -19,8 +18,8 @@ public class PaymentServiceImpl implements PaymentService {
 //    @Autowired private ServiceConfig paymentConfig;
 	
 	@Autowired private PaymentRepository paymentRepository;
-	@Autowired private com.xapi.rate.service.FXRateService fxRateService;
-    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
+//	@Autowired private FXRateService fxRateService;
+//    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
 //	@HystrixCommand(fallbackMethod="getAllPaymentFallback")
@@ -52,8 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="calculatePaymentFallback")
 	public Payment calculate(Payment payment, Boolean calculatePayee) {
-		double fxRate = fxRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
-		double charge = fxRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
+		double fxRate = FXRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
+		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
 			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
 		
 		if(calculatePayee)

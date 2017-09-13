@@ -40,40 +40,45 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/calculation", method = RequestMethod.POST)
-	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment paymentDetails){ //ResponseEntity<Collection<PaymentAccounts>>
+	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod calculatePayment( Object paymentDetails) NOT IMPLEMENTED YET" + 
-				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + paymentDetails.toString();
-		
+				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + payment.toString();		
 		logger.info(info);
 		
-		Payment calculatedResult = paymentService.calculate(paymentDetails, true);
+		Boolean calculatePayee = payment.getAmount() != null 
+				&& (payment.getCalculatedAmount() == null || payment.getCalculatedAmount().intValue() == 0 )? false: true;
+		Payment calculatedResult = paymentService.calculate(payment, calculatePayee);		
+		logger.info(calculatedResult.toString());
+		
 		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}", method = RequestMethod.POST)
-	public ResponseEntity<?> createPayment(@RequestBody Object paymentDetails,
+	public ResponseEntity<?> createPayment(@RequestBody Object payment,
 			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, @PathVariable("payee_id") Long payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
-				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + paymentDetails.toString() 
-				+ ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;
 		
+		String info = "Metod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
+				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + payment.toString() 
+				+ ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
 		logger.info(info);
 		
-		Object calculatedResult = paymentService.createPayment(userId, accountId, payeeId, paymentDetails);
+		Object calculatedResult = paymentService.createPayment(userId, accountId, payeeId, payment);
 		return new ResponseEntity<Object>(info + "\n" + calculatedResult.toString(), HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST) //value = "", 
-	public ResponseEntity<?> placePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
+	public ResponseEntity<Payment> placePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod placePayment( Object payment) NOT IMPLEMENTED YET" + 
 				"\nPlace to execute User's placed PAYMENT by payment object" + "\n Parameters, payment = " + payment.toString();
 		
 		logger.info(info);
 		
-		Object paymentReference = paymentService.placePayment(payment);
-		return new ResponseEntity<Object>(info + "\n" + paymentReference.toString(), HttpStatus.I_AM_A_TEAPOT);
+		Payment paymentReference = paymentService.placePayment(payment);
+		logger.info(paymentReference.toString());
+		
+		return new ResponseEntity<Payment>( paymentReference, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
