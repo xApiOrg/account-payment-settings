@@ -1,36 +1,51 @@
 @echo off
 Set cmdTitle=ipay
 Set taskName=ipayService
-if "%~1"=="/S" (
-	echo * Param /S
-    ::pause
-    echo * Terminating all instances of the Server (Windows with title containing %cmdTitle%^)*
-    ::pause
-    FOR /F "tokens=2" %%l IN ('tasklist /FO TABLE /NH /V /FI "IMAGENAME eq cmd.exe" ^| findstr /r ".*ipay.*"') DO taskkill -f -t -pid %%l
-    echo * Ending previous Task
-    ::pause
-    SCHTASKS /END /TN %taskName%
-)
-if "%~1"=="/R" (
-    echo * Param /R
-    ::pause
-    echo * Creating new Task with command "cmd /K '%~dp0run_windows.bat' /D"
-    ::pause
-    SCHTASKS /CREATE /TN %taskName% /SC ONCE /ST 00:00 /TR "cmd /K '%~dp0run_windows.bat' /D" /F
-    echo * Running Task
-    ::pause
-    SCHTASKS /RUN /TN %taskName%
-)
+Set deployFile=@project.build.finalName@.jar
+Set fileDir=..
+
 if "%~1"=="/D" (
-    echo Param /D
-    ::pause
-    echo Changing Window Title to %cmdTitle%
-    ::pause
-    title %cmdTitle%
-    echo Moving to folder "%~dp0"
+	echo * Param /D
+    echo * CD "%~dp0"
     ::pause
     cd "%~dp0"
-    echo Deploying Server
+    echo Changing window title to %cmdTitle%
     ::pause
-    java -jar ../xapi-account-payment-settings-0.0.1-SNAPSHOT.jar
+    title %cmdTitle%
+    echo Deploying %deployFile% at CD %fileDir%
+    ::pause
+    java -jar %fileDir%/%deployFile%
+)
+if "%~1"=="/DT" (
+	echo * Param /DT
+    echo * CD "%~dp0"
+    ::pause
+    cd "%~dp0"
+    echo * Creating task %taskName%_D
+    ::pause
+    SCHTASKS /Create /TN %taskName%_D /SC ONCE /ST 00:00 /TR "'%~dp0run_windows.bat' /D" /F
+    echo * Running task %taskName%_D
+    ::pause
+    SCHTASKS /Run /TN %taskName%_D
+)
+if "%~1"=="/K" (
+	echo * Param /K
+    echo * CD "%~dp0"
+    ::pause
+    cd "%~dp0"
+    echo Killing all instances of %cmdTitle%
+    ::pause
+    FOR /F "tokens=2" %%l IN ('tasklist /FO TABLE /NH /V /FI "IMAGENAME eq cmd.exe" ^| findstr /r ".*%cmdTitle%.*"') DO taskkill /T /F /PID %%l
+)
+if "%~1"=="/KT" (
+	echo * Param /KT
+    echo * CD "%~dp0"
+    ::pause
+    cd "%~dp0"
+    echo * Creating task %taskName%_K
+    ::pause
+    SCHTASKS /Create /TN %taskName%_K /SC ONCE /ST 00:00 /TR "'%~dp0run_windows.bat' /K" /F
+    echo * Running task %taskName%_K
+    ::pause
+    SCHTASKS /Run /TN %taskName%_K
 )
