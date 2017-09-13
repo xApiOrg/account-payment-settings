@@ -19,6 +19,7 @@ public class PaymentServiceImpl implements PaymentService {
 //    @Autowired private ServiceConfig paymentConfig;
 	
 	@Autowired private PaymentRepository paymentRepository;
+	@Autowired private com.xapi.rate.service.FXRateService fxRateService;
     private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -51,7 +52,17 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="calculatePaymentFallback")
 	public Payment calculate(Payment payment, Boolean calculatePayee) {
-		// TODO Auto-generated method stub
+		double fxRate = fxRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
+		double charge = fxRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
+			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
+		
+		if(calculatePayee)
+			payment.setCalculatedAmount(payment.getAmount() * fxRate - charge);
+		else
+			payment.setAmount(payment.getCalculatedAmount()/fxRate + charge);
+		
+		paymentRepository.saveAndFlush(payment);
+		
 		return payment;
 	}
 
