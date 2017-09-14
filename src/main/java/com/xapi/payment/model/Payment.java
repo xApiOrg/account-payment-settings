@@ -30,7 +30,7 @@ public class Payment implements Serializable{
 	@Column(name = "PAYEE_CCURRENCY")	private String payeeCurrency;
 										private Boolean placed = false;
 	@Column(name = "DATE_PLACED")		private Date datePlaced = new Date();
-										private Boolean canceled = false;
+										private Boolean cancelled = false;
 	@Column(name = "DATE_CANCELED")		private Date dateCancelled = new Date();
 										private Boolean settled = false;
 	@Column(name = "DATE_SETTLED")		private Date dateSettled = new Date();
@@ -130,12 +130,12 @@ public class Payment implements Serializable{
 		this.id = id;
 	}
 
-	public Boolean getCanceled() {
-		return canceled;
+	public Boolean getCancelled() {
+		return cancelled;
 	}
 
-	public void setCanceled(Boolean canceled) {
-		this.canceled = canceled;
+	public void setCancelled(Boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	public String getPaymentCurrency() {
@@ -223,7 +223,7 @@ public class Payment implements Serializable{
         <payeeCurrency>EUR</payeeCurrency>
         <placed>false</placed>
         <datePlaced>1505223404000</datePlaced>
-        <canceled>false</canceled>
+        <cancelled>false</cancelled>
         <dateCancelled>1505223404000</dateCancelled>
         <settled>false</settled>
         <dateSettled>1505223404000</dateSettled>

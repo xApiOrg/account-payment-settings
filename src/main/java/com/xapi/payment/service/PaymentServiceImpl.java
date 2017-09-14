@@ -130,7 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
     "payeeCurrency": "EUR",
     "placed": false,
     "datePlaced": 1505383141468,
-    "canceled": false,
+    "cancelled": false,
     "dateCancelled": 1505383141468,
     "settled": false,
     "dateSettled": 1505383141468
