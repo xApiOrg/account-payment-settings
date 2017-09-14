@@ -12,6 +12,9 @@ spring:
        # jdbc:mysql://localhost:3306/test?verifyServerCertificate=false&useSSL=false&requireSSL=false
     username: vassit
     password: vass1tlon
+   # spring.jackson.serialization.fail-on-empty-beans=false
+  jackson:
+    serialization.fail-on-empty-beans: false   
 exchange:
   apiProtocol: "http"
   apiDomain: "api.fixer.io"

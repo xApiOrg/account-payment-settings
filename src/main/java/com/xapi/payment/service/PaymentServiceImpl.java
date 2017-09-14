@@ -50,20 +50,21 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="calculatePaymentFallback")
 	public Payment calculate(Payment payment, Boolean calculatePayee) {
-		double fxRate = FXRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
-		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
-			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
+		Payment calculatedPayment = paymentRepository.findById(payment.getId());// paymentRepository.getOne(payment.getId());// paymentRepository.findById(payment.getId())
 		
-		payment = payment.getId() != null ? paymentRepository.getOne(payment.getId()): payment;
+		if(calculatedPayment != null){
+			calculatedPayment.setAmount(payment.getAmount());
+			calculatedPayment.setCalculatedAmount(payment.getCalculatedAmount());
+			calculatedPayment.setPaymentCurrency(payment.getPaymentCurrency());
+			calculatedPayment.setPayeeCurrency(payment.getPayeeCurrency());
+		}else
+			calculatedPayment = payment;
 		
-		if(calculatePayee)
-			payment.setCalculatedAmount(payment.getAmount() * fxRate - charge);
-		else
-			payment.setAmount(payment.getCalculatedAmount()/fxRate + charge);
+
+		calculatedPayment = recalculate(calculatedPayment, calculatePayee);
+		paymentRepository.save(calculatedPayment);
 		
-		paymentRepository.save(payment);
-		
-		return payment;
+		return calculatedPayment;
 	}
 
 //	@HystrixCommand

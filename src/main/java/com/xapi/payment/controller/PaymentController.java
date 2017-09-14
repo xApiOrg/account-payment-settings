@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.payment.model.Payment;
@@ -40,27 +41,28 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/calculation", method = RequestMethod.POST)
-	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod calculatePayment( Object paymentDetails) NOT IMPLEMENTED YET" + 
-				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + payment.toString();		
+	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment payment, 
+			@RequestParam(value="calculatePayee", required=false) String calculatePayee){ 
+		String info = "\nMetod calculatePayment( Object paymentDetails) NOT IMPLEMENTED YET" + 
+				"\nPlace to calculate User's to be placed PAYMENT by payment details" + 
+				"\n Parameters, payment = " + payment.toString();		
 		logger.info(info);
 		
-		Boolean calculatePayee = payment.getAmount() != null 
+		Boolean flag = calculatePayee != null? new Boolean( calculatePayee ): payment.getAmount() != null 
 				&& (payment.getCalculatedAmount() == null || payment.getCalculatedAmount().intValue() == 0 )? false: true;
-		Payment calculatedResult = paymentService.calculate(payment, calculatePayee);		
-		logger.info(calculatedResult.toString());
+		payment = paymentService.calculate(payment, flag);		
+		logger.info(payment.toString());
 		
-		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.OK);
+		return new ResponseEntity<Payment>(payment, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}", method = RequestMethod.POST)
 	public ResponseEntity<Payment> createPayment(@RequestBody Payment payment,
-			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, @PathVariable("payee_id") Long payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
+			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, @PathVariable("payee_id") Long payeeId){ 
 		
-		String info = "Metod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
-				"\nPlace to calculate User's to be placed PAYMENT by payment details" + "\n Parameters, payment = " + payment.toString() 
-				+ ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
+		String info = "\nMetod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
+				"\n Parameters, payment = " + payment.toString() + ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
 		logger.info(info);
 		
 		Payment calculatedResult = paymentService.createPayment(userId, accountId, payeeId, payment);
@@ -69,7 +71,7 @@ public class PaymentController {
 //		calculatedResult = paymentService.calculate(payment, calculatePayee);	
 		logger.info(calculatedResult.toString());
 		
-		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.OK);
 	}
 	
 	@CrossOrigin

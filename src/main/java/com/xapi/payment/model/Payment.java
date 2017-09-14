@@ -203,7 +203,9 @@ public class Payment implements Serializable{
     {
         "userId": 1000,
         "accountId": 10,
-        "payeeId": 100,
+        "payeeId": 100,        
+        "amount": 2000,
+        "calculatedAmount": 0,
         "paymentCurrency": "GBP",
         "payeeCurrency": "EUR"
     }
