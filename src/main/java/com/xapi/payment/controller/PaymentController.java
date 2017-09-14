@@ -39,6 +39,25 @@ public class PaymentController {
 
 	 */	
 	
+	
+	/*
+	 * Example:
+	 * METHOD: POST
+	 * URL: http://localhost:10001/ipay/payment/calculation?calculatePayee=true 
+	 * BODY: minimal
+	 *     {
+	 *     		"id": 3,
+	 *     		"amount": 1000,
+	 *     		"calculatedAmount": 0,
+	 *     		"paymentCurrency": "GBP",
+	 *     		"payeeCurrency": "EUR"
+	 *     }
+	 *     
+	 *  IMMUTABLE ELEMENTS   
+	 *     		"userId": 1000,
+	 *     		"accountId": 10,
+	 *     		"payeeId": 100,
+	 * */
 	@CrossOrigin
 	@RequestMapping(value = "/calculation", method = RequestMethod.POST)
 	public ResponseEntity<Payment> calculatePayment(@RequestBody Payment payment, 
@@ -48,13 +67,24 @@ public class PaymentController {
 				"\n Parameters, payment = " + payment.toString();		
 		logger.info(info);
 		
-		Boolean flag = calculatePayee != null? new Boolean( calculatePayee ): payment.getAmount() != null 
-				&& (payment.getCalculatedAmount() == null || payment.getCalculatedAmount().intValue() == 0 )? false: true;
+		Boolean flag = calculatePayee != null? new Boolean( calculatePayee ): payment.getAmount() != null && payment.getAmount() > 0 ? true: false;
 		payment = paymentService.calculate(payment, flag);		
 		logger.info(payment.toString());
 		
-		return new ResponseEntity<Payment>(payment, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>(payment, HttpStatus.OK);
 	}
+	
+	/*
+	 * Example:
+	 * METHOD: POST
+	 * URL: http://localhost:10001/ipay/payment/1000/11/101 
+	 * BODY: minimal
+	 *     {
+	 *     		"amount": 1000,
+	 *     		"paymentCurrency": "GBP",
+	 *     		"payeeCurrency": "EUR"
+	 *     }
+	 * */
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}", method = RequestMethod.POST)
@@ -74,23 +104,34 @@ public class PaymentController {
 		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.OK);
 	}
 	
+	/*
+	 * Example:
+	 * METHOD: POST
+	 * URL: http://localhost:10001/ipay/payment
+	 * BODY: minimal
+	 *     {
+	 *     		"id": 3
+	 *     }
+	 * */
+	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST) //value = "", 
-	public ResponseEntity<Payment> placePayment(@RequestBody Payment payment){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod placePayment( Object payment) NOT IMPLEMENTED YET" + 
-				"\nPlace to execute User's placed PAYMENT by payment object" + "\n Parameters, payment = " + payment.toString();
+	public ResponseEntity<Payment> placePayment(@RequestBody Payment paymentRef){ 
+		String info = "\nMetod placePayment( Object payment) NOT IMPLEMENTED YET" + 
+				"\nPlace to execute User's placed PAYMENT by payment object" + 
+				"\n Parameters, payment = " + paymentRef.toString();
 		
 		logger.info(info);
 		
-		Payment paymentReference = paymentService.placePayment(payment);
-		logger.info(paymentReference.toString());
+		Payment payment = paymentService.placePayment(paymentRef);
+		logger.info(payment.toString());
 		
-		return new ResponseEntity<Payment>( paymentReference, HttpStatus.OK);
+		return new ResponseEntity<Payment>( payment, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<Collection<Payment>> getUserPayments(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>> //, HttpServletRequest request
+	public ResponseEntity<Collection<Payment>> getUserPayments(@PathVariable("user_id") Long userId){ //, HttpServletRequest request
 		String info = "\nMetod getUserPayments( Long userId) NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's placed PAYMENTS by user Id" + "\n Parameters, user Id = " + userId;
 //				+ "\n" + "method = " + request.getMethod() +  ", URI - " + request.getRequestURI() + ", URL - " + request.getRequestURL() + ", -->" + RequestMethod.GET.toString();
@@ -99,6 +140,7 @@ public class PaymentController {
 		
 		Collection<Payment> placedPayments = paymentService.getAll( userId );
 		logger.info( placedPayments.toString() );
+		
 		return new ResponseEntity<Collection<Payment>>(placedPayments, HttpStatus.OK);
 	}	
 }

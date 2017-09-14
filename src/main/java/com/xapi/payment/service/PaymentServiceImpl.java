@@ -36,8 +36,12 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="placePaymentFallback")
 	public Payment placePayment(Payment payment) {
-		payment.setPlaced( true );
-		paymentRepository.saveAndFlush(payment);
+		payment = paymentRepository.findById(payment.getId());
+		if(payment != null && ! payment.getPlaced() ){
+			payment.setPlaced( true );
+			paymentRepository.save(payment);			
+		}
+		
 		return payment;
 	}
 	
@@ -52,6 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
 	public Payment calculate(Payment payment, Boolean calculatePayee) {
 		Payment calculatedPayment = paymentRepository.findById(payment.getId());// paymentRepository.getOne(payment.getId());// paymentRepository.findById(payment.getId())
 		
+		// TODO, FIXME Check for 0 amounts
 		if(calculatedPayment != null){
 			calculatedPayment.setAmount(payment.getAmount());
 			calculatedPayment.setCalculatedAmount(payment.getCalculatedAmount());
