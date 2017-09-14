@@ -31,7 +31,7 @@ public class Payment implements Serializable{
 										private Boolean placed = false;
 	@Column(name = "DATE_PLACED")		private Date datePlaced = new Date();
 										private Boolean cancelled = false;
-	@Column(name = "DATE_CANCELED")		private Date dateCancelled = new Date();
+	@Column(name = "DATE_CANCELLED")	private Date dateCancelled = new Date();
 										private Boolean settled = false;
 	@Column(name = "DATE_SETTLED")		private Date dateSettled = new Date();
 	
