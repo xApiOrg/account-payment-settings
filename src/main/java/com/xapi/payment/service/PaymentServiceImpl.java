@@ -18,7 +18,6 @@ public class PaymentServiceImpl implements PaymentService {
 //    @Autowired private ServiceConfig paymentConfig;
 	
 	@Autowired private PaymentRepository paymentRepository;
-//	@Autowired private FXRateService fxRateService;
 //    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -55,12 +54,14 @@ public class PaymentServiceImpl implements PaymentService {
 		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
 			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
 		
+		payment = payment.getId() != null ? paymentRepository.getOne(payment.getId()): payment;
+		
 		if(calculatePayee)
 			payment.setCalculatedAmount(payment.getAmount() * fxRate - charge);
 		else
 			payment.setAmount(payment.getCalculatedAmount()/fxRate + charge);
 		
-		paymentRepository.saveAndFlush(payment);
+		paymentRepository.save(payment);
 		
 		return payment;
 	}
@@ -71,10 +72,33 @@ public class PaymentServiceImpl implements PaymentService {
 //		return null;
 //	}
 	
+	private Payment recalculate(Payment payment, Boolean calculatePayee){
+		double fxRate = FXRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
+		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
+			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
+		payment.setRate(fxRate);
+		payment.setCharge(charge);
+		
+		if(calculatePayee)
+			payment.setCalculatedAmount(payment.getAmount() * fxRate - charge);
+		else
+			payment.setAmount(payment.getCalculatedAmount()/fxRate + charge);
+		
+		return payment;
+	}
+	
 	@Override
-	public Payment createPayment(Long userId, Long accountId, Long payeeId, Object paymentPayeeAmounts){
+	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentTransferred){
 		Payment payment = new Payment(userId, accountId, payeeId);
-			paymentRepository.saveAndFlush(payment);
+			payment.setAmount(paymentTransferred.getAmount());
+			payment.setPaymentCurrency(paymentTransferred.getPaymentCurrency());
+			payment.setPayeeCurrency(paymentTransferred.getPayeeCurrency());
+			
+		boolean calculatePayee = payment.getAmount() != null ? true: false;
+//				&& (paymentTransferred.getCalculatedAmount() == null || calculatedResult.getCalculatedAmount().intValue() == 0 )? true: false;
+		payment = recalculate(payment, calculatePayee);
+			
+		paymentRepository.save(payment);
 			
 		return payment;
 	}
@@ -93,40 +117,22 @@ public class PaymentServiceImpl implements PaymentService {
 
 /*
 {
-    "base": "EUR",
-    "date": "2017-09-12",
-    "rates": {
-        "AUD": 1.4847,
-        "BGN": 1.9558,
-        "BRL": 3.7117,
-        "CAD": 1.4477,
-        "CHF": 1.1444,
-        "CNY": 7.8024,
-        "CZK": 26.105,
-        "DKK": 7.44,
-        "GBP": 0.89878,
-        "HKD": 9.3235,
-        "HRK": 7.4513,
-        "HUF": 307.11,
-        "IDR": 15752,
-        "ILS": 4.2197,
-        "INR": 76.438,
-        "JPY": 130.93,
-        "KRW": 1346,
-        "MXN": 21.13,
-        "MYR": 5.012,
-        "NOK": 9.3593,
-        "NZD": 1.6343,
-        "PHP": 60.765,
-        "PLN": 4.2549,
-        "RON": 4.6018,
-        "RUB": 68.384,
-        "SEK": 9.5355,
-        "SGD": 1.6074,
-        "THB": 39.522,
-        "TRY": 4.0948,
-        "USD": 1.1933,
-        "ZAR": 15.48
-    }
-} 
+    "id": 13,
+    "userId": 1000,
+    "accountId": 12,
+    "payeeId": 102,
+    "created": 1505383141468,
+    "amount": 2000,
+    "paymentCurrency": "GBP",
+    "rate": 1.1081,
+    "charge": 0,
+    "calculatedAmount": 2216.2000000000003,
+    "payeeCurrency": "EUR",
+    "placed": false,
+    "datePlaced": 1505383141468,
+    "canceled": false,
+    "dateCancelled": 1505383141468,
+    "settled": false,
+    "dateSettled": 1505383141468
+}
  * */

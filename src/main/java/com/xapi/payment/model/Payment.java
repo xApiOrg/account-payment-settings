@@ -1,6 +1,7 @@
 package com.xapi.payment.model;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -160,6 +161,20 @@ public class Payment implements Serializable{
 	public void setDateCancelled(Date dateCancelled) {
 		this.dateCancelled = dateCancelled;
 	}
+	
+	public String toString(){
+		StringBuffer toString = new StringBuffer();
+		for(Field field: this.getClass().getDeclaredFields())
+			try {
+				toString.append( field.getName() + " = " ).append( field.get( this ) ).append("\n");
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+//		return "id = " + id + ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId + ", created = " + created + ", amount = " + amount + ", paymentCurrency = " + paymentCurrency + ", rate = " + rate;
+		return toString.toString();
+	}
 }
 
 /*
@@ -185,6 +200,14 @@ public class Payment implements Serializable{
     }
 ]
 
+    {
+        "userId": 1000,
+        "accountId": 10,
+        "payeeId": 100,
+        "paymentCurrency": "GBP",
+        "payeeCurrency": "EUR"
+    }
+    
 <Collection>
     <item>
         <id>1</id>

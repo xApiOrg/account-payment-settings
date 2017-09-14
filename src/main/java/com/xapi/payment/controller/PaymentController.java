@@ -50,12 +50,12 @@ public class PaymentController {
 		Payment calculatedResult = paymentService.calculate(payment, calculatePayee);		
 		logger.info(calculatedResult.toString());
 		
-		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}", method = RequestMethod.POST)
-	public ResponseEntity<?> createPayment(@RequestBody Object payment,
+	public ResponseEntity<Payment> createPayment(@RequestBody Payment payment,
 			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, @PathVariable("payee_id") Long payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
 		
 		String info = "Metod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
@@ -63,8 +63,13 @@ public class PaymentController {
 				+ ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
 		logger.info(info);
 		
-		Object calculatedResult = paymentService.createPayment(userId, accountId, payeeId, payment);
-		return new ResponseEntity<Object>(info + "\n" + calculatedResult.toString(), HttpStatus.I_AM_A_TEAPOT);
+		Payment calculatedResult = paymentService.createPayment(userId, accountId, payeeId, payment);
+//		Boolean calculatePayee = calculatedResult.getAmount() != null 
+//				&& (calculatedResult.getCalculatedAmount() == null || calculatedResult.getCalculatedAmount().intValue() == 0 )? true: false;
+//		calculatedResult = paymentService.calculate(payment, calculatePayee);	
+		logger.info(calculatedResult.toString());
+		
+		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
@@ -78,7 +83,7 @@ public class PaymentController {
 		Payment paymentReference = paymentService.placePayment(payment);
 		logger.info(paymentReference.toString());
 		
-		return new ResponseEntity<Payment>( paymentReference, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>( paymentReference, HttpStatus.OK);
 	}
 	
 	@CrossOrigin

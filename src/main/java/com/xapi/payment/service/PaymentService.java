@@ -12,9 +12,10 @@ public interface PaymentService {
 
 	public Payment calculate(Payment payment, Boolean calculatePayee);
 
-	public Payment createPayment(Long userId, Long accountId, Long payeeId, Object paymentPayeeAmounts);
+	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentPayeeAmounts);
 
 	public Payment createPayment(Payment payment);
 	
 	public List<Payment> findByUserId(Long userId);
+
 }
