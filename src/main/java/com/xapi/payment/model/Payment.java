@@ -17,23 +17,23 @@ import javax.persistence.Id;
 public class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id @GeneratedValue 				private Long id;
-	@Column(name = "USER_ID") 			private final Long userId;
-	@Column(name = "ACCOUNT_ID") 		private final Long accountId;
-	@Column(name = "PAYEE_ID") 			private final Long payeeId;
-										private final Date created = new Date();
-										private Double amount = 0.00;
-	@Column(name = "PAYMENT_CURRENCY") 	private String paymentCurrency;
-										private Double rate = 1.00;
-										private Double charge = 0.00;
-	@Column(name = "CALCULATED_AMOUNT")	private Double calculatedAmount = 0.00;
-	@Column(name = "PAYEE_CCURRENCY")	private String payeeCurrency;
-										private Boolean placed = false;
-	@Column(name = "DATE_PLACED")		private Date datePlaced = new Date();
-										private Boolean cancelled = false;
-	@Column(name = "DATE_CANCELLED")	private Date dateCancelled = new Date();
-										private Boolean settled = false;
-	@Column(name = "DATE_SETTLED")		private Date dateSettled = new Date();
+	@Id @GeneratedValue 							private Long id;
+	@Column(name="USER_ID", nullable=false) 		private final Long userId;
+	@Column(name="ACCOUNT_ID", nullable=false) 		private final Long accountId;
+	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
+	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
+	@Column(name="AMOUNT", nullable=false)			private Double amount = 0.00; 
+	@Column(name="PAYMENT_CURRENCY",nullable=false) private String paymentCurrency;
+	@Column(name="RATE", nullable=false)			private Double rate = 1.00;
+	@Column(name="CHARGE", nullable=false)			private Double charge = 0.00;
+	@Column(name="CALCULATED_AMOUNT",nullable=false)private Double calculatedAmount = 0.00;
+	@Column(name="PAYEE_CCURRENCY", nullable=false)	private String payeeCurrency;
+	@Column(name="PLACED", nullable=false)			private Boolean placed = false;
+	@Column(name="DATE_PLACED", nullable=false)		private Date datePlaced = new Date();
+	@Column(name="CANCELLED", nullable=false)		private Boolean cancelled = false;
+	@Column(name="DATE_CANCELLED", nullable=false)	private Date dateCancelled = new Date();
+	@Column(name="SETTLED", nullable=false)			private Boolean settled = false;
+	@Column(name="DATE_SETTLED", nullable=false)	private Date dateSettled = new Date();
 	
 	public Payment(){ 
 		this.userId = 0l; this.accountId = 0l; this.payeeId = 0l;
