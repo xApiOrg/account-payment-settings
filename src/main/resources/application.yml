@@ -1,9 +1,26 @@
 server:
   port: 10001 # 8080
   contextPath: /ipay
-  ## http://localhost:8080/ipay/settings/country
-  ## otherwise it will be 
-  ## http://localhost:8080/settings/country
   
-  ## http://localhost:8080/ipay/i-pay/settings/country - OLD
-  ## http://localhost:8080/i-pay/settings/country - OLD
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate # validate, update, create, create-drop
+  datasource:
+    url: jdbc:mysql://rds-ferdinand-london.cpoiz5ncholm.eu-west-2.rds.amazonaws.com:3306/ferdinand?verifyServerCertificate=false&useSSL=false&requireSSL=false
+       # jdbc:mysql://rds-ferdinand-london.cpoiz5ncholm.eu-west-2.rds.amazonaws.com:3306/ferdinand
+       # jdbc:mysql://localhost:3306/test?verifyServerCertificate=false&useSSL=false&requireSSL=false
+    username: vassit
+    password: vass1tlon
+   # spring.jackson.serialization.fail-on-empty-beans=false
+  jackson:
+    serialization.fail-on-empty-beans: false   
+exchange:
+  apiProtocol: "http"
+  apiDomain: "api.fixer.io"
+  apiPath: "/latest"    
+# spring.jpa.hibernate.ddl-auto=create
+# spring.datasource.url=jdbc:mysql://localhost:3306/db_example
+# spring.datasource.username=springuser
+# spring.datasource.password=ThePassword
+

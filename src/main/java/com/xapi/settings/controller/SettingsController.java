@@ -75,7 +75,7 @@ NB!!! New ONES. Needs to be discussed and agreed
 	
 	// FIXME, agree with the rest
 	@CrossOrigin
-	@RequestMapping(value = "/country/list", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)//value = "/country/list", 
 	public ResponseEntity<?> getElements(){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod getElements() NOT IMPLEMENTED YET" + 
 				"\nGet all ELEMENTS settings" + "\n NO Parameters";
