@@ -71,7 +71,7 @@ public class PaymentController {
 		payment = paymentService.calculate(payment, flag);		
 		logger.info(payment.toString());
 		
-		return new ResponseEntity<Payment>(payment, HttpStatus.OK);
+		return new ResponseEntity<Payment>(payment, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	/*
@@ -101,7 +101,7 @@ public class PaymentController {
 //		calculatedResult = paymentService.calculate(payment, calculatePayee);	
 		logger.info(calculatedResult.toString());
 		
-		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.OK);
+		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	/*
@@ -126,7 +126,7 @@ public class PaymentController {
 		Payment payment = paymentService.placePayment(paymentRef);
 		logger.info(payment.toString());
 		
-		return new ResponseEntity<Payment>( payment, HttpStatus.OK);
+		return new ResponseEntity<Payment>( payment, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
@@ -141,6 +141,6 @@ public class PaymentController {
 		Collection<Payment> placedPayments = paymentService.getAll( userId );
 		logger.info( placedPayments.toString() );
 		
-		return new ResponseEntity<Collection<Payment>>(placedPayments, HttpStatus.OK);
+		return new ResponseEntity<Collection<Payment>>(placedPayments, HttpStatus.I_AM_A_TEAPOT);
 	}	
 }
