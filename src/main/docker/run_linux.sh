@@ -1,10 +1,11 @@
+instanceName="ipayService"
 copyFile="/tmp/ipay.sh"
 fileName="$(basename "$0")"
 qualifiedPath="$(dirname "$(readlink -f "$0")")/$fileName"
 
 function killInstance {
     echo "[INFO] Killing previous instance"
-    pkill -f ipayService
+    pkill -f "$instanceName"
     if [[ $! -eq 0 ]]
     then echo "[OK] Instance killed"; 
     else echo "[FAIL] No instance to kill"; 
@@ -12,7 +13,7 @@ function killInstance {
 }
 function runInstance {
     echo "[INFO] Running instance" >> /tmp/ipay.instance.log
-    exec -a ipayService java -jar ./target/xapi-account-payment-settings-0.0.1-SNAPSHOT.jar 1>> /tmp/ipay.instance.log 2>> /tmp/ipay.instance.log &
+    exec -a "$instanceName" java -jar ./target/xapi-account-payment-settings-0.0.1-SNAPSHOT.jar 1>> /tmp/ipay.instance.log 2>> /tmp/ipay.instance.log &
     echo "[OK] Async process launched" >> /tmp/ipay.instance.log
 }
 
