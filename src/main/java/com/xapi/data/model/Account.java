@@ -25,15 +25,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Account  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id @GeneratedValue 							private Long id;
+	@Id @GeneratedValue 								private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID") @JsonBackReference				private final User user;
-	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
-	@Column(name="CURRENCY",nullable=false) 		private String currency;
-	@Column(name="BALANCE",nullable=false) 			private Double balance = 0.0;
-	@Column(name="OVERDRAFT",nullable=false) 		private Double overDraft = 0.0;
+    @JoinColumn(name = "USER_ID") @JsonBackReference	private final User user;
+	@Column(name="CREATED", nullable=false)				private final Date created = new Date();
+	@Column(name="CURRENCY",nullable=false) 			private String currency;
+	@Column(name="BALANCE",nullable=false) 				private Double balance = 0.0;
+	@Column(name="OVERDRAFT",nullable=false) 			private Double overDraft = 0.0;
 	@Column(name="TYPE", nullable = false)
-		@Enumerated(EnumType.STRING)				private AccountType type;
+		@Enumerated(EnumType.STRING)					private AccountType type;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 													private Set<Payment> payments;
@@ -92,5 +92,14 @@ public class Account  implements Serializable{
 			}
 		
 		return toString.toString();
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public Date getCreated() {
+		return created;
 	}
 }

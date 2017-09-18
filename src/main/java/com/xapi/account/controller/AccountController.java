@@ -60,14 +60,14 @@ public class AccountController {
 
 		String info = "\nMetod getUserAccountById( Integer userId, Integer accountId) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYMENT account by user Id and account Id" + 
-			"\n Parameters, user Id = " + userId + ", account Id" + accountId;		
+			"\n Parameters, user Id = " + userId + ", account Id = " + accountId;		
 		logger.info(info);
 		
-		// findByAccountId(accountId) - should return same result if accountId is unique across all system
+		// getAccountById(accountId) - should return same result if accountId is unique across all system
 		Account account = accountService.getUserAccountById(userId, accountId);
-		logger.info(account.toString());
+		logger.info(account != null? account.toString(): null);
 		
-		return new ResponseEntity<Account>(account, HttpStatus.OK);
+		return new ResponseEntity<Account>(account, account != null? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}
 	
 	@CrossOrigin
