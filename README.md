@@ -225,4 +225,3 @@ cd /var/lib/jenkins/workspace/account-payment-settings
 >_To kill the service use the parameter `-k`_
 
 >_**Please stop the service by yourself** if you started it manually as Jenkins will have **no permission** to do so!_
-							or 
