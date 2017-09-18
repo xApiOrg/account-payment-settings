@@ -93,6 +93,60 @@ insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) value
 insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 5, 'GBP', 5000, 500, 'CURRENT', current_timestamp);
 
 
+insert into payee (NAME) values ('Ferdinand Burgazov');
+insert into payee (NAME) values ('Manuel Ferran');
+insert into payee (NAME) values ('Nuno Duque');
+insert into payee (NAME) values ('Maria Merino');
+insert into payee (NAME) values ('Gustav Haraldson');
+insert into payee (NAME) values ('Hans Zimmerman');
+insert into payee (NAME) values ('Jeff Redcheeck');
+insert into payee (NAME) values ('Robert DeBurg');
+insert into payee (NAME) values ('Ivan Ivanov');
+insert into payee (NAME) values ('Peter Petrov');
+insert into payee (NAME) values ('Ganyo Balkanski');
+insert into payee (NAME) values ('Hasan Kassas');
+insert into payee (NAME) values ('Redjeb Mutlu');
+insert into payee (NAME) values ('Vladimir Esenin');
+insert into payee (NAME) values ('Alexandra Kostenko');
+insert into payee (NAME) values ('Ilya Grechko');
+insert into payee (NAME) values ('Efrem Kossigin');
+insert into payee (NAME) values ('Petar Hitrev');
+insert into payee (NAME) values ('Alil Chaush');
+insert into payee (NAME) values ('Osama Osman');
+insert into payee (NAME) values ('Yurii Izotzadze');
+
+insert into user_payee (user_id, payee_id) values( 1, 1 );
+insert into user_payee (user_id, payee_id) values( 1, 2 );
+insert into user_payee (user_id, payee_id) values( 1, 3 );
+insert into user_payee (user_id, payee_id) values( 1, 4 );
+insert into user_payee (user_id, payee_id) values( 1, 5 );
+insert into user_payee (user_id, payee_id) values( 1, 6 );
+insert into user_payee (user_id, payee_id) values( 1, 7 );
+
+insert into user_payee (user_id, payee_id) values( 2, 8 );
+insert into user_payee (user_id, payee_id) values( 2, 9 );
+insert into user_payee (user_id, payee_id) values( 2, 10 );
+insert into user_payee (user_id, payee_id) values( 2, 11 );
+insert into user_payee (user_id, payee_id) values( 2, 12 );
+insert into user_payee (user_id, payee_id) values( 2, 13 );
+insert into user_payee (user_id, payee_id) values( 2, 14 );
+
+insert into user_payee (user_id, payee_id) values( 3, 15 );
+insert into user_payee (user_id, payee_id) values( 3, 16 );
+insert into user_payee (user_id, payee_id) values( 3, 17 );
+insert into user_payee (user_id, payee_id) values( 3, 18 );
+insert into user_payee (user_id, payee_id) values( 3, 19 );
+insert into user_payee (user_id, payee_id) values( 3, 20 );
+insert into user_payee (user_id, payee_id) values( 3, 21 );
+
+insert into user_payee (user_id, payee_id) values( 4, 2 );
+insert into user_payee (user_id, payee_id) values( 4, 3 );
+insert into user_payee (user_id, payee_id) values( 4, 4 );
+insert into user_payee (user_id, payee_id) values( 4, 5 );
+insert into user_payee (user_id, payee_id) values( 4, 6 );
+insert into user_payee (user_id, payee_id) values( 4, 7 );
+insert into user_payee (user_id, payee_id) values( 4, 8 );
+
 /*minimal insert statement. N.B. AMOUNT and CALCULATED_AMOUNT can be omitted but it's useful to have at least one of them*/
 insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CCURRENCY) 
 			values ( 1000, 10, 100, 2000.00, 'GBP', 'EUR' );

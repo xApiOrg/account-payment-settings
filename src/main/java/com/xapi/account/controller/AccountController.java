@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.account.service.AccountService;
 import com.xapi.data.model.Account;
+import com.xapi.data.model.Payee;
 
 @RestController
 @RequestMapping("/account")
@@ -43,7 +44,7 @@ public class AccountController {
 	@CrossOrigin(origins="*")
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllUserPaymentAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "\nMetod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET" + 
+		String info = //"\nMetod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's PAYMENT accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
 		
@@ -58,7 +59,7 @@ public class AccountController {
 	public ResponseEntity<?> getUserAccountById(
 			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId){ //ResponseEntity<Collection<PaymentAccounts>>
 
-		String info = "\nMetod getUserAccountById( Integer userId, Integer accountId) NOT IMPLEMENTED YET" + 
+		String info = //"\nMetod getUserAccountById( Integer userId, Integer accountId) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYMENT account by user Id and account Id" + 
 			"\n Parameters, user Id = " + userId + ", account Id = " + accountId;		
 		logger.info(info);
@@ -72,14 +73,15 @@ public class AccountController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllUserPayeeAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "\nMetod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
-				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;
-		
+	public ResponseEntity<?> getUserPayeeAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
+		String info = //"\nMetod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
+				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
 		
-		Collection<Account> accounts = accountService.getAll( userId ); // FIXME, accountService.getPayees(user_id)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		List<Payee> accounts = accountService.getUserPayeeAccounts( userId );
+		logger.info(accounts != null? accounts.toString(): null);
+		
+		return new ResponseEntity<List<Payee>>(accounts, accounts != null && ! accounts.isEmpty()? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
 	
 	@CrossOrigin
