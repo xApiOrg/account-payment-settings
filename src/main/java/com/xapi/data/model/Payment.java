@@ -1,4 +1,4 @@
-package com.xapi.payment.model;
+package com.xapi.data.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -6,8 +6,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 //import javax.persistence.Column;
 //import javax.persistence.Table;
@@ -18,16 +21,22 @@ public class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue 							private Long id;
-	@Column(name="USER_ID", nullable=false) 		private final Long userId;
-	@Column(name="ACCOUNT_ID", nullable=false) 		private final Long accountId;
-	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
+//	@Column(name="USER_ID", nullable=false) 		private final Long userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "USER_ID")				private final User user;
+//	@Column(name="ACCOUNT_ID", nullable=false) 		private final Long accountId;
+    @ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "ACCOUNT_ID")				private final Account account;
+//	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
+    @ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
 	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
 	@Column(name="AMOUNT", nullable=false)			private Double amount = 0.00; 
 	@Column(name="PAYMENT_CURRENCY",nullable=false) private String paymentCurrency;
 	@Column(name="RATE", nullable=false)			private Double rate = 1.00;
 	@Column(name="CHARGE", nullable=false)			private Double charge = 0.00;
 	@Column(name="CALCULATED_AMOUNT",nullable=false)private Double calculatedAmount = 0.00;
-	@Column(name="PAYEE_CCURRENCY", nullable=false)	private String payeeCurrency;
+	@Column(name="PAYEE_CURRENCY", nullable=false)	private String payeeCurrency;
 	@Column(name="PLACED", nullable=false)			private Boolean placed = false;
 	@Column(name="DATE_PLACED", nullable=false)		private Date datePlaced = new Date();
 	@Column(name="CANCELLED", nullable=false)		private Boolean cancelled = false;
@@ -36,26 +45,30 @@ public class Payment implements Serializable{
 	@Column(name="DATE_SETTLED", nullable=false)	private Date dateSettled = new Date();
 	
 	public Payment(){ 
-		this.userId = 0l; this.accountId = 0l; this.payeeId = 0l;
+		this.user = new User(); this.account = new Account(); this.payee = new Payee();
 	}
 	
-	public Payment(Long userId, Long accountId, Long payeeId){
-		this.userId = userId; this.accountId = accountId; this.payeeId = payeeId;
+	public Payment(User user, Long accountId, Long payeeId){
+		this.user = user; this.account = new Account(); this.payee = new Payee();
+	}
+	
+	public Payment(User user, Account account, Payee payee){
+		this.user = user; this.account = account; this.payee = payee;
 	}
 	
 	public static void main(String[] args){
 		System.out.println("dfgsdzxrgfxcv");
-		Payment payment = new Payment(1l, 1l, 1l);
+		Payment payment = new Payment( new User(), 1l, 1l);
 
 		System.out.println("dfgsdzxrgfxcv = " + payment.getCreated());
 	}
 
-	public Long getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public Long getAccountId() {
-		return accountId;
+	public Account getAccount() {
+		return account;
 	}
 
 	public Double getAmount() {
@@ -114,8 +127,8 @@ public class Payment implements Serializable{
 		return dateSettled;
 	}
 
-	public Long getPayeeId() {
-		return payeeId;
+	public Payee getPayee() {
+		return payee;
 	}
 
 	public Date getCreated() {
@@ -168,7 +181,6 @@ public class Payment implements Serializable{
 			try {
 				toString.append( field.getName() + " = " ).append( field.get( this ) ).append("\n");
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		

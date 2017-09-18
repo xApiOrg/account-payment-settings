@@ -1,4 +1,4 @@
-package com.xapi.rate.model;
+package com.xapi.data.model;
 
 import java.util.Date;
 import java.util.Map;
