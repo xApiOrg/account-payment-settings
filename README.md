@@ -225,3 +225,138 @@ cd /var/lib/jenkins/workspace/account-payment-settings
 >_To kill the service use the parameter `-k`_
 
 >_**Please stop the service by yourself** if you started it manually as Jenkins will have **no permission** to do so!_
+
+
+## Windows:
+
+### 1. Pre-requisites
+- Jenkins
+- Tomcat
+- Maven
+- Java JDK
+
+#### Installing Java JDK
+
+1. Download and install Java JDK 
+```
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+```
+
+2. Set environment variables
+```
+Create JAVA_HOME environment variable in System variables
+Variable name: JAVA_HOME
+Variable value: {jdkDirectory} (e.g.: C:\Program Files\Java\jdk1.8.0_144)
+
+Edit Path environment variable in System variables and add %JAVA_HOME% to it
+```
+
+#### Installing Jenkins
+
+1. Download and install Jenkins for Windows
+```
+https://jenkins.io/download/
+```
+
+#### Setting up Jenkins
+
+1. Open a browser of your choice and navigate to
+```
+http://localhost:8080
+```
+
+2. It will ask for a password. You can find it here
+```
+{jenkinsDirectory}/secrets/initialAdminPassword
+```
+
+3. Change Jenkins port to 8081
+```
+Open {jenkinsDirectory}\jenkins.xml and change --httpPort=8080 to --httpPort=8081
+```
+
+4. Restart Jenkins service
+```
+Open Windows services (win + r > services.msc), find Jenkins and restart it. After the restart the new Jenkins URL will be http://localhost:8081 
+```
+
+#### Installing Tomcat
+
+1. Download Tomcat
+```
+https://tomcat.apache.org/download-80.cgi
+```
+
+#### Configuring Tomcat
+
+1. Add and admin user
+```
+Open {tomcatDirectory}\tomcat-users.xml and edit it
+<tomcat-users>
+	<role rolename="manager-gui"/>
+	<role rolename="manager-script"/>
+	<user username="admin" password="admin" roles="manager-gui, manager-script"/>
+<tomcat-users>
+```
+
+#### Installing Maven
+
+1. Download Maven
+```
+https://maven.apache.org/download.cgi
+```
+
+2. Set environment variable
+```
+Edit Path environment variable in System variables and add your maven bin directory to it (e.g.: C:\Program Files\apache-maven-3.5.0\bin)
+```
+
+### 2. Creating a new task in Jenkins
+
+- _Open a browser_ of your choice and navigate to
+```
+http://localhost:8081
+```
+
+- Login with your _user name_ and _password_
+
+- Click on `New Task` (left panel)
+
+- Enter `account-payment-settings` as task name (_or anything else you see fit_)
+
+- Select `free style` as project type
+
+- Click `OK`
+
+- In the `Source code origin` select `git` and use the following URL as `Repository URL`
+```
+https://github.com/xApiOrg/account-payment-settings.git
+```
+
+- Scroll down and enable `SCM`, then enter the following command
+```
+H/02 * * * *
+```
+
+- Finally, in the `Run pipeline` add the following steps
+
+	- Invoke top-level Maven targets
+	```
+	generate-resources
+	```
+	
+	- Execute Windows batch command
+	```
+	.\target\dockerfile\run_windows.bat /QT
+	```
+	
+- Click `Save`
+
+### 3. Try the application
+
+After every Jenkins build the application will be restarted. To try the application navigate to 
+```
+http://<public-server-ip>:10001/ipay/account/100
+```
+The default port is 10001.
+
