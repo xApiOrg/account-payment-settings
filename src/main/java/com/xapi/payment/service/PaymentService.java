@@ -3,7 +3,7 @@ package com.xapi.payment.service;
 import java.util.Collection;
 import java.util.List;
 
-import com.xapi.payment.model.Payment;
+import com.xapi.data.model.Payment;
 
 public interface PaymentService {
 	public Collection<Payment> getAll(Long userId);

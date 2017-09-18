@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xapi.payment.model.Payment;
-import com.xapi.payment.model.PaymentRepository;
+import com.xapi.data.model.Payment;
+import com.xapi.data.model.User;
+import com.xapi.data.repository.PaymentRepository;
+import com.xapi.data.repository.UserRepository;
 import com.xapi.rate.service.FXRateService;
 
 //import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -16,8 +18,9 @@ import com.xapi.rate.service.FXRateService;
 @Service("paymentService")
 public class PaymentServiceImpl implements PaymentService {
 //    @Autowired private ServiceConfig paymentConfig;
-	
+
 	@Autowired private PaymentRepository paymentRepository;
+	@Autowired private UserRepository userRepository;
 //    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -95,7 +98,8 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Override
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentTransferred){
-		Payment payment = new Payment(userId, accountId, payeeId);
+		User user = userRepository.findById(userId);
+		Payment payment = new Payment(user, accountId, payeeId);
 			payment.setAmount(paymentTransferred.getAmount());
 			payment.setPaymentCurrency(paymentTransferred.getPaymentCurrency());
 			payment.setPayeeCurrency(paymentTransferred.getPayeeCurrency());
