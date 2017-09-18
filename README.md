@@ -328,17 +328,17 @@ http://localhost:8081
 
 - Click `OK`
 
-- In the `Source code origin` select `git` and use the following URL as `Repository URL`
+- In the `Source Code Management` select `Git` and use the following URL as `Repository URL`
 ```
 https://github.com/xApiOrg/account-payment-settings.git
 ```
 
-- Scroll down and enable `SCM`, then enter the following command
+- Scroll down and enable `Poll SCM`, then enter the following command
 ```
 H/02 * * * *
 ```
 
-- Finally, in the `Run pipeline` add the following steps
+- Finally, in the `Build pipeline` add the following steps
 
 	- Invoke top-level Maven targets
 	```
