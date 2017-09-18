@@ -13,60 +13,60 @@ Account, payment and settings services all togther as mock online service
 
 #### Installing Jenkins
 
-1. Open a shell terminal and add a new `repository key` to apt
+1. Open a shell terminal and add a new _repository key_ to apt
 ```
 wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - 
 ```
 
-2. Now add the `jenkins repository` to the apt sources
+2. Now add the _jenkins repository_ to the apt sources
 ```
 echo deb http://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
 ```
 
-3. `Update` the local database
+3. _Update_ the local database
 ```
 sudo apt-get update
 ```
 
-4. And finally `install` Jenkins
+4. And finally _install_ Jenkins
 ```
 sudo apt-get install jenkins
 ```
 
 #### Setting up Jenkins
 
-1. `Open a browser` of your choice and navigate to
+1. _Open a browser_ of your choice and navigate to
 ```
 http://localhost:8081
 ```
 
-2. It will ask for a `password`. You can find it this way
+2. It will ask for a _password_. You can find it this way
 ```
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
->_After submitting the password you will be prompted to create a new user. We entered `admin as user name and password`, but this is arbitrary and for testing purposes only!_
+>_After submitting the password you will be prompted to create a new user. We entered _admin as user name and password_, but this is arbitrary and for testing purposes only!_
 
 #### Installing Nginx
 
-1. `Update` the local repositories
+1. _Update_ the local repositories
 ```
 sudo apt-get update
 ```
 
-2. `Install` Nginx
+2. _Install_ Nginx
 ```
 sudo apt-get install nginx
 ```
 
 #### Configuring Nginx
 
-1. Enable Nginx in `firewall`
+1. Enable Nginx in _firewall_
 ```
 sudo ufw allow 'Nginx HTTP'
 ```
 
-2. `Restart` Nginx
+2. _Restart_ Nginx
 ```
 sudo service nginx restart
 ```
@@ -75,38 +75,38 @@ sudo service nginx restart
 
 #### Installing Maven
 
-1. `Update` the local repositories
+1. _Update_ the local repositories
 ```
 sudo apt-get update
 ```
 
-2. `Install` Maven
+2. _Install_ Maven
 ```
 sudo apt-get install maven
 ```
 
 #### Installing Java JDK
 
-1. `Update` the local repositories
+1. _Update_ the local repositories
 ```
 sudo apt-get update
 ```
 
-2. `Install` Java JDK
+2. _Install_ Java JDK
 ```
 sudo apt-get install default-jdk
 ```
 
->_Now let's get started with the `nitty gritty!`_
+>_Now let's get started with the nitty gritty!_
 
 ### 2. Creating a new task in Jenkins
 
-- `Open a browser` of your choice and navigate to
+- _Open a browser_ of your choice and navigate to
 ```
 http://localhost:8081
 ```
 
-- Login with your `user name` and `password`
+- Login with your _user name_ and _password_
 
 - Click on `New Task` (left panel)
 
@@ -153,20 +153,20 @@ H/02 * * * *
 
 >_We will redirect all the requests comming towards `http://<host>/ipay` to `http://localhost:10001/ipay`_ 
 
-- Open a shell terminal and go to the available nginx `virtual servers` folder:
+- Open a shell terminal and go to the available nginx _virtual servers_ folder:
 ```
 cd /etc/nginx/sites-available
 ```
 
-- Edit the `default configuration` with your preferred text editor:
+- Edit the _default configuration_ with your preferred text editor:
 ```
 nano ./default
 ```
 
->_You should see a location object already present in the file.
+>_You should see a **location object** already present in the file.
 It serves all requests comming to the root path `/`_
 
-- Now add a new location object below it:
+- Now _add_ a new location object below it:
 ```
 location /ipay {
 	include /etc/nginx/proxy_params;
@@ -174,12 +174,12 @@ location /ipay {
 }
 ```
 
-- Restart the Nginx server:
+- _Restart_ the Nginx server:
 ```
 sudo service nginx restart
 ```
 
-- And check with a browser or curl that it is actually working!
+- And _check_ with a browser or curl that it is actually working!
 ```
 http://<public-server-ip>/ipay/account/100
 ```
@@ -190,31 +190,31 @@ Metod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET Get ALL Use
 
 ### 4. Manually starting and stopping the service
 
-Open a `shell terminal` and move to the task's directory
+Open a _shell terminal_ and move to the task's directory
 ```
 cd /var/lib/jenkins/workspace/account-payment-settings
 ```
 
 - Starting the service
 
-	- Generate the target folder
+	- Generate the _target_ folder
 	```
 	mvn generate-resources
 	```
 
-	- Start the service via the provided `shell script`
+	- Start the service via the provided _shell script_
 	```
 	sudo bash ./target/dockerfile/run_linux -r
 	```
 
 - Stopping the service
 
-	- Generate the target folder
+	- Generate the _target_ folder
 	```
 	mvn generate-resources
 	```
 
-	- Stop the service via the provided `shell script`
+	- Stop the service via the provided _shell script_
 	```
 	sudo bash ./target/dockerfile/run_linux -k
 	```
@@ -224,5 +224,5 @@ cd /var/lib/jenkins/workspace/account-payment-settings
 
 >_To kill the service use the parameter `-k`_
 
->_`Please stop the service yourself` if you started it manually as Jenkins will have `no permission` to stop it!_
+>_**Please stop the service by yourself** if you started it manually as Jenkins will have **no permission** to do so!_
 							or 
