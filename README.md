@@ -1,11 +1,11 @@
 # account-payment-settings
 Account, payment and settings services all togther as mock online service
 
-## System run/start
+# System run/start
 
-### Ubuntu:
+## Ubuntu:
 
-#### Pre-requisites
+### 1. Pre-requisites
 - Jenkins
 - Nginx
 - Maven
@@ -45,7 +45,7 @@ http://localhost:8081
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
-_After submitting the password you will be prompted to create a new user. We entered admin as user name and password, but this is arbitrary and for testing purposes only!_
+>_After submitting the password you will be prompted to create a new user. We entered admin as user name and password, but this is arbitrary and for testing purposes only!_
 
 #### Installing Nginx
 
@@ -97,9 +97,9 @@ sudo apt-get update
 sudo apt-get install default-jdk
 ```
 
-_Now let's get started with the nitty gritty!_
+>_Now let's get started with the nitty gritty!_
 
-#### 1. Creating a new task in Jenkins
+### 2. Creating a new task in Jenkins
 
 - Open a browser of your choice and navigate to
 ```
@@ -145,47 +145,84 @@ H/02 * * * *
 	
 - Click `Save`
 
-_The service should start automatically with every build!_
+>_The service should start automatically with every build!_
 
-#### 2. Expose the service with Nginx
+### 3. Expose the service with Nginx
 
-_The service will listen for requests on the `port 10001` by default_
-_We will redirect all the requests comming towards `http://<host>/ipay` to `http://localhost:10001/ipay`_ 
+>_The service will listen for requests on the `port 10001` by default_
 
-#### Manually starting and stopping the service
+>_We will redirect all the requests comming towards `http://<host>/ipay` to `http://localhost:10001/ipay`_ 
+
+- Open a shell terminal and go to the available nginx `virtual servers` folder:
+```
+cd /etc/nginx/sites-available
+```
+
+- Edit the `default configuration` with your preferred text editor:
+```
+nano ./default
+```
+
+>_You should see a location object already present in the file.
+It serves all requests comming to the root path `/`_
+
+- Now add a new location object below it:
+```
+location /ipay {
+	include /etc/nginx/proxy_params;
+	proxy_pass http://localhost:10001/ipay;
+}
+```
+
+- Restart the Nginx server:
+```
+sudo service nginx restart
+```
+
+- And check with a browser or curl that it is actually working!
+```
+http://<public-server-ip>/ipay/account/100
+```
+It shoud return:
+```
+Metod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET Get ALL User's PAYMENT accounts by user Id Parameters, user Id = 113 []
+```
+
+### 4. Manually starting and stopping the service
 
 Open a `shell terminal` and move to the task's directory
 ```
 cd /var/lib/jenkins/workspace/account-payment-settings
 ```
 
-##### 1. Starting the service
+- Starting the service
 
-- Generate the target directory
-```
-mvn generate-resources
-```
+	- Generate the target folder
+	```
+	mvn generate-resources
+	```
 
-- Start the service via the provided `shell script`
-```
-sudo bash ./target/dockerfile/run_linux -r
-```
+	- Start the service via the provided `shell script`
+	```
+	sudo bash ./target/dockerfile/run_linux -r
+	```
 
-##### 2. Stopping the service
+- Stopping the service
 
-- Generate the target directory
-```
-mvn generate-resources
-```
-	
-- Stop the service via the provided `shell script`
-```
-sudo bash ./target/dockerfile/run_linux -k
-```
+	- Generate the target folder
+	```
+	mvn generate-resources
+	```
 
-_Please stop the service yourself if you started it manually as Jenkins will have no permission to stop it!_
+	- Stop the service via the provided `shell script`
+	```
+	sudo bash ./target/dockerfile/run_linux -k
+	```
+>_The `run_linux.sh` is a script writen to help run and kill the service._
 
-cd /var/lib/jenkins/workspace/xapi-account-payment-settings
-java -jar target/xapi-account-payment-settings-0.0.1-SNAPSHOT.jar
+>_To run the service use the parameter `-r`_
+
+>_To kill the service use the parameter `-k`_
+
+>_Please stop the service yourself if you started it manually as Jenkins will have no permission to stop it!_
 							or 
-# ./target/dockerfile/run.sh
