@@ -320,11 +320,11 @@ http://localhost:8081
 
 - Login with your _user name_ and _password_
 
-- Click on `New Task` (left panel)
+- Click on `New Item` (left panel)
 
 - Enter `account-payment-settings` as task name (_or anything else you see fit_)
 
-- Select `free style` as project type
+- Select `Freestyle project` as project type
 
 - Click `OK`
 
