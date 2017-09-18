@@ -352,11 +352,9 @@ H/02 * * * *
 	
 - Click `Save`
 
-### 3. Try the application
-
-After every Jenkins build the application will be restarted. To try the application navigate to 
+- After every Jenkins build the application will be restarted. To try the application navigate to 
 ```
 http://<public-server-ip>:10001/ipay/account/100
 ```
-The default port is 10001.
+>The default port is 10001.
 
