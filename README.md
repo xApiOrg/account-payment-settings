@@ -103,7 +103,7 @@ sudo apt-get install default-jdk
 
 - _Open a browser_ of your choice and navigate to
 ```
-http://localhost:8081
+http://localhost:8080
 ```
 
 - Login with your _user name_ and _password_
