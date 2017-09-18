@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xapi.payment.model.Payment;
+import com.xapi.data.model.Payment;
 import com.xapi.payment.service.PaymentService;
 
 

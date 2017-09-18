@@ -1,6 +1,7 @@
 package com.xapi.account.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.account.service.AccountService;
+import com.xapi.data.model.Account;
 
 @RestController
 @RequestMapping("/account")
@@ -40,47 +42,50 @@ public class AccountController {
 	
 	@CrossOrigin(origins="*")
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllUserPaymentAccounts(@PathVariable("user_id") Integer userId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET" + 
-				"\nGet ALL User's PAYMENT accounts by user Id" + "\n Parameters, user Id = " + userId;
-		
+	public ResponseEntity<?> getAllUserPaymentAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
+		String info = "\nMetod getAllUserPaymentAccounts( Integer userId) NOT IMPLEMENTED YET" + 
+				"\nGet ALL User's PAYMENT accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
-		Collection<?> accounts = accountService.getAll( userId );
 		
-		return new ResponseEntity<String>(info + "\n" + accounts.toString(), HttpStatus.I_AM_A_TEAPOT);
+		List<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
+		logger.info(accounts.toString());
+		
+		return new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
 	}	
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}/{account_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getUserAccountById(
-			@PathVariable("user_id") Integer userId, @PathVariable("account_id") Integer accountId){ //ResponseEntity<Collection<PaymentAccounts>>
+			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId){ //ResponseEntity<Collection<PaymentAccounts>>
 
-		String info = "Metod getUserAccountById( Integer userId, Integer accountId) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod getUserAccountById( Integer userId, Integer accountId) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYMENT account by user Id and account Id" + 
-			"\n Parameters, user Id = " + userId + ", account Id" + accountId;
-		
+			"\n Parameters, user Id = " + userId + ", account Id" + accountId;		
 		logger.info(info);
 		
-		Collection<?> accounts = accountService.getAll( userId ); // FIXME, accountService.getAll(user_id).getAccount(account_id); or accountService.getAccount(userId, accountId)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		// findByAccountId(accountId) - should return same result if accountId is unique across all system
+		Account account = accountService.getUserAccountById(userId, accountId);
+		logger.info(account.toString());
+		
+		return new ResponseEntity<Account>(account, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllUserPayeeAccounts(@PathVariable("user_id") Integer userId){ //ResponseEntity<Collection<PaymentAccounts>>
+	public ResponseEntity<?> getAllUserPayeeAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "Metod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;
 		
 		logger.info(info);
 		
-		Collection<?> accounts = accountService.getAll( userId ); // FIXME, accountService.getPayees(user_id)
+		Collection<Account> accounts = accountService.getAll( userId ); // FIXME, accountService.getPayees(user_id)
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
 	}	
 	
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getPayeeAccountById(
-			@PathVariable("user_id") Integer userId, @PathVariable("payee_id") Integer payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
+			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
 
 		String info = "Metod getPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYEE account by user Id and payee Id" + 
@@ -88,7 +93,7 @@ public class AccountController {
 		
 		logger.info(info);
 		
-		Collection<?> accounts = accountService.getAll( userId );// FIXME, accountService.getPayees(user_id).getAccount(payee_id); or accountService.getPayee(userId, payee_id)
+		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.getPayees(user_id).getAccount(payee_id); or accountService.getPayee(userId, payee_id)
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
 	}
 		
@@ -96,13 +101,13 @@ public class AccountController {
 //	Content-Type = text/json 					and 	Body -> raw -> {"some": "jason"}
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> createUserPayeeAccount(@RequestBody Object account, @PathVariable("user_id") Integer userId){//, @RequestBody Object account
+	public ResponseEntity<?> createUserPayeeAccount(@RequestBody Object account, @PathVariable("user_id") Long userId){//, @RequestBody Object account
 		String info = "Metod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nCreate User's PAYEE account by user Id" + "\n Parameters, user Id = " + userId + ", parameter account " + account;
 		
 		logger.info(info);
 		
-		Collection<?> accounts = accountService.getAll( userId );// FIXME, accountService.createPayeeAccount(userId, account)
+		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.createPayeeAccount(userId, account)
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
@@ -111,7 +116,7 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.PATCH)
 	public ResponseEntity<?> updateUserPayeeAccount(  @RequestBody Object account,
-			@PathVariable("user_id") Integer userId, @PathVariable("payee_id") Integer payeeId){//
+			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){//
 		String info = "Metod updateUserPayeeAccount( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nUpdate User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId + ", parameter account " + account;
@@ -125,14 +130,14 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteUserPayeeAccountById(
-			@PathVariable("user_id") Integer userId, @PathVariable("payee_id") Integer payeeId){
+			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){
 		String info = "Metod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nDelete User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId;
 		
 		logger.info(info);
 		
-		Collection<?> accounts = accountService.getAll( userId );// FIXME, accountService.delete(userId, payee_id)
+		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.delete(userId, payee_id)
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
