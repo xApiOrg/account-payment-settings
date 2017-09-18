@@ -48,9 +48,9 @@ public class AccountController {
 		logger.info(info);
 		
 		List<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
-		logger.info(accounts.toString());
+		logger.info(accounts != null? accounts.toString(): null);
 		
-		return new ResponseEntity<List<Account>>(accounts, HttpStatus.OK);
+		return new ResponseEntity<List<Account>>(accounts, accounts != null && ! accounts.isEmpty()?  HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
 	
 	@CrossOrigin
@@ -73,7 +73,7 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllUserPayeeAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;
 		
 		logger.info(info);
