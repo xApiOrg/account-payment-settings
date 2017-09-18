@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 		Arrays.asList(new AccountType[] { AccountType.CURRENT, AccountType.FX, AccountType.DEBIT, AccountType.CASH });
 
 	public List<Account> findByUserId(Long userId);
-	public List<Account> findById(Long id);
-	public List<Account> findByIdAndUserId(Long userId, Long id);
+	public Account findById(Long id);
+	public Account findByIdAndUserId(Long userId, Long id);
 	public List<Account> findByUserIdAndTypeIn(Long userId, Collection<AccountType> types);
 }

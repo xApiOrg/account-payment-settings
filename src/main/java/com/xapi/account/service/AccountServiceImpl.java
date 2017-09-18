@@ -22,14 +22,13 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account getAccountById(Long accountId) {
-		accountRepository.findById(accountId);
-		return null;
+		return accountRepository.findById(accountId);
 	}
 
 	@Override
 	public Account getUserAccountById(Long userId, Long accountId) {
-		accountRepository.findByIdAndUserId(userId, accountId);
-		return null;
+		return accountRepository.findByIdAndUserId(userId, accountId);
+		
 	}
 	
 	@Override
