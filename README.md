@@ -28,7 +28,7 @@ echo deb http://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources
 sudo apt-get update
 ```
 
-4. And finally `install Jenkins`
+4. And finally `install` Jenkins
 ```
 sudo apt-get install jenkins
 ```
