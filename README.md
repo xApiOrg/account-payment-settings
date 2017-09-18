@@ -234,6 +234,7 @@ cd /var/lib/jenkins/workspace/account-payment-settings
 - Tomcat
 - Maven
 - Java JDK
+- Open Firewall ports
 
 #### Installing Java JDK
 
@@ -310,6 +311,11 @@ https://maven.apache.org/download.cgi
 ```
 Edit Path environment variable in System variables and add your maven bin directory to it (e.g.: C:\Program Files\apache-maven-3.5.0\bin)
 ```
+
+#### Firewall ports
+
+To allow remote access to the applications, tomcat, jenkins... we need to open the port where the application is listening.
+
 
 ### 2. Creating a new task in Jenkins
 
