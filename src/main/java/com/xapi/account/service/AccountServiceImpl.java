@@ -46,4 +46,10 @@ public class AccountServiceImpl implements AccountService {
 	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId) {
 		return payeeRepository.findPayeeByIdandUserId( payeeId, userId);
 	}
+
+	@Override
+	public Payee createNewPayee(Object payee, Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

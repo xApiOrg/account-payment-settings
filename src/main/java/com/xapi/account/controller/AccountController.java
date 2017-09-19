@@ -101,17 +101,18 @@ public class AccountController {
 	}
 		
 //	Content-Type = text/xml or application/xml 	and 	Body -> raw -> <xml>some xml</xml>
-//	Content-Type = text/json 					and 	Body -> raw -> {"some": "jason"}
+//	Content-Type = text/json 					and 	Body -> raw -> {"some": "jason"}, { "name": "Bai Ganyo" }    
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> createUserPayeeAccount(@RequestBody Object account, @PathVariable("user_id") Long userId){//, @RequestBody Object account
-		String info = "Metod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
-				"\nCreate User's PAYEE account by user Id" + "\n Parameters, user Id = " + userId + ", parameter account " + account;
+		String info = // "\nMetod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
+				"\nCreate User's PAYEE account by user Id" + "\n Parameters, user Id = " + userId + ", parameter account: " + account;
+			logger.info(info);
 		
-		logger.info(info);
-		
-		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.createPayeeAccount(userId, account)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		Payee payee = accountService.createNewPayee( account, userId );
+			logger.info(payee != null? payee.toString(): null);
+			
+		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
 	
 //	Content-Type = text/xml or application/xml 	and 	Body -> raw -> <xml>some xml</xml>
