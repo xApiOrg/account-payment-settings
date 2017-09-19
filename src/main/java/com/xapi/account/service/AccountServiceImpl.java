@@ -1,5 +1,6 @@
 package com.xapi.account.service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.xapi.data.model.Account;
 import com.xapi.data.model.Payee;
+import com.xapi.data.model.User;
 import com.xapi.data.repository.AccountRepository;
 import com.xapi.data.repository.PayeeRepository;
+import com.xapi.data.repository.UserRepository;
 
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
 	@Autowired private AccountRepository accountRepository;
 	@Autowired private PayeeRepository payeeRepository;
+	@Autowired private UserRepository userRepository;
 	
 	@Override
 	public List<Account> getAll(Long userId) {
@@ -48,8 +52,22 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Payee createNewPayee(Object payee, Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Payee createNewPayee(Payee payee, Long userId) {
+		User user = userRepository.findById(userId);
+		if( user == null )
+			return null;
+		
+		Payee newPayee = (Payee) payee;
+		if(newPayee == null)
+			return null;
+		
+		newPayee.getUsers().add(user);
+		payeeRepository.save(newPayee);
+		
+		if(user.getPayees() == null)
+			user.setPayees( new HashSet<>() );
+		user.getPayees().add(newPayee);
+		userRepository.save(user);
+		return newPayee;
 	}
 }

@@ -1,6 +1,7 @@
 package com.xapi.data.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,10 +32,10 @@ public class Payee implements Serializable{
 //	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //												private Set<Account> accounts;
 	
-	public Payee(){ this.name = "SYSTEM";}
+	public Payee(){ this.name = "SYSTEM"; this.users = new HashSet<>(); this.payments = new HashSet<>();}
 	
 	public Payee(String name){
-		this.name = name;
+		this.name = name; this.users = new HashSet<>(); this.payments = new HashSet<>();
 	}
 
 	public Set<User> getUsers() {

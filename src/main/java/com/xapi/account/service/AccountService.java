@@ -12,5 +12,5 @@ public interface AccountService {
 	public List<Account> getAllPayableAccounts(Long userId);
 	public List<Payee> getUserPayeeAccounts(Long userId);
 	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId);
-	public Payee createNewPayee(Object payee, Long userId);
+	public Payee createNewPayee(Payee payee, Long userId);
 }

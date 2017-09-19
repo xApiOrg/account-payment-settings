@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.xapi.data.model.Payee;
 import com.xapi.data.model.User;
 
-public interface PayeeRepository extends JpaRepository<User, Long> { //JpaRepository<Payee, Long>, 
+public interface PayeeRepository extends JpaRepository<Payee, Long> { //JpaRepository<Payee, Long>, 
 	
 	//@Query("select t from Test t join User u where u.username = :username")
 	// @Query("SELECT u.tags FROM User u WHERE u.id = :id")

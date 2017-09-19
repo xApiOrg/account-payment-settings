@@ -1,5 +1,6 @@
 package com.xapi.account.controller;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -104,12 +105,12 @@ public class AccountController {
 //	Content-Type = text/json 					and 	Body -> raw -> {"some": "jason"}, { "name": "Bai Ganyo" }    
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> createUserPayeeAccount(@RequestBody Object account, @PathVariable("user_id") Long userId){//, @RequestBody Object account
+	public ResponseEntity<?> createUserPayeeAccount(@RequestBody PayeeDto account, @PathVariable("user_id") Long userId){//, @RequestBody Object account
 		String info = // "\nMetod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nCreate User's PAYEE account by user Id" + "\n Parameters, user Id = " + userId + ", parameter account: " + account;
 			logger.info(info);
 		
-		Payee payee = accountService.createNewPayee( account, userId );
+		Payee payee = accountService.createNewPayee( (Payee) new Payee( account.getName() ), userId );
 			logger.info(payee != null? payee.toString(): null);
 			
 		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
@@ -156,6 +157,24 @@ public class AccountController {
 //		Account accounts = accountService.accountValidate( ); // FIXME Account account = accountService.validate(iBanFscAccountDetails)
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
 	}
+}
+
+class PayeeDto implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+	private String name;
+	
+	public PayeeDto(){}
+	public PayeeDto(String name){ this.name = name;}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }
 
 /*
