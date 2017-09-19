@@ -137,9 +137,9 @@ public class AccountController {
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteUserPayeeAccountById(
 			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){
-		String info = "Metod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = // "\nMetod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nDelete User's PAYEE account by user Id and payee Id" + 
-			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId;
+			"\n Parameters, user Id = " + userId + ", payee Id = " + payeeId;
 			logger.info(info);
 		
 		Payee payee = accountService.deletePayee( userId, payeeId);
