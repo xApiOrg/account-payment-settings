@@ -13,4 +13,6 @@ public interface AccountService {
 	public List<Payee> getUserPayeeAccounts(Long userId);
 	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId);
 	public Payee createNewPayee(Payee payee, Long userId);
+	public Payee updatePayee(Payee payee, Long payeeId, Long userId);
+	public Payee deletePayee(Long userId, Long payeeId);
 }

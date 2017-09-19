@@ -23,6 +23,7 @@ public class Payee implements Serializable{
 	
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false) 		private final String name;
+	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
 	@ManyToMany(mappedBy = "payees") @JsonBackReference
 												private Set<User> users;
 	
@@ -64,6 +65,19 @@ public class Payee implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String toString(){
+		return "id = " + id + ", name = " + name + ", active = " + active + ", users = " + 
+				users.toString() + ", payments = " + payments.toString();
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 //	public Set<Account> getAccounts() {

@@ -120,16 +120,17 @@ public class AccountController {
 //	Content-Type = text/json 					and 	Body -> raw -> {"some": "jason"}	
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.PATCH)
-	public ResponseEntity<?> updateUserPayeeAccount(  @RequestBody Object account,
+	public ResponseEntity<?> updateUserPayeeAccount(  @RequestBody Payee payeeDto,
 			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){//
-		String info = "Metod updateUserPayeeAccount( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = // "\nMetod updateUserPayeeAccount( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nUpdate User's PAYEE account by user Id and payee Id" + 
-			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId + ", parameter account " + account;
+			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId + ", parameter account " + payeeDto;
+			logger.info(info);
 		
-		logger.info(info);
-		
-		Collection<?> accounts = accountService.getAll( userId );// FIXME, accountService.updatePayeeAccount(userId, account)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		Payee payee = accountService.updatePayee( payeeDto, payeeId, userId );
+			logger.info(payee.toString());
+			
+		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
 	
 	@CrossOrigin
@@ -139,11 +140,12 @@ public class AccountController {
 		String info = "Metod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nDelete User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId;
+			logger.info(info);
 		
-		logger.info(info);
-		
-		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.delete(userId, payee_id)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		Payee payee = accountService.deletePayee( userId, payeeId);
+			logger.info(payee.toString());
+			
+		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
 	
 	@CrossOrigin

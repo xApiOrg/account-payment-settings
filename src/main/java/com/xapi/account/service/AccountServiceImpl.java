@@ -1,7 +1,10 @@
 package com.xapi.account.service;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +73,39 @@ public class AccountServiceImpl implements AccountService {
 		user.getPayees().add(newPayee);
 		userRepository.save(user);
 		return newPayee;
+	}
+
+	@Override
+	public Payee updatePayee(Payee payeeDto, Long payeeId, Long userId) {
+		Payee payee = payeeRepository.findPayeeByIdandUserId(payeeId, userId);
+		
+		if(payeeDto == null || payee == null)
+			return null;		
+		payeeDto.setId(payeeId);
+		payeeRepository.save(payeeDto);
+//		Map<String, Object> valuesMap = (LinkedHashMap<String, Object>) payeeObject;
+//		for(Field field: payee.getClass().getDeclaredFields()){
+//			field.
+//			field.setAccessible(true); 
+//			try {
+//				field.set(payee, valuesMap.get(field.getName()));
+//			} catch (IllegalArgumentException | IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
+//		}			
+		
+		return payeeRepository.findPayeeByIdandUserId(payeeId, userId);
+	}
+
+	@Override
+	public Payee deletePayee(Long userId, Long payeeId) {
+		Payee payee = payeeRepository.findPayeeByIdandUserId(payeeId, userId);		
+		if( payee == null)
+			return null;
+		
+		payee.setActive(false);
+		payeeRepository.save(payee);
+		
+		return payee;
 	}
 }
