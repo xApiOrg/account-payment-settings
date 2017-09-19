@@ -57,8 +57,9 @@ public class AccountServiceImpl implements AccountService {
 		if( user == null )
 			return null;
 		
-		Payee newPayee = (Payee) payee;
-		if(newPayee == null)
+		Payee newPayee = payeeRepository.findByName(payee.getName());
+		newPayee = newPayee == null? (Payee) payee: newPayee;
+		if(newPayee == null || newPayee.getName() == null || newPayee.getName().isEmpty())
 			return null;
 		
 		newPayee.getUsers().add(user);

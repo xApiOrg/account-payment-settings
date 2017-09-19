@@ -118,6 +118,7 @@ CREATE TABLE payee (
   NAME varchar(255) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE payee ADD UNIQUE INDEX name_unique (NAME ASC);
 
 CREATE TABLE user_payee (
   USER_ID bigint(20) NOT NULL,

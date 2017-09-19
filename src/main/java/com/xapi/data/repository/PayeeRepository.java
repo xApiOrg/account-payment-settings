@@ -21,4 +21,6 @@ public interface PayeeRepository extends JpaRepository<Payee, Long> { //JpaRepos
 	
 	@Query("select p from Payee p join p.users u where p.id = ?1 and u.id = ?2")
 	public Payee findPayeeByIdandUserId(Long id, Long userId);
+	
+	public Payee findByName(String name);
 }
