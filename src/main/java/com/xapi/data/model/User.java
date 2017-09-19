@@ -27,7 +27,7 @@ public class User implements Serializable{
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) @JsonBackReference
 												private Set<Account> accounts;	
-	
+	@JsonBackReference
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_payee", 
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 

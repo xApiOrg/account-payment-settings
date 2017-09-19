@@ -4,19 +4,19 @@ server:
   
 spring:
   jpa:
-    # database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update # validate, update, create, create-drop
   datasource:
-    url: jdbc:mysql://rds-ferdinand-london.cpoiz5ncholm.eu-west-2.rds.amazonaws.com:3306/ferdinand?verifyServerCertificate=false&useSSL=false&requireSSL=false
+    # url: jdbc:mysql://rds-ferdinand-london.cpoiz5ncholm.eu-west-2.rds.amazonaws.com:3306/ferdinand?verifyServerCertificate=false&useSSL=false&requireSSL=false
        # jdbc:mysql://rds-ferdinand-london.cpoiz5ncholm.eu-west-2.rds.amazonaws.com:3306/ferdinand
        # jdbc:mysql://localhost:3306/test?verifyServerCertificate=false&useSSL=false&requireSSL=false
-    username: vassit
-    password: vass1tlon
-    # url: jdbc:h2:tcp://localhost/~/test # jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    # driverClassName: org.h2.Driver
-    # username: sa
-    # password: 
+    # username: vassit
+    # password: vass1tlon
+    url: jdbc:h2:tcp://localhost/~/test # jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
   jackson:
     serialization.fail-on-empty-beans: false 
     # spring.jackson.serialization.fail-on-empty-beans=false  

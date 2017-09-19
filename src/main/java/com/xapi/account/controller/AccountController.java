@@ -87,16 +87,17 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getPayeeAccountById(
-			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){ //ResponseEntity<Collection<PaymentAccounts>>
+			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){ 
 
-		String info = "Metod getPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = //"Metod getPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYEE account by user Id and payee Id" + 
-			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId;
-		
+			"\n Parameters, user Id = " + userId + ", payee Id = " + payeeId;		
 		logger.info(info);
 		
-		Collection<Account> accounts = accountService.getAll( userId );// FIXME, accountService.getPayees(user_id).getAccount(payee_id); or accountService.getPayee(userId, payee_id)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		Payee account = accountService.getPayeeByIdAndUserId( userId, payeeId );
+		logger.info(account != null? account.toString(): null);
+		
+		return new ResponseEntity<Payee>(account, account != null? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}
 		
 //	Content-Type = text/xml or application/xml 	and 	Body -> raw -> <xml>some xml</xml>

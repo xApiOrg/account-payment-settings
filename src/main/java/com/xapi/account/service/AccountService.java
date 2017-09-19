@@ -10,5 +10,6 @@ public interface AccountService {
 	public Account getAccountById(Long id);
 	public Account getUserAccountById(Long userId, Long id);
 	public List<Account> getAllPayableAccounts(Long userId);
-	public List<Payee	> getUserPayeeAccounts(Long userId);
+	public List<Payee> getUserPayeeAccounts(Long userId);
+	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId);
 }

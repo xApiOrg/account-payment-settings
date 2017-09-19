@@ -41,4 +41,9 @@ public class AccountServiceImpl implements AccountService {
 	public List<Payee> getUserPayeeAccounts(Long userId) {
 		return payeeRepository.findByUserId(userId);
 	}
+
+	@Override
+	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId) {
+		return payeeRepository.findPayeeByIdandUserId( payeeId, userId);
+	}
 }

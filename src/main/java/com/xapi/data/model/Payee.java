@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="payee")
 public class Payee implements Serializable{
@@ -20,7 +22,7 @@ public class Payee implements Serializable{
 	
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false) 		private final String name;
-	@ManyToMany(mappedBy = "payees")
+	@ManyToMany(mappedBy = "payees") @JsonBackReference
 												private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -49,6 +51,18 @@ public class Payee implements Serializable{
 
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 //	public Set<Account> getAccounts() {
