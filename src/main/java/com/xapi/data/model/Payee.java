@@ -30,6 +30,8 @@ public class Payee implements Serializable{
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 												private Set<Payment> payments;
 	
+	// https://giannigar.wordpress.com/2009/09/04/mapping-a-many-to-many-join-table-with-extra-column-using-jpa/
+	
 //	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //												private Set<Account> accounts;
 	
