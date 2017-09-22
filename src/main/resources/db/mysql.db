@@ -1,0 +1,84 @@
+
+CREATE TABLE `user` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1
+
+CREATE TABLE `account` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `balance` double NOT NULL DEFAULT '0',
+  `CREATED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `currency` varchar(255) NOT NULL,
+  `overdraft` double NOT NULL DEFAULT '0',
+  `type` varchar(255) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_id_curr_type` (`user_id`,`currency`,`type`),
+  CONSTRAINT `FK7m8ru44m93ukyb61dfxw0apf6` FOREIGN KEY (`user_id`) REFERENCES `user` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1
+
+CREATE TABLE `payee` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) NOT NULL,
+  `ACTIVE` bit(1) NOT NULL DEFAULT b'1',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `NAME_UNIQUE` (`NAME`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1
+
+CREATE TABLE `user_payee` (
+  `user_id` bigint(20) NOT NULL,
+  `payee_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`payee_id`),
+  KEY `FKbhkye10vjdyilt061tguhjsff` (`payee_id`),
+  CONSTRAINT `FK8w0bxoxx5lfdjn7tops7mj9l6` FOREIGN KEY (`user_id`) REFERENCES `user` (`ID`),
+  CONSTRAINT `FKbhkye10vjdyilt061tguhjsff` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `account_details` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account_number` varchar(255) NOT NULL,
+  `bank_identifier` varchar(255) NOT NULL,
+  `branch_identifier` varchar(255) NOT NULL,
+  `idetifier` varchar(255) NOT NULL,
+  `iso_country_code` varchar(255) NOT NULL,
+  `sepa_member` bit(1) NOT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `payee_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKjlchm9h4od1gxeqrfsngfkj5b` (`account_id`),
+  KEY `FKnybc8195ndv3bpm77mpv3xmbj` (`payee_id`),
+  CONSTRAINT `FKjlchm9h4od1gxeqrfsngfkj5b` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `FKnybc8195ndv3bpm77mpv3xmbj` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `payment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `amount` double NOT NULL DEFAULT '0',
+  `calculated_amount` double NOT NULL DEFAULT '0',
+  `cancelled` bit(1) NOT NULL DEFAULT b'0',
+  `charge` double NOT NULL DEFAULT '0',
+  `CREATED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DATE_CANCELLED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DATE_PLACED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DATE_SETTLED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `payee_currency` varchar(255) NOT NULL,
+  `payment_currency` varchar(255) NOT NULL,
+  `placed` bit(1) NOT NULL DEFAULT b'0',
+  `rate` double NOT NULL DEFAULT '1',
+  `settled` bit(1) NOT NULL DEFAULT b'0',
+  `account_id` bigint(20) DEFAULT NULL,
+  `payee_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `payment_ibfk_1` (`user_id`),
+  KEY `payment_ibfk_2` (`payee_id`),
+  KEY `payment_ibfk_3` (`account_id`),
+  CONSTRAINT `FK4spfnm9si9dowsatcqs5or42i` FOREIGN KEY (`user_id`) REFERENCES `user` (`ID`),
+  CONSTRAINT `FKlxit2h3nigdg1j7kt6nuq0ipk` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`ID`),
+  CONSTRAINT `FKqg9hvuj0jh5jkd3ejm3ibfn10` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`ID`),
+  CONSTRAINT `payment_ibfk_2` FOREIGN KEY (`payee_id`) REFERENCES `payee` (`ID`),
+  CONSTRAINT `payment_ibfk_3` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
