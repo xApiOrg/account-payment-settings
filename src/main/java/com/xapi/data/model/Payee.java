@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,6 +30,9 @@ public class Payee implements Serializable{
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 												private Set<Payment> payments;
+	
+	@OneToOne(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+												private AccountDetails accountDetails;
 	
 	// https://giannigar.wordpress.com/2009/09/04/mapping-a-many-to-many-join-table-with-extra-column-using-jpa/
 	

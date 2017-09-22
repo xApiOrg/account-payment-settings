@@ -1,13 +1,14 @@
 package com.xapi.account.service;
 
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.xapi.data.model.Account;
 import com.xapi.data.model.Payee;
@@ -22,6 +23,13 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired private AccountRepository accountRepository;
 	@Autowired private PayeeRepository payeeRepository;
 	@Autowired private UserRepository userRepository;
+	
+	private static final RestTemplate restTemplate = new RestTemplateBuilder().build();
+	
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
+	public static final Map<String,String> URLS = new HashMap(){{ 
+		put("iban", AccountService.IBAN_VALIDATOR); put("ifsc", AccountService.IFSC_VALIDATOR);
+		put("micr", AccountService.MICR_VALIDATOR); put("rtn", AccountService.ABA_RTN_VALIDATOR);}};
 	
 	@Override
 	public List<Account> getAll(Long userId) {
@@ -107,5 +115,18 @@ public class AccountServiceImpl implements AccountService {
 		payeeRepository.save(payee);
 		
 		return payee;
+	}
+
+	@Override
+	public Object validateAccount(String accountIdent, String type) {
+//		ResponseEntity<Rates> response = restTemplate.getForEntity( FX_RATE_URL, Rates.class, currency );
+//		ResponseEntity<Object> response = restTemplate.getForEntity( 
+//				"https://openiban.com/validate/" + accountIdent, Object.class );
+		
+		String url = URLS.get(type == null || type.isEmpty()? "iban": type.toLowerCase().trim());
+		url = ( url == null || url.isEmpty() )? AccountService.IBAN_VALIDATOR: url;
+
+		Object response = restTemplate.getForObject( url + accountIdent, Object.class );		
+		return response;
 	}
 }

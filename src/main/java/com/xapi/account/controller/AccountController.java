@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.account.service.AccountService;
 import com.xapi.data.model.Account;
+import com.xapi.data.model.AccountDetails;
 import com.xapi.data.model.Payee;
 
 @RestController
@@ -35,7 +37,10 @@ public class AccountController {
 	/account/payee/{user_id}				PUT		- createUserPayeeAccount		Create new payee account		http://localhost:10001/account/payee/100
 	/account/payee/{user_id}/{payee_id}		PATCH	- updateUserPayeeAccount		Update payee account			http://localhost:10001/account/payee/100/10
 	/account/payee/{user_id}/{payee_id}		DELETE	- deleteUserPayeeAccountById	Delete payee account			http://localhost:10001/account/payee/100/10
-	/account								POST	- payeeAccountValidation		IBAN, IFSC, validation check	http://localhost:10001/account
+	/account/validation/{iban}				GET		- payeeAccountValidation		IBAN, IFSC, validation check	http://localhost:10001/account/validation/GB48LOYD30963846959260
+	
+	OBSOLETE, See /account/validation/{iban}	GET
+	/account/validation							POST	- payeeAccountValidation		IBAN, IFSC, validation check	http://localhost:10001/account
 
 	See for logging
 	https://stackoverflow.com/questions/33744875/spring-boot-how-to-log-all-requests-and-responses-with-exceptions-in-single-pl
@@ -50,7 +55,7 @@ public class AccountController {
 		logger.info(info);
 		
 		List<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
-		logger.info(accounts != null? accounts.toString(): null);
+		logger.info(accounts != null? accounts.toString(): "NO AccountS FOUND!!!");
 		
 		return new ResponseEntity<List<Account>>(accounts, accounts != null && ! accounts.isEmpty()?  HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
@@ -67,7 +72,7 @@ public class AccountController {
 		
 		// getAccountById(accountId) - should return same result if accountId is unique across all system
 		Account account = accountService.getUserAccountById(userId, accountId);
-		logger.info(account != null? account.toString(): null);
+		logger.info(account != null? account.toString(): "Account NOT FOUND!!!");
 		
 		return new ResponseEntity<Account>(account, account != null? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}
@@ -80,7 +85,7 @@ public class AccountController {
 		logger.info(info);
 		
 		List<Payee> accounts = accountService.getUserPayeeAccounts( userId );
-		logger.info(accounts != null? accounts.toString(): null);
+		logger.info(accounts != null? accounts.toString(): "NO AccountS FOUND!!!");
 		
 		return new ResponseEntity<List<Payee>>(accounts, accounts != null && ! accounts.isEmpty()? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
@@ -96,7 +101,7 @@ public class AccountController {
 		logger.info(info);
 		
 		Payee account = accountService.getPayeeByIdAndUserId( userId, payeeId );
-		logger.info(account != null? account.toString(): null);
+		logger.info(account != null? account.toString(): "Account NOT FOUND!!!");
 		
 		return new ResponseEntity<Payee>(account, account != null? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}
@@ -111,7 +116,7 @@ public class AccountController {
 			logger.info(info);
 		
 		Payee payee = accountService.createNewPayee( (Payee) new Payee( account.getName() ), userId );
-			logger.info(payee != null? payee.toString(): null);
+			logger.info(payee != null? payee.toString(): "Payee NOT FOUND!!!");
 			
 		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
@@ -128,7 +133,7 @@ public class AccountController {
 			logger.info(info);
 		
 		Payee payee = accountService.updatePayee( payeeDto, payeeId, userId );
-			logger.info(payee.toString());
+			logger.info(payee  != null? payee.toString(): "Payee NOT FOUND!!!");
 			
 		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
@@ -143,21 +148,29 @@ public class AccountController {
 			logger.info(info);
 		
 		Payee payee = accountService.deletePayee( userId, payeeId);
-			logger.info(payee.toString());
+			logger.info(payee  != null? payee.toString(): "Payee NOT FOUND!!!");
 			
 		return new ResponseEntity<Payee>(payee, payee != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
 	
+	// http://localhost:10001/ipay/account/validation/324377516?type=rtn
+	// http://localhost:10001/ipay/account/validation/GB48LOYD30963846959260?type=iban
+	// http://localhost:10001/ipay/account/validation/SBIN0000138?type=ifsc
+	// http://localhost:10001/ipay/account/validation/842002002?type=micr
+	
 	@CrossOrigin
-	@RequestMapping(value = "/payee", method = RequestMethod.POST)
-	public ResponseEntity<?> payeeAccountValidation( @RequestBody String iBanFscAccountDetails ){ // @RequestBody String iBaniFscAccountDetails
-		String info = "Metod payeeAccountValidation() NOT IMPLEMENTED YET" + 
-				"\nAccount User's new PAYEE account validation check: " + iBanFscAccountDetails;
-		
+//	@RequestMapping(value = "/payee", method = RequestMethod.POST) 
+	@RequestMapping(value = "/validation/{iban}", method = RequestMethod.GET)
+//	public ResponseEntity<?> payeeAccountValidation( @RequestBody String iBanFscAccountDetails ){
+	public ResponseEntity<?> payeeAccountValidation( @PathVariable("iban") String iBanFscAccountDetails, @RequestParam("type") String type){
+		String info = // "\nMetod payeeAccountValidation() NOT IMPLEMENTED YET" + 
+				"\nAccount User's new PAYEE account validation check: " + iBanFscAccountDetails;		
 		logger.info(info);
 		
-//		Account accounts = accountService.accountValidate( ); // FIXME Account account = accountService.validate(iBanFscAccountDetails)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		Object accountDetails = accountService.validateAccount(iBanFscAccountDetails == null? "": iBanFscAccountDetails.replaceAll("\\s+",""), type);
+			logger.info(accountDetails != null? accountDetails.toString(): null);
+			
+		return new ResponseEntity<Object>(accountDetails, accountDetails != null? HttpStatus.OK: HttpStatus.EXPECTATION_FAILED);
 	}
 }
 

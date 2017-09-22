@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -36,8 +37,11 @@ public class Account  implements Serializable{
 		@Enumerated(EnumType.STRING)					private AccountType type;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-													private Set<Payment> payments;
-
+														private Set<Payment> payments;
+	
+	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+														private AccountDetails accountDetails;
+														
 	public Account(){ this.user = new User();}
 	public Account(User user){ this.user = user;}
 	
@@ -101,6 +105,14 @@ public class Account  implements Serializable{
 	}
 	public Date getCreated() {
 		return created;
+	}
+
+	public AccountDetails getAccountDetails() {
+		return accountDetails;
+	}
+	
+	public void setAccountDetails(AccountDetails accountDetails) {
+		this.accountDetails = accountDetails;
 	}
 }
 
