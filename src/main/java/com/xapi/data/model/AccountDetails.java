@@ -70,6 +70,10 @@ public class AccountDetails implements Serializable {
 		return sepaMember;
 	}	
 }
+// https://stackoverflow.com/questions/1493229/multiple-yet-mutually-exclusive-foreign-keys-is-this-the-way-to-go
+// https://dba.stackexchange.com/questions/42434/database-design-two-1-to-many-relationships-to-the-same-table
+// https://blogs.oracle.com/sql/implementing-a-mutually-exclusive-relationship-in-the-database
+
 //Bank of India IFSC and MICR Code, 
 //https://en.wikipedia.org/wiki/Indian_Financial_System_Code, 
 //https://www.bankbazaar.com/ifsc-code/bank-of-india.html, 
