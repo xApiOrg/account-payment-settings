@@ -12,55 +12,7 @@ public class Country implements Serializable{
 	private String code;
 	private String flag;
 	private String currency;
-	private List<Section> sections; // = new LinkedList<>();
-	
-//	public Country(){}
-//	
-//	public Country(String name, String code, String flag, String currency){
-//		this.name = name; this.code = code; this.flag = flag; this.currency = currency;
-//	}
-	
-	public boolean setSections(List<Section> sections){
-		if( this.sections == null )
-			sections = new LinkedList<>();
-		
-		return sections.addAll(sections);
-	}
-	
-	public List<Section> getSections(){
-		return sections;
-	}
-	
-	public boolean addSection(Section section){
-		return sections.add(section);
-	}
-	
-	public boolean removeSection(Section section){
-		return sections.remove(section);
-	}
-	
-//	private Map<String, Map<String, Object>> sections = new HashMap<>();
-	
-//	public Map<String, Object> addSection(String sectionName, Map<String, Object> properties){
-//		return sections.put(sectionName, properties);
-//	}
-	
-//	public Object addSectionProperty(String sectionName, String propertyName, Object propertyValue){
-//		Map<String, Object> section = sections.get(sectionName);
-//		if(section == null){
-//			section = new HashMap<String, Object>();
-//			addSection(sectionName, section);
-//		}
-//		return section.put(propertyName, propertyValue);
-//	}
-	
-//	public Map<String, Map<String, Object>> getSections() {
-//		return sections;
-//	}
-
-//	public void setSections(Map<String, Map<String, Object>> sections) {
-//		this.sections = sections;
-//	}
+	private List<Section> sections = new LinkedList<>();
 	
 	public long getId() {
 		return id;
@@ -93,5 +45,21 @@ public class Country implements Serializable{
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+	
+	public List<Section> getSections(){
+		return sections;
+	}
+
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
+	}		
+	
+	public boolean addSection(Section section){
+		return sections == null? false: sections.add(section);
+	}
+	
+	public boolean removeSection(Section section){
+		return  sections == null? false: sections.remove(section);
 	}
 }

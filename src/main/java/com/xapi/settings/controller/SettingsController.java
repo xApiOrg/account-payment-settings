@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xapi.data.model.Country;
 import com.xapi.settings.service.SettingsService;
 
 @RestController
@@ -44,8 +45,9 @@ NB!!! New ONES. Needs to be discussed and agreed
 		
 		logger.info(info);
 		
-		Collection<?> allCountrySettings = settingsService.get(); // FIXME, settingsService.get()
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+//		Collection<?> allCountrySettings = settingsService.get(); // FIXME, settingsService.get()
+		String settings = settingsService.allCountrySettings();
+		return new ResponseEntity<String>(settings, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	@CrossOrigin
@@ -56,8 +58,9 @@ NB!!! New ONES. Needs to be discussed and agreed
 		
 		logger.info(info);
 		
-		Collection<?> countrySettings = settingsService.get( country ); // FIXME, settingsService.get(country_id)
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+//		Collection<?> countrySettings = settingsService.get( country ); // FIXME, settingsService.get(country_id)
+		Country countrySettings = settingsService.get( country );
+		return new ResponseEntity<Country>(countrySettings, HttpStatus.I_AM_A_TEAPOT);
 	}
 	
 	// FIXME, agree with the rest
