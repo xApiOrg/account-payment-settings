@@ -1,5 +1,6 @@
 package com.xapi.settings.service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 //import org.apache.commons
@@ -11,51 +12,78 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xapi.data.model.Country;
 import com.xapi.data.model.Settings;
 
 @Service("settingsService")
 public class SettingsServiceImpl implements SettingsService {
-	public static final Logger logger = LoggerFactory.getLogger(SettingsServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(SettingsServiceImpl.class);
+	
+	private static final String SETTINGS_FILE_PATH = "./src/main/resources/settings.json";
+	private static final File SETTINGS_FILE = new File(SETTINGS_FILE_PATH);
+	private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+	private static final JSONParser JSON_PARSER = new JSONParser();
+	
+	private static Long SETTINGS_LAST_MODIFIED = new Long( 0l );
+	private static String ALL_COUNTRY_SETTINGS = new String();
+	
+//	private static final RestTemplate REST_TEMPLATE = new RestTemplate();	
 
-	private static List<Country> countries = new ArrayList<>();//	Country[] countries; // = new Country[ 1 ]; 
+	private static final List<Country> COUNTRIES = new ArrayList<>();//	Country[] COUNTRIES = new Country[ 1 ];
+	
+	private void reloadSettings(){
+		if(SETTINGS_LAST_MODIFIED < SETTINGS_FILE.lastModified() || 
+				SETTINGS_LAST_MODIFIED == 0 || ALL_COUNTRY_SETTINGS.isEmpty() ){
+				logger.info("Last SETTINGS_LAST_MODIFIED = " + SETTINGS_LAST_MODIFIED.toString());
+			SETTINGS_LAST_MODIFIED = SETTINGS_FILE.lastModified();
+				logger.info("Current SETTINGS_LAST_MODIFIED = " + SETTINGS_LAST_MODIFIED.toString());
+			try ( FileReader fileReader = new FileReader( SETTINGS_FILE ) ) {
+				Object object = JSON_PARSER.parse( fileReader );
+				ALL_COUNTRY_SETTINGS = object.toString();
+					logger.info("ALL_COUNTRY_SETTINGS = " + ALL_COUNTRY_SETTINGS);
+	            List<Country> countries = JSON_MAPPER.readValue(object.toString(), 
+						JSON_MAPPER.getTypeFactory().constructCollectionType(List.class, Country.class));
+//	            		Arrays.asList(SettingsService.JSON_MAPPER.readValue(file, Country[].class)); // DOESN'T WORK IN HERE, but it does below
+//	            		JSON_MAPPER.readValue(file, new TypeReference<List<Country>>(){}); // DOESN'T WORK IN HERE, but it does below
+	            COUNTRIES.clear(); COUNTRIES.addAll(countries);
+	            logger.info("COUNTRIES = " + COUNTRIES);
+			}catch ( IOException | ParseException e) { e.printStackTrace(); }
+		}
+	}
 
 	@Override
 	public String allCountrySettings() {
-		Object object = "";
+		reloadSettings();
 		
-		// put file listener, check the last read
-        try ( FileReader file = new FileReader("./src/main/resources/settings.json") ) {
-            object = SettingsService.JSON_PARSER.parse( file );
-            countries = SettingsService.JSON_MAPPER.readValue(object.toString(), 
-							SettingsService.JSON_MAPPER.getTypeFactory().constructCollectionType(List.class, Country.class));
-//            		Arrays.asList(SettingsService.JSON_MAPPER.readValue(file, Country[].class)); // DOESN'T WORK IN HERE, but it does below
-//            		JSON_MAPPER.readValue(file, new TypeReference<List<Country>>(){}); // DOESN'T WORK IN HERE, but it does below
-        }catch ( IOException | ParseException e) { // 
-            e.printStackTrace(); // read the settings from db instead to throw exception
-        }
+        logger.info(ALL_COUNTRY_SETTINGS);
         
-        logger.info(object.toString());
-        
-		return object.toString();
+		return ALL_COUNTRY_SETTINGS;
 	}
 
 	@Override
 	public Country get(String countryId) {
-		for(Country country: countries)
+		reloadSettings();
+		
+		for(Country country: COUNTRIES)
 			if(country.getCode().equals(countryId))
 				return country;
 		
 		return null;
 	}
+	
+//	TO BE AGREED, MIGHT BE OBSOLETE: BEGIN
+	private static final String APPLICATION_SETTINGS = "APPLICATION";
 	
 	@Override
 	public Collection<?> getAll() {
@@ -75,6 +103,8 @@ public class SettingsServiceImpl implements SettingsService {
 		return null;
 	}
 	
+//	TO BE AGREED, MIGHT BE OBSOLETE: END
+	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException{
 		SettingsService settingsService = new SettingsServiceImpl();
 		System.out.println(settingsService.allCountrySettings());
@@ -93,13 +123,14 @@ public class SettingsServiceImpl implements SettingsService {
         FileReader file = new FileReader("./src/main/resources/settings.json");
 //    	countries = JSON_MAPPER.readValue(file, Country[].class);
 //      countries = Arrays.asList(SettingsService.JSON_MAPPER.readValue(file, Country[].class));
-    	countries = JSON_MAPPER.readValue(file, new TypeReference<List<Country>>(){});
+    	List<Country> countries = JSON_MAPPER.readValue(file, new TypeReference<List<Country>>(){});
+    		COUNTRIES.clear(); COUNTRIES.addAll(countries);
     	
     	file = new FileReader("./src/main/resources/settings.json");
     	Country[] countriesArray = JSON_MAPPER.readValue(file, Country[].class);
     	
     	file = new FileReader("./src/main/resources/settings.json");
-    	List<Settings> settingsList = Arrays.asList(SettingsService.JSON_MAPPER.readValue(file, Settings[].class));
+    	List<Settings> settingsList = Arrays.asList(JSON_MAPPER.readValue(file, Settings[].class));
 //      countries =  SettingsService.JSON_MAPPER.readValue(object.toString(), 
 //						SettingsService.JSON_MAPPER.getTypeFactory().constructCollectionType(List.class, Country.class));
         

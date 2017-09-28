@@ -11,7 +11,7 @@ public class Settings implements Serializable{
 	private String code;
 	private String flag;
 	private String currency;
-	private List<Section> sections;
+	private List<SettingsSection> sections;
 
 	public long getId() {
 		return id;
@@ -53,11 +53,11 @@ public class Settings implements Serializable{
 		this.currency = currency;
 	}
 
-	public List<Section> getSections() {
+	public List<SettingsSection> getSections() {
 		return sections;
 	}
 
-	public void setSections(List<Section> sections) {
+	public void setSections(List<SettingsSection> sections) {
 		this.sections = sections;
 	}
 }

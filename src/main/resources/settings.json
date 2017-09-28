@@ -145,4 +145,43 @@
         "required": true
       }]
     }]
+  }, {
+    "name": "APPLICATION",
+    "code": "XP",
+    "flag": "xp",
+    "sections": [{
+      "name": "payee",
+      "fields": [{
+        "id": "payee-name",
+        "title": "Payee's full name",
+        "tooltip": "United Kingdom payee's full name placeholder",
+        "type": "text",
+        "maxlength": 30,
+        "required": true
+      }, {
+        "id": "payee-address",
+        "title": "Payee's address",
+        "tooltip": "United Kingdom payee's address placeholder",
+        "type": "text",
+        "maxlength": 50,
+        "required": true
+      }]
+    }, {
+      "name": "payment",
+      "fields": [{
+        "id": "sort-code",
+        "title": "Sort Code",
+        "tooltip": "United Kingdom Sort Code placeholder",
+        "type": "text",
+        "maxlength": 30,
+        "required": true
+      }, {
+        "id": "account-number",
+        "title": "Account Number",
+        "tooltip": "United Kingdom Account Number placeholder",
+        "type": "text",
+        "maxlength": 30,
+        "required": true
+      }]
+    }]
   }]

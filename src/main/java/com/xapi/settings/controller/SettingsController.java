@@ -40,27 +40,31 @@ NB!!! New ONES. Needs to be discussed and agreed
 	@CrossOrigin
 	@RequestMapping(value = "/country", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllCountrySettings(){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getAllCountrySettings() NOT IMPLEMENTED YET" + 
-				"\nGet ALL country settings" + "\n NO Parameters";
+		String info = "\nMetod getAllCountrySettings()" + //" NOT IMPLEMENTED YET" + 
+				"\nGet ALL country settings" + "\n NO PARAMETERS";
 		
 		logger.info(info);
 		
 //		Collection<?> allCountrySettings = settingsService.get(); // FIXME, settingsService.get()
 		String settings = settingsService.allCountrySettings();
-		return new ResponseEntity<String>(settings, HttpStatus.I_AM_A_TEAPOT);
+		logger.info(settings == null || settings.isEmpty()? "NO SETTINGS FOUND": settings);
+		
+		return new ResponseEntity<String>(settings, settings == null || settings.isEmpty()? HttpStatus.NOT_FOUND: HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/country/{country}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCountrySettingsById(@PathVariable("country") String country){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getCountrySettingsById( String country ) NOT IMPLEMENTED YET" + 
-				"\nGet country settings by country Id" + "\n Parameters, country Id = " + country;
+		String info = "\nMetod getCountrySettingsById( String country )" + //" NOT IMPLEMENTED YET" + 
+				"\nGet country settings by country Id" + "\n Parameters, country Code = " + country;
 		
 		logger.info(info);
 		
 //		Collection<?> countrySettings = settingsService.get( country ); // FIXME, settingsService.get(country_id)
 		Country countrySettings = settingsService.get( country );
-		return new ResponseEntity<Country>(countrySettings, HttpStatus.I_AM_A_TEAPOT);
+		logger.info(countrySettings == null? "NO SETTINGS FOUND FOR COUNTRY " + country: countrySettings.toString());
+		
+		return new ResponseEntity<Country>(countrySettings, countrySettings == null? HttpStatus.NOT_FOUND: HttpStatus.OK);
 	}
 	
 	// FIXME, agree with the rest

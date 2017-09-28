@@ -104,3 +104,16 @@ CREATE TABLE `section` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   UNIQUE KEY `NAME_VALUE_UNIQUE` (`NAME`,`VALUE`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+
+CREATE TABLE `section` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `fields` (
+  `id` bigint(20) NOT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  KEY `FKjy95so23f1pev0xih8t0sk7v5` (`id`),
+  CONSTRAINT `FKjy95so23f1pev0xih8t0sk7v5` FOREIGN KEY (`id`) REFERENCES `section` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
