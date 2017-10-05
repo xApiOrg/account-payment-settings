@@ -63,18 +63,8 @@ create table sections (NAME varchar(255) not null,
 );
 
 /* BEGIN H2 statements*/
-drop table account if exists;
-CREATE TABLE account(
-  ID bigint NOT NULL identity primary key,
-  USER_ID bigint NOT NULL,
-  CREATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CURRENCY varchar(3) NOT NULL,
-  BALANCE decimal(8,2) NOT NULL DEFAULT 0.0,
-  OVERDRAFT decimal(8,2) NOT NULL DEFAULT 0.0,
-  TYPE varchar(255) NOT NULL DEFAULT 'CURRENT',
-  PRIMARY KEY (ID),
-  FOREIGN KEY (USER_ID) REFERENCES user (ID)
-)
+
+
 
 /* Generated */
 CREATE CACHED TABLE PUBLIC.ACCOUNT(

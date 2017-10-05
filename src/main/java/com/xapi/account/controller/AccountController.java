@@ -55,7 +55,7 @@ public class AccountController {
 		logger.info(info);
 		
 		List<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
-		logger.info(accounts != null? accounts.toString(): "NO AccountS FOUND!!!");
+		logger.info(accounts != null  && ! accounts.isEmpty() ? accounts.toString(): "NO AccountS FOUND!!!");
 		
 		return new ResponseEntity<List<Account>>(accounts, accounts != null && ! accounts.isEmpty()?  HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	

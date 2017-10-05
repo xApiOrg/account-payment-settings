@@ -25,7 +25,7 @@ public class Payee implements Serializable{
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false) 		private final String name;
 	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
-	@ManyToMany(mappedBy = "payees") @JsonBackReference
+	@ManyToMany(mappedBy = "payees") 			@JsonBackReference
 												private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

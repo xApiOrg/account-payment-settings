@@ -125,7 +125,7 @@ insert into user_payee (user_id, payee_id) values( 4, 7 );
 insert into user_payee (user_id, payee_id) values( 4, 8 );
 
 /*minimal insert statement. N.B. AMOUNT and CALCULATED_AMOUNT can be omitted but it's useful to have at least one of them*/
-insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CCURRENCY) 
+insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CURRENCY) 
 			values ( 1000, 10, 100, 2000.00, 'GBP', 'EUR' );
 			
 /* END MySQL statements*/

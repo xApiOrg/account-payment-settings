@@ -28,7 +28,7 @@ public class Payment implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER)
 		@JoinColumn(name = "ACCOUNT_ID")				private final Account account;
 //	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
 		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
 	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
 	@Column(name="AMOUNT", nullable=false)			private Double amount = 0.00; 

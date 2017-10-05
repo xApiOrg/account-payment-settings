@@ -36,8 +36,8 @@ public class Account  implements Serializable{
 	@Column(name="TYPE", nullable = false)
 		@Enumerated(EnumType.STRING)					private AccountType type;
 	
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-														private Set<Payment> payments;
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference									private Set<Payment> payments;
 	
 	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 														private AccountDetails accountDetails;
@@ -88,9 +88,10 @@ public class Account  implements Serializable{
 	
 	public String toString(){
 		StringBuffer toString = new StringBuffer();
-		for(Field field: this.getClass().getDeclaredFields())
+		for(Field field: this.getClass().getDeclaredFields()) //payments
 			try {
-				toString.append( field.getName() + " = " ).append( field.get( this ) ).append("\n");
+				if(! field.getName().equalsIgnoreCase("payments"))
+					toString.append( field.getName() + " = " ).append( field.get( this ) ).append("\n");
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
