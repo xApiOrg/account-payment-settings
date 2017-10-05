@@ -1,7 +1,6 @@
 package com.xapi.settings.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 //import org.apache.commons
 
@@ -16,8 +15,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,10 +25,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xapi.data.model.Country;
 import com.xapi.data.model.Settings;
+import com.xapi.settings.config.SettingsConfig;
 
 @Service("settingsService")
 public class SettingsServiceImpl implements SettingsService {
 	private static final Logger logger = LoggerFactory.getLogger(SettingsServiceImpl.class);
+
+	@Autowired Environment env;
+	@Autowired SettingsConfig settingsConfig;
 	
 	private static final String SETTINGS_FILE_PATH = "./src/main/resources/settings.json";
 	private static final File SETTINGS_FILE = new File(SETTINGS_FILE_PATH);
@@ -66,6 +70,8 @@ public class SettingsServiceImpl implements SettingsService {
 	public String allCountrySettings() {
 		reloadSettings();
 		
+		logger.info(settingsConfig.getAllCountrySettings());
+		logger.info(env.getProperty("ALL_COUNTRY_SETTINGS"));
         logger.info(ALL_COUNTRY_SETTINGS);
         
 		return ALL_COUNTRY_SETTINGS;
@@ -74,6 +80,10 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public Country get(String countryId) {
 		reloadSettings();
+		
+		logger.info(settingsConfig.getAllCountrySettings());
+		logger.info(env.getProperty("ALL_COUNTRY_SETTINGS"));
+        logger.info(ALL_COUNTRY_SETTINGS);
 		
 		for(Country country: COUNTRIES)
 			if(country.getCode().equals(countryId))

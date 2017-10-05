@@ -41,7 +41,7 @@ NB!!! New ONES. Needs to be discussed and agreed
 	@RequestMapping(value = "/country", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllCountrySettings(){ //ResponseEntity<Collection<PaymentAccounts>>
 		String info = "\nMetod getAllCountrySettings()" + //" NOT IMPLEMENTED YET" + 
-				"\nGet ALL country settings" + "\n NO PARAMETERS";
+				"\nGet ALL country settings" + " NO PARAMETERS";
 		
 		logger.info(info);
 		
