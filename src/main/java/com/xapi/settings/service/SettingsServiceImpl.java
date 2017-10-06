@@ -102,9 +102,17 @@ public class SettingsServiceImpl implements SettingsService {
 	}
 
 	@Override
-	public Collection<?> getList() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Country> getList() {
+		reloadSettings();
+		
+		Collection<Country> countries = new ArrayList<>();
+		for(Country country: COUNTRIES){
+			Country countryClone = country.clone();
+			countryClone.setSections( new ArrayList<>() );
+			countries.add( countryClone );
+		}
+		
+		return countries;
 	}
 
 	@Override

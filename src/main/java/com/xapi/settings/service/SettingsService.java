@@ -16,6 +16,6 @@ public interface SettingsService {
 	
 	// TO BE AGREED, MIGHT BE OBSOLETE
 	public Collection<?> getAll();
-	public Collection<?> getList();
+	public Collection<Country> getList();
 	public Collection<?> get();
 }

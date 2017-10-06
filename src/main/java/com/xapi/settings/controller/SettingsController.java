@@ -21,16 +21,16 @@ import com.xapi.settings.service.SettingsService;
 @RestController
 @RequestMapping("/settings")
 public class SettingsController {
-	public static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
 	
 	@Autowired private SettingsService settingsService;
 /**
-	 * 
+
 		/settings/country				GET		- getAllCountrySettings		All Country Settings		http://localhost:10001/ipay/settings/country
 		/settings/country/{country}		GET		- getCountrySettingsById	One Country Settings		http://localhost:10001/ipay/settings/country/10
 
 NB!!! New ONES. Needs to be discussed and agreed
-		/settings/country/list			GET		- getCountryList			List of all countries		http://localhost:10001/ipay/settings/country/list
+		/settings/list/country			GET		- getCountryList			List of all countries		http://localhost:10001/ipay/settings/country/list
 		/settings/						GET		- getElements				All elements and country	http://localhost:10001/ipay/settings
 
 */	
@@ -43,11 +43,11 @@ NB!!! New ONES. Needs to be discussed and agreed
 		String info = "\nMetod getAllCountrySettings()" + //" NOT IMPLEMENTED YET" + 
 				"\nGet ALL country settings" + " NO PARAMETERS";
 		
-		logger.info(info);
+		LOGGER.info(info);
 		
 //		Collection<?> allCountrySettings = settingsService.get(); // FIXME, settingsService.get()
 		String settings = settingsService.allCountrySettings();
-		logger.info(settings == null || settings.isEmpty()? "NO SETTINGS FOUND": settings);
+		LOGGER.info(settings == null || settings.isEmpty()? "NO SETTINGS FOUND": settings);
 		
 		return new ResponseEntity<String>(settings, settings == null || settings.isEmpty()? HttpStatus.NOT_FOUND: HttpStatus.OK);
 	}
@@ -58,26 +58,31 @@ NB!!! New ONES. Needs to be discussed and agreed
 		String info = "\nMetod getCountrySettingsById( String country )" + //" NOT IMPLEMENTED YET" + 
 				"\nGet country settings by country Id" + "\n Parameters, country Code = " + country;
 		
-		logger.info(info);
+		LOGGER.info(info);
 		
 //		Collection<?> countrySettings = settingsService.get( country ); // FIXME, settingsService.get(country_id)
 		Country countrySettings = settingsService.get( country );
-		logger.info(countrySettings == null? "NO SETTINGS FOUND FOR COUNTRY " + country: countrySettings.toString());
+		LOGGER.info(countrySettings == null? "NO SETTINGS FOUND FOR COUNTRY " + country: countrySettings.toString());
 		
 		return new ResponseEntity<Country>(countrySettings, countrySettings == null? HttpStatus.NOT_FOUND: HttpStatus.OK);
 	}
 	
 	// FIXME, agree with the rest
+	// FIXME, ambiguous with the above, i.e. the call /country/list is treated like /country/{list} and is 
+	// looking for a country with code list
 	@CrossOrigin
-	@RequestMapping(value = "/country/list", method = RequestMethod.GET)
-	public ResponseEntity<?> getCountryList(){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = "Metod getCountryList() NOT IMPLEMENTED YET" + 
-				"\nGet ALL country LIST" + "\n NO Parameters";
+//	@RequestMapping(value = "/country/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/country", method = RequestMethod.GET)
+	public ResponseEntity<?> getCountryList(){ 
+		String info = "\nMetod getCountryList() NOT IMPLEMENTED YET" + 
+				"\nGet ALL country LIST" + "\n NO Parameters";		
+			LOGGER.info(info);
 		
-		logger.info(info);
+		Collection<Country> allCountriesList = settingsService.getList();
+			LOGGER.info(allCountriesList == null || allCountriesList.isEmpty()? "NO COUNTRIES FOUND": allCountriesList.toString());
 		
-		Collection<?> allCountriesList = settingsService.getList(); // FIXME, settingsService.getList()
-		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Collection<Country>>(allCountriesList, 
+				allCountriesList == null || allCountriesList.isEmpty()? HttpStatus.NOT_FOUND: HttpStatus.OK);
 	}
 	
 	// FIXME, agree with the rest
@@ -87,7 +92,7 @@ NB!!! New ONES. Needs to be discussed and agreed
 		String info = "Metod getElements() NOT IMPLEMENTED YET" + 
 				"\nGet all ELEMENTS settings" + "\n NO Parameters";
 		
-		logger.info(info);
+		LOGGER.info(info);
 		
 		Collection<?> allElementsSettings = settingsService.getAll(); // FIXME, settingsService.getAll()
 		return new ResponseEntity<String>(info, HttpStatus.I_AM_A_TEAPOT);

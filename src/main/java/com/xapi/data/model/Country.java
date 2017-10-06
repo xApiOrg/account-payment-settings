@@ -77,4 +77,16 @@ public class Country implements Serializable{
 		
 		return toString.toString();
 	}	
+	
+	@Override
+	public Country clone(){	
+		Country cloneCountry = new Country();
+			cloneCountry.setName(this.name);
+			cloneCountry.setCode(this.code);
+			cloneCountry.setFlag(this.flag);
+			cloneCountry.setCurrency(this.currency);
+			cloneCountry.setSections(this.sections);
+			
+		return cloneCountry;
+	}
 }
