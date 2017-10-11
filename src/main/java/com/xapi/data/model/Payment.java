@@ -26,7 +26,7 @@ public class Payment implements Serializable{
 		@JoinColumn(name = "USER_ID")				private final User user;
 //	@Column(name="ACCOUNT_ID", nullable=false) 		private final Long accountId;
     @ManyToOne(fetch = FetchType.EAGER)
-		@JoinColumn(name = "ACCOUNT_ID")				private final Account account;
+		@JoinColumn(name = "ACCOUNT_ID")			private final Account account;
 //	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
     @ManyToOne(fetch = FetchType.LAZY)
 		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
@@ -37,6 +37,7 @@ public class Payment implements Serializable{
 	@Column(name="CHARGE", nullable=false)			private Double charge = 0.00;
 	@Column(name="CALCULATED_AMOUNT",nullable=false)private Double calculatedAmount = 0.00;
 	@Column(name="PAYEE_CURRENCY", nullable=false)	private String payeeCurrency;
+	@Column(name="PAYMENT_DATE", nullable=false)	private Date paymentDate = new Date();
 	@Column(name="PLACED", nullable=false)			private Boolean placed = false;
 	@Column(name="DATE_PLACED", nullable=false)		private Date datePlaced = new Date();
 	@Column(name="CANCELLED", nullable=false)		private Boolean cancelled = false;
@@ -186,6 +187,14 @@ public class Payment implements Serializable{
 		
 //		return "id = " + id + ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId + ", created = " + created + ", amount = " + amount + ", paymentCurrency = " + paymentCurrency + ", rate = " + rate;
 		return toString.toString();
+	}
+
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
 }
 
