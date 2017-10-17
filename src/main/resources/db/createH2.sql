@@ -35,7 +35,7 @@ CREATE TABLE payee (
   ACTIVE bit(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (ID)
 );
-
+ALTER TABLE payee ALTER ACTIVE bit(1) NOT NULL DEFAULT 1;
 
 drop table user_payee if exists;
 CREATE TABLE user_payee (
@@ -193,5 +193,6 @@ insert into user_payee (user_id, payee_id) values( 4, 7 );
 insert into user_payee (user_id, payee_id) values( 4, 8 );
 
 
-insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CURRENCY) values ( 1, 1, 3, 2000.00, 'GBP', 'EUR' );
+insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CURRENCY) 
+			values ( 1, 1, 3, 2000.00, 'GBP', 'EUR' );
 /* */

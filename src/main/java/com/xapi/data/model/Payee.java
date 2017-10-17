@@ -29,7 +29,7 @@ public class Payee implements Serializable{
 												private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-												private Set<Payment> payments;
+	@JsonBackReference							private Set<Payment> payments;
 	
 	@OneToOne(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 												private AccountDetails accountDetails;
@@ -74,8 +74,11 @@ public class Payee implements Serializable{
 	}
 	
 	public String toString(){
-		return "id = " + id + ", name = " + name + ", active = " + active + ", users = " + 
-				users.toString() + ", payments = " + payments.toString();
+//		String paymentsString = payments.toString();
+		return "id = " + id + ", name = " + name + ", active = " + active  + 
+				", users = " + users.toString() 
+//				+ ", payments = " + payments
+				;
 	}
 
 	public Boolean getActive() {

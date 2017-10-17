@@ -1,6 +1,7 @@
 package com.xapi.payment.service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="getAllPaymentFallback")
 	public Collection<Payment> getAll(Long userId) {
-		List<Payment> payments = paymentRepository.findByUserId(userId);
+		List<Payment> payments = paymentRepository.findByUserIdAndPlaced(userId, true);
 		return payments;
 	}
 	
@@ -40,8 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
 //	@HystrixCommand(fallbackMethod="placePaymentFallback")
 	public Payment placePayment(Payment payment) {
 		payment = paymentRepository.findById(payment.getId());
+		
 		if(payment != null && ! payment.getPlaced() ){
 			payment.setPlaced( true );
+			payment.setDatePlaced(new Date());
 			paymentRepository.save(payment);			
 		}
 		

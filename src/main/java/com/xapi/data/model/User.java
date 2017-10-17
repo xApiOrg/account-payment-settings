@@ -25,17 +25,19 @@ public class User implements Serializable{
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false) 		private final String name;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) @JsonBackReference
-												private Set<Account> accounts;	
-	@JsonBackReference
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+	@JsonBackReference(value="accounts")		private Set<Account> accounts;	
+	
+	
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_payee", 
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
     	inverseJoinColumns = @JoinColumn(name = "payee_id", referencedColumnName = "id"))
-												private Set<Payee> payees;
+	@JsonBackReference							private Set<Payee> payees;
+	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonBackReference							private Set<Payment> payments;
+	@JsonBackReference							private Set<Payment> payments; // @JsonBackReference // commented in order to appear in the payments, i.e. /payment/{user_id}
 	
 	public User(){ this.name = "SYSTEM";}
 	
@@ -63,5 +65,17 @@ public class User implements Serializable{
 
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

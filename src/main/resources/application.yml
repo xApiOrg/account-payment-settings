@@ -3,6 +3,9 @@ server:
   contextPath: /ipay
   
 spring:
+  h2:
+    console:
+      enabled: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
@@ -13,8 +16,8 @@ spring:
        # jdbc:mysql://localhost:3306/test?verifyServerCertificate=false&useSSL=false&requireSSL=false
     #username: vassit
     #password: vass1tlon
-    url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=runscript from 'src/main/resources/db/createH2.sql'; # \\,runscript from 'src/main/resources/db/importH2.sql'; 
-                # jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE jdbc:h2:tcp://localhost/~/test
+    url: # jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=runscript from 'src/main/resources/db/createH2.sql'; # \\,runscript from 'src/main/resources/db/importH2.sql'; 
+         jdbc:h2:tcp://localhost/~/test; # DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=runscript from 'src/main/resources/db/createH2.sql';       # jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE 
     driverClassName: org.h2.Driver
     username: sa
     password: 

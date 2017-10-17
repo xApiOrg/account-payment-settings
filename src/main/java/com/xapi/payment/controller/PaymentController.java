@@ -1,7 +1,12 @@
 package com.xapi.payment.controller;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.data.model.Payment;
+import com.xapi.data.model.User;
 import com.xapi.payment.service.PaymentService;
 
 
@@ -31,7 +37,7 @@ public class PaymentController {
 	 * 
 		/payment/calculation	POST	- calculatePayment	Calculate (recalculate) payment and payee amounts	http://localhost:8080/ipay/payment/calculation
 		/payment				POST	- placePayment		Place payment										http://localhost:8080/ipay/payment
-		/payment/{user_id}		GET		- getUserPayments	List recent payments								http://localhost:8080/ipay/payment/100
+		/payment/{user_id}		GET		- getUserPayments	List recent placed payments							http://localhost:8080/ipay/payment/100
 		
 		
 		/payment//{user_id}/{account_id}/{payee_id}	POST	createPayment	
@@ -79,11 +85,11 @@ public class PaymentController {
 	 * METHOD: POST
 	 * URL: http://localhost:10001/ipay/payment/1000/11/101 
 	 * BODY: minimal
-	 *     {
-	 *     		"amount": 1000,
-	 *     		"paymentCurrency": "GBP",
-	 *     		"payeeCurrency": "EUR"
-	 *     }
+{
+	"amount": 1000,
+	"paymentCurrency": "GBP",
+	"payeeCurrency": "EUR"
+}
 	 * */
 	
 	@CrossOrigin
@@ -124,23 +130,26 @@ public class PaymentController {
 		logger.info(info);
 		
 		Payment payment = paymentService.placePayment(paymentRef);
-		logger.info(payment.toString());
+		logger.info(payment != null && payment.getSettled()? payment.toString(): 
+			"NOT PLACED/CONFIRMED Payment " + paymentRef.toString());
 		
-		return new ResponseEntity<Payment>( payment, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
+			payment.getSettled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<Collection<Payment>> getUserPayments(@PathVariable("user_id") Long userId){ //, HttpServletRequest request
-		String info = "\nMetod getUserPayments( Long userId) NOT IMPLEMENTED YET" + 
+	public ResponseEntity<Collection<Payment>> getUserPayments(@PathVariable("user_id") Long userId){ 
+		String info = "\nMetod getUserPayments( Long userId )" + //" NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's placed PAYMENTS by user Id" + "\n Parameters, user Id = " + userId;
-//				+ "\n" + "method = " + request.getMethod() +  ", URI - " + request.getRequestURI() + ", URL - " + request.getRequestURL() + ", -->" + RequestMethod.GET.toString();
-		
 		logger.info(info);
 		
 		Collection<Payment> placedPayments = paymentService.getAll( userId );
-		logger.info( placedPayments.toString() );
+		logger.info( placedPayments != null && ! placedPayments.isEmpty()? placedPayments.toString(): 
+				"NO PLACED PAYMENTS FOR USER ID " + userId );		
 		
-		return new ResponseEntity<Collection<Payment>>(placedPayments, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Collection<Payment>>(placedPayments, 
+				placedPayments != null && ! placedPayments.isEmpty()? HttpStatus.OK: HttpStatus.NO_CONTENT);
 	}	
 }
+

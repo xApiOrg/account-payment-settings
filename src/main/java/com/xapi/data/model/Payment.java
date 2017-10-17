@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 //import javax.persistence.Column;
 //import javax.persistence.Table;
 
@@ -28,7 +30,7 @@ public class Payment implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER)
 		@JoinColumn(name = "ACCOUNT_ID")			private final Account account;
 //	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)	// @JsonBackReference
 		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
 	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
 	@Column(name="AMOUNT", nullable=false)			private Double amount = 0.00; 
@@ -122,6 +124,10 @@ public class Payment implements Serializable{
 
 	public Date getDatePlaced() {
 		return datePlaced;
+	}
+
+	public void setDatePlaced(Date datePlaced) {
+		this.datePlaced = datePlaced;
 	}
 
 	public Date getDateSettled() {
