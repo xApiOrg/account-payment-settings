@@ -28,7 +28,8 @@ public class Account  implements Serializable{
 	
 	@Id @GeneratedValue 								private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID") @JsonBackReference	private final User user;
+    @JoinColumn(name = "USER_ID") 
+    @JsonBackReference(value="user")					private final User user;
 	@Column(name="CREATED", nullable=false)				private final Date created = new Date();
 	@Column(name="CURRENCY",nullable=false) 			private String currency;
 	@Column(name="BALANCE",nullable=false) 				private Double balance = 0.0;
@@ -37,7 +38,7 @@ public class Account  implements Serializable{
 		@Enumerated(EnumType.STRING)					private AccountType type;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonBackReference									private Set<Payment> payments;
+	@JsonBackReference(value="payments")				private Set<Payment> payments;
 	
 	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 														private AccountDetails accountDetails;

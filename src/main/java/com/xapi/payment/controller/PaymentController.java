@@ -39,9 +39,11 @@ public class PaymentController {
 		/payment				POST	- placePayment		Place payment										http://localhost:8080/ipay/payment
 		/payment/{user_id}		GET		- getUserPayments	List recent placed payments							http://localhost:8080/ipay/payment/100
 		
+		NEW!!! Create and calculate (recalculate) payment Object to ease re calculation and payment confirmation 
 		
-		/payment//{user_id}/{account_id}/{payee_id}	POST	createPayment	
-			NEW!!! Create and calculate (recalculate) payment Object to ease re calculation an payment confirmation 
+		/payment/{user_id}/{account_id}/{payee_id}	POST	createPayment
+		/payment/{user_id}/{account_id}/{payee_id}	PATCH	cancelPayment	
+			
 
 	 */	
 	
@@ -51,14 +53,14 @@ public class PaymentController {
 	 * METHOD: POST
 	 * URL: http://localhost:10001/ipay/payment/calculation?calculatePayee=true 
 	 * BODY: minimal
-	 *     {
-	 *     		"id": 3,
-	 *     		"amount": 1000,
-	 *     		"calculatedAmount": 0,
-	 *     		"paymentCurrency": "GBP",
-	 *     		"payeeCurrency": "EUR"
-	 *     }
-	 *     
+	      {
+	      		"id": 3,
+	      		"amount": 1000,
+	      		"calculatedAmount": 0,
+	      		"paymentCurrency": "GBP",
+	      		"payeeCurrency": "EUR"
+	      }
+	      
 	 *  IMMUTABLE ELEMENTS   
 	 *     		"userId": 1000,
 	 *     		"accountId": 10,
@@ -85,11 +87,11 @@ public class PaymentController {
 	 * METHOD: POST
 	 * URL: http://localhost:10001/ipay/payment/1000/11/101 
 	 * BODY: minimal
-{
-	"amount": 1000,
-	"paymentCurrency": "GBP",
-	"payeeCurrency": "EUR"
-}
+			{
+				"amount": 1000,
+				"paymentCurrency": "GBP",
+				"payeeCurrency": "EUR"
+			}
 	 * */
 	
 	@CrossOrigin
@@ -115,26 +117,26 @@ public class PaymentController {
 	 * METHOD: POST
 	 * URL: http://localhost:10001/ipay/payment
 	 * BODY: minimal
-	 *     {
-	 *     		"id": 3
-	 *     }
+			{
+				"id": 6
+			}
 	 * */
 	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST) //value = "", 
 	public ResponseEntity<Payment> placePayment(@RequestBody Payment paymentRef){ 
-		String info = "\nMetod placePayment( Object payment) NOT IMPLEMENTED YET" + 
-				"\nPlace to execute User's placed PAYMENT by payment object" + 
+		String info = "\nMetod placePayment( JSONObject payment) // NOT IMPLEMENTED YET" + 
+				// "\nPlace to execute User's placed PAYMENT by payment object" + 
 				"\n Parameters, payment = " + paymentRef.toString();
 		
 		logger.info(info);
 		
 		Payment payment = paymentService.placePayment(paymentRef);
-		logger.info(payment != null && payment.getSettled()? payment.toString(): 
+		logger.info(payment != null && payment.getPlaced()? payment.toString(): 
 			"NOT PLACED/CONFIRMED Payment " + paymentRef.toString());
 		
 		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
-			payment.getSettled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
+			payment.getPlaced()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
 	}
 	
 	@CrossOrigin

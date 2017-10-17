@@ -25,11 +25,11 @@ public class Payee implements Serializable{
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false) 		private final String name;
 	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
-	@ManyToMany(mappedBy = "payees") 			@JsonBackReference
-												private Set<User> users;
+	@ManyToMany(mappedBy = "payees") 			
+	@JsonBackReference(value="users")			private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonBackReference							private Set<Payment> payments;
+	@JsonBackReference(value="payments")		private Set<Payment> payments;
 	
 	@OneToOne(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 												private AccountDetails accountDetails;

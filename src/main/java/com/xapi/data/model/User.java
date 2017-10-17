@@ -33,11 +33,11 @@ public class User implements Serializable{
     @JoinTable(name = "user_payee", 
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
     	inverseJoinColumns = @JoinColumn(name = "payee_id", referencedColumnName = "id"))
-	@JsonBackReference							private Set<Payee> payees;
+	@JsonBackReference(value="payees")			private Set<Payee> payees;
 	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonBackReference							private Set<Payment> payments; // @JsonBackReference // commented in order to appear in the payments, i.e. /payment/{user_id}
+	@JsonBackReference(value="payments")		private Set<Payment> payments; // @JsonBackReference // commented in order to appear in the payments, i.e. /payment/{user_id}
 	
 	public User(){ this.name = "SYSTEM";}
 	
