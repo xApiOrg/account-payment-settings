@@ -171,7 +171,7 @@ public class PaymentController {
 				"\nGet ALL User's placed PAYMENTS by user Id" + "\n Parameters, user Id = " + userId;
 		logger.info(info);
 		
-		Collection<Payment> placedPayments = paymentService.getAll( userId );
+		Collection<Payment> placedPayments = paymentService.getAllPlaced( userId );
 		logger.info( placedPayments != null && ! placedPayments.isEmpty()? placedPayments.toString(): 
 				"NO PLACED PAYMENTS FOR USER ID " + userId );		
 		

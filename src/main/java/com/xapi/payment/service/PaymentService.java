@@ -6,7 +6,7 @@ import java.util.List;
 import com.xapi.data.model.Payment;
 
 public interface PaymentService {
-	public Collection<Payment> getAll(Long userId);
+	public Collection<Payment> getAllPlaced(Long userId);
 
 	public Payment cancelPayment(Payment payment);
 
@@ -15,9 +15,6 @@ public interface PaymentService {
 	public Payment calculate(Payment payment, Boolean calculatePayee);
 
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentPayeeAmounts);
-
-	public Payment createPayment(Payment payment);
 	
 	public List<Payment> findByUserId(Long userId);
-
 }

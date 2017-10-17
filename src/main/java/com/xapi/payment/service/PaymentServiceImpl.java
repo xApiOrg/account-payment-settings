@@ -26,7 +26,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 //	@HystrixCommand(fallbackMethod="getAllPaymentFallback")
-	public Collection<Payment> getAll(Long userId) {
+	public Collection<Payment> getAllPlaced(Long userId) {
 		List<Payment> payments = paymentRepository.findByUserIdAndPlaced(userId, true);
 		return payments;
 	}
@@ -46,6 +46,8 @@ public class PaymentServiceImpl implements PaymentService {
 		if(payment != null && ! payment.getSettled() && payment.getPaymentDate().after(now) ){
 			payment.setCancelled(true);
 			payment.setDateCancelled(now);
+			payment.setPlaced( false );
+			payment.setDatePlaced(now);
 			paymentRepository.save(payment);			
 		}
 		
@@ -122,6 +124,7 @@ public class PaymentServiceImpl implements PaymentService {
 		return payment;
 	}
 	
+	// SELECT u.id, a.id, up.payee_id from user u join account a on u.id = a.user_id join user_payee up on up.user_id = u.id
 	@Override
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentTransferred){
 		User user = userRepository.findById(userId);
@@ -136,12 +139,6 @@ public class PaymentServiceImpl implements PaymentService {
 			
 		paymentRepository.save(payment);
 			
-		return payment;
-	}
-	
-	@Override
-	public Payment createPayment(Payment payment){
-		paymentRepository.saveAndFlush(payment);
 		return payment;
 	}	
 
