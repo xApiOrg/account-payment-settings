@@ -8,6 +8,8 @@ import com.xapi.data.model.Payment;
 public interface PaymentService {
 	public Collection<Payment> getAll(Long userId);
 
+	public Payment cancelPayment(Payment payment);
+
 	public Payment placePayment(Payment payment);
 
 	public Payment calculate(Payment payment, Boolean calculatePayee);

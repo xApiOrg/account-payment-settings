@@ -42,7 +42,7 @@ public class PaymentController {
 		NEW!!! Create and calculate (recalculate) payment Object to ease re calculation and payment confirmation 
 		
 		/payment/{user_id}/{account_id}/{payee_id}	POST	createPayment
-		/payment/{user_id}/{account_id}/{payee_id}	PATCH	cancelPayment	
+		/payment									PATCH	cancelPayment	
 			
 
 	 */	
@@ -114,6 +114,32 @@ public class PaymentController {
 	
 	/*
 	 * Example:
+	 * METHOD: PATCH
+	 * URL: http://localhost:10001/ipay/payment
+	 * BODY: minimal
+			{
+				"id": 6
+			}
+	 * */
+	
+	@CrossOrigin
+	@RequestMapping(method = RequestMethod.PATCH) //value = "", 
+	public ResponseEntity<Payment> cancelPayment(@RequestBody Payment paymentRef){ 
+		String info = "\nMetod cancelPayment( JSONObject payment)  NOT IMPLEMENTED YET" + 
+				// "\nPlace to execute User's placed PAYMENT by payment object" + 
+				"\nParameters, payment:\n" + paymentRef.toString();		
+		logger.info(info);
+		
+		Payment payment = paymentService.cancelPayment(paymentRef);
+		logger.info(payment != null && payment.getCancelled()? payment.toString(): 
+			"\nNOT CANCELLED Payment:\n" + paymentRef.toString());
+		
+		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
+			payment.getCancelled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
+	}
+	
+	/*
+	 * Example:
 	 * METHOD: POST
 	 * URL: http://localhost:10001/ipay/payment
 	 * BODY: minimal
@@ -127,8 +153,7 @@ public class PaymentController {
 	public ResponseEntity<Payment> placePayment(@RequestBody Payment paymentRef){ 
 		String info = "\nMetod placePayment( JSONObject payment) // NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
-				"\n Parameters, payment = " + paymentRef.toString();
-		
+				"\n Parameters, payment = " + paymentRef.toString();		
 		logger.info(info);
 		
 		Payment payment = paymentService.placePayment(paymentRef);

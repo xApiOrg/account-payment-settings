@@ -38,13 +38,36 @@ public class PaymentServiceImpl implements PaymentService {
 //	}
 
 	@Override
+//	@HystrixCommand(fallbackMethod="cancelPaymentFallback")
+	public Payment cancelPayment(Payment payment) {
+		payment = paymentRepository.findById(payment.getId());
+		Date now = new Date();
+		
+		if(payment != null && ! payment.getSettled() && payment.getPaymentDate().after(now) ){
+			payment.setCancelled(true);
+			payment.setDateCancelled(now);
+			paymentRepository.save(payment);			
+		}
+		
+		return payment;
+	}
+	
+//	@HystrixCommand
+//	private Object cancelPaymentFallback(Object payment) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	@Override
 //	@HystrixCommand(fallbackMethod="placePaymentFallback")
 	public Payment placePayment(Payment payment) {
 		payment = paymentRepository.findById(payment.getId());
+		Date now = new Date();
 		
-		if(payment != null && ! payment.getPlaced() ){
+		if(payment != null && ! payment.getPlaced()  && ! payment.getSettled() && ! payment.getCancelled() 
+				&& payment.getPaymentDate().after(now) ){
 			payment.setPlaced( true );
-			payment.setDatePlaced(new Date());
+			payment.setDatePlaced(now);
 			paymentRepository.save(payment);			
 		}
 		
