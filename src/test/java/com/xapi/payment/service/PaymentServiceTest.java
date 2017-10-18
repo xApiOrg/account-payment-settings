@@ -88,9 +88,4 @@ public class PaymentServiceTest {
 	public void testCreatePayment(){
 		assertEquals(1,1);
 	}
-	
-	@Test
-	public void testFindByUserId(){
-		assertEquals(1,1);
-	}
 }
