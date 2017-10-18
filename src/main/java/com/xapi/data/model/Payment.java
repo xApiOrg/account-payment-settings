@@ -51,19 +51,19 @@ public class Payment implements Serializable{
 		this.user = new User(); this.account = new Account(); this.payee = new Payee();
 	}
 	
-	public Payment(User user, Long accountId, Long payeeId){
-		this.user = user; this.account = new Account(); this.payee = new Payee();
-	}
+//	public Payment(User user, Long accountId, Long payeeId){
+//		this.user = user; this.account = new Account(); this.payee = new Payee();
+//	}
 	
 	public Payment(User user, Account account, Payee payee){
 		this.user = user; this.account = account; this.payee = payee;
 	}
 	
 	public static void main(String[] args){
-		System.out.println("dfgsdzxrgfxcv");
-		Payment payment = new Payment( new User(), 1l, 1l);
-
-		System.out.println("dfgsdzxrgfxcv = " + payment.getCreated());
+//		System.out.println("dfgsdzxrgfxcv");
+//		Payment payment = new Payment( new User(), 1l, 1l);
+//
+//		System.out.println("dfgsdzxrgfxcv = " + payment.getCreated());
 	}
 
 	public User getUser() {
