@@ -7,8 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xapi.data.model.Account;
+import com.xapi.data.model.Payee;
 import com.xapi.data.model.Payment;
 import com.xapi.data.model.User;
+import com.xapi.data.repository.AccountRepository;
+import com.xapi.data.repository.PayeeRepository;
 import com.xapi.data.repository.PaymentRepository;
 import com.xapi.data.repository.UserRepository;
 import com.xapi.rate.service.FXRateService;
@@ -22,6 +26,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired private PaymentRepository paymentRepository;
 	@Autowired private UserRepository userRepository;
+	@Autowired private AccountRepository accountRepository;
+	@Autowired private PayeeRepository payeeRepository;
+	private FXRateService fxRateService = new FXRateService();
 //    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -111,16 +118,20 @@ public class PaymentServiceImpl implements PaymentService {
 //	}
 	
 	private Payment recalculate(Payment payment, Boolean calculatePayee){
-		double fxRate = FXRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
+		double fxRate = fxRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
 		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
 			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
 		payment.setRate(fxRate);
 		payment.setCharge(charge);
 		
+		Double amount = calculatePayee? payment.getAmount() * fxRate - charge: 
+							payment.getCalculatedAmount()/fxRate + charge;
+			amount = amount > payment.getAccount().getBalance()? 0: amount;
+			
 		if(calculatePayee)
-			payment.setCalculatedAmount(payment.getAmount() * fxRate - charge);
+			payment.setCalculatedAmount(amount);
 		else
-			payment.setAmount(payment.getCalculatedAmount()/fxRate + charge);
+			payment.setAmount(amount);
 		
 		return payment;
 	}
@@ -129,7 +140,10 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentTransferred){
 		User user = userRepository.findById(userId);
-		Payment payment = new Payment(user, accountId, payeeId);
+		Account account = accountRepository.findById(accountId);
+		Payee payee = payeeRepository.findPayeeByIdandUserId( payeeId, userId);
+		
+		Payment payment = new Payment(user, account, payee);
 			payment.setAmount(paymentTransferred.getAmount());
 			payment.setPaymentCurrency(paymentTransferred.getPaymentCurrency());
 			payment.setPayeeCurrency(paymentTransferred.getPayeeCurrency());
@@ -137,8 +151,10 @@ public class PaymentServiceImpl implements PaymentService {
 		boolean calculatePayee = payment.getAmount() != null ? true: false;
 //				&& (paymentTransferred.getCalculatedAmount() == null || calculatedResult.getCalculatedAmount().intValue() == 0 )? true: false;
 		payment = recalculate(payment, calculatePayee);
-			
-		paymentRepository.save(payment);
+		
+		if(payment.getAmount() != null && payment.getAmount() > 0 && 
+			payment.getCalculatedAmount() != null && payment.getCalculatedAmount() > 0)
+			paymentRepository.save(payment);
 			
 		return payment;
 	}	
