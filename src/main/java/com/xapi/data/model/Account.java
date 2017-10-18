@@ -58,10 +58,11 @@ public class Account  implements Serializable{
 		return id;
 	}
 	
-	@SuppressWarnings("unused")
-	private void setId(Long id) {
+//	@SuppressWarnings("unused")
+	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public Double getBalance() {
 		return balance;
 	}
