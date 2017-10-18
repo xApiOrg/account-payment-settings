@@ -15,6 +15,4 @@ public interface PaymentService {
 	public Payment calculate(Payment payment, Boolean calculatePayee);
 
 	public Payment createPayment(Long userId, Long accountId, Long payeeId, Payment paymentPayeeAmounts);
-	
-	public List<Payment> findByUserId(Long userId);
 }

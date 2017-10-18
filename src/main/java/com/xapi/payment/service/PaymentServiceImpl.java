@@ -142,11 +142,6 @@ public class PaymentServiceImpl implements PaymentService {
 			
 		return payment;
 	}	
-
-	@Override
-	public List<Payment> findByUserId(Long userId){
-		return paymentRepository.findByUserId(userId);
-	}	
 }
 
 /*
