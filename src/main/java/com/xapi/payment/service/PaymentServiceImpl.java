@@ -16,6 +16,7 @@ import com.xapi.data.repository.PayeeRepository;
 import com.xapi.data.repository.PaymentRepository;
 import com.xapi.data.repository.UserRepository;
 import com.xapi.rate.service.FXRateService;
+import com.xapi.rate.service.RateService;
 
 //import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 //import com.xapi.payment.config.ServiceConfig;
@@ -28,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired private UserRepository userRepository;
 	@Autowired private AccountRepository accountRepository;
 	@Autowired private PayeeRepository payeeRepository;
-	private FXRateService fxRateService = new FXRateService();
+	@Autowired private RateService fxRateService; // = new FXRateService();
 //    private final RestTemplate restTemplate = new RestTemplateBuilder().build(); // RestTemplate restTemplate = new RestTemplate();
 
 	@Override
@@ -119,7 +120,7 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	private Payment recalculate(Payment payment, Boolean calculatePayee){
 		double fxRate = fxRateService.getRate(payment.getPaymentCurrency(), payment.getPayeeCurrency());
-		double charge = FXRateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
+		double charge = RateService.getCharge( payment.getPaymentCurrency(), payment.getPayeeCurrency(), 
 			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
 		payment.setRate(fxRate);
 		payment.setCharge(charge);
