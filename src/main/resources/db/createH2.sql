@@ -195,4 +195,6 @@ insert into user_payee (user_id, payee_id) values( 4, 8 );
 
 insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CURRENCY) 
 			values ( 1, 1, 3, 2000.00, 'GBP', 'EUR' );
+			
+update payment set placed = 1;
 /* */
