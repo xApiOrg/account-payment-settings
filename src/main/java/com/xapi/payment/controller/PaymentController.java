@@ -99,17 +99,17 @@ public class PaymentController {
 	public ResponseEntity<Payment> createPayment(@RequestBody Payment payment,
 			@PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, @PathVariable("payee_id") Long payeeId){ 
 		
-		String info = "\nMetod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails ) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod createPayment( Long userId, Long accountId, Long payeeId, Object paymentDetails )" + // "\nNOT IMPLEMENTED YET" + 
 				"\n Parameters, payment = " + payment.toString() + ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
 		logger.info(info);
 		
 		Payment calculatedResult = paymentService.createPayment(userId, accountId, payeeId, payment);
-//		Boolean calculatePayee = calculatedResult.getAmount() != null 
-//				&& (calculatedResult.getCalculatedAmount() == null || calculatedResult.getCalculatedAmount().intValue() == 0 )? true: false;
-//		calculatedResult = paymentService.calculate(payment, calculatePayee);	
-		logger.info(calculatedResult.toString());
+		logger.info(calculatedResult != null && calculatedResult.getId() != null &&
+				(calculatedResult.getAmount() == 0.0 || calculatedResult.getCalculatedAmount() == 0.0)? calculatedResult.toString():
+				"Payment NOT CREATED!!!\n" + calculatedResult.toString());
 		
-		return new ResponseEntity<Payment>(calculatedResult, HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<Payment>(calculatedResult, 
+				calculatedResult != null && calculatedResult.getId() != null? HttpStatus.OK: HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	/*
