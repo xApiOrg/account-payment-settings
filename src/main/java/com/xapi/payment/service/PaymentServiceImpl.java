@@ -155,7 +155,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		if(payment.getAmount() != null && payment.getAmount() > 0 && 
 			payment.getCalculatedAmount() != null && payment.getCalculatedAmount() > 0)
-				paymentRepository.save(payment);
+				payment = paymentRepository.save(payment);
 			
 		return payment;
 	}	

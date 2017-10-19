@@ -1,8 +1,9 @@
 package com.xapi.payment.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xapi.data.model.Account;
@@ -114,7 +116,6 @@ public class PaymentServiceTest {
 		when(accountRepository.findById( TEST_ACCOUNT.getId() )).thenReturn( TEST_ACCOUNT );
 		when(payeeRepository.findPayeeByIdandUserId( TEST_PAYEE.getId(), TEST_USER.getId() ) ).thenReturn( TEST_PAYEE );
 		when(fxRateService.getRate("EUR", "GBP")).thenReturn( 0.89283 );
-//		when(paymentRepository.save("GBP", "EUR")).thenReturn( 1.1217 );
 		
 		Payment paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
 		assertEquals(null, paymentCreated.getId());
@@ -124,5 +125,29 @@ public class PaymentServiceTest {
 		paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
 		assertEquals(null, paymentCreated.getId());
 		assertTrue( paymentCreated.getCalculatedAmount() == 0.0 );
+	}
+	
+	@Test
+	public void testCreatePaymentSave(){
+		when(userRepository.findById( TEST_USER.getId() )).thenReturn( TEST_USER );
+		when(accountRepository.findById( TEST_ACCOUNT.getId() )).thenReturn( TEST_ACCOUNT );
+		when(payeeRepository.findPayeeByIdandUserId( TEST_PAYEE.getId(), TEST_USER.getId() ) ).thenReturn( TEST_PAYEE );
+		when(fxRateService.getRate("EUR", "GBP")).thenReturn( 0.89283 );
+		
+		when(paymentRepository.save( any(Payment.class) )).thenAnswer(new Answer<Payment>(){
+			@Override
+			public Payment answer(InvocationOnMock invocation){
+				Payment payment = invocation.getArgumentAt( 0, Payment.class);
+					payment.setId( 1l );
+				return payment;
+			}
+		});		
+		
+		TEST_PAYMENT.setAmount( 600.00 );
+		Payment paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
+		
+		assertEquals( new Long( 1 ), paymentCreated.getId());
+		assertTrue( paymentCreated.getCalculatedAmount() != 0.0 );
+		assertTrue( paymentCreated.getAmount() != 0.0 );
 	}
 }
