@@ -6,6 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Date;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -62,9 +66,23 @@ public class PaymentControllerTest {
 	
 	@Test
 	public void verifyPlacePayment() throws Exception {
+		Date now = new Date();
 		mockMvc.perform(MockMvcRequestBuilders.post("/payment")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\" : \"1\" }") )
+		.andExpect( jsonPath( "$.id").exists() )
+		.andExpect( jsonPath( "$.id").value( 1 ) )
+		.andExpect( jsonPath( "$.placed").exists() )
+		.andExpect( jsonPath( "$.placed").value( true ) )
+		.andExpect( jsonPath( "$.datePlaced").exists() )
+//		.andExpect( jsonPath( "$.datePlaced").value(new BaseMatcher<Date>(){
+//			@Override public boolean matches(Object datePlaced) {
+////				return (new Date( (long) datePlaced) ).after(now);
+//				return ( (long) datePlaced > now.getTime() );
+//			}
+//
+//			@Override public void describeTo(Description description) {}
+//		} ) )
 				.andDo( print() );		
 	}
 	
@@ -75,7 +93,30 @@ public class PaymentControllerTest {
 	
 	@Test
 	public void verifyCreatePayment() throws Exception {
-		
+		mockMvc.perform(MockMvcRequestBuilders.post("/payment/2/7/8")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"amount\": 500,\"paymentCurrency\": \"GBP\",\"payeeCurrency\": \"EUR\"}") )
+		.andExpect( jsonPath( "$.id").exists() )
+		.andExpect( jsonPath( "$.id").value( 2 ) )
+		.andExpect( jsonPath( "$.amount").exists() )
+		.andExpect( jsonPath( "$.amount").value( 500.0 ) )
+		.andExpect( jsonPath( "$.paymentCurrency").exists() )
+		.andExpect( jsonPath( "$.paymentCurrency").value( "GBP" ) )
+		.andExpect( jsonPath( "$.payeeCurrency").exists() )
+		.andExpect( jsonPath( "$.payeeCurrency").value( "EUR" ) )
+		.andExpect( jsonPath( "$.placed").exists() )
+		.andExpect( jsonPath( "$.placed").value( false ) )
+		.andExpect( jsonPath( "$.cancelled").exists() )
+		.andExpect( jsonPath( "$.cancelled").value( false ) )
+		.andExpect( jsonPath( "$.settled").exists() )
+		.andExpect( jsonPath( "$.settled").value( false ) )
+		.andExpect( jsonPath( "$.user.id").exists() )
+		.andExpect( jsonPath( "$.user.id").value( 2 ) )
+		.andExpect( jsonPath( "$.account.id").exists() )
+		.andExpect( jsonPath( "$.account.id").value( 7 ) )
+		.andExpect( jsonPath( "$.payee.id").exists() )
+		.andExpect( jsonPath( "$.payee.id").value( 8 ) )
+				.andDo( print() );
 	}
 	
 	@Test
