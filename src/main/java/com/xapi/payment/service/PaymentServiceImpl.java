@@ -146,7 +146,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		Payment payment = new Payment(user, account, payee);
 			payment.setAmount(paymentTransferred.getAmount());
-			payment.setPaymentCurrency(paymentTransferred.getPaymentCurrency());
+			payment.setPaymentCurrency(account.getCurrency()); // paymentTransferred.getPaymentCurrency() - WRONG!!!
 			payment.setPayeeCurrency(paymentTransferred.getPayeeCurrency());
 			
 		boolean calculatePayee = payment.getAmount() != null ? true: false;

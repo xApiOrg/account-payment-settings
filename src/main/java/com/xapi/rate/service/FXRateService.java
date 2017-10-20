@@ -58,6 +58,9 @@ public class FXRateService implements RateService{
 	}
 	
 	public Double getRate(String currency, String currencyTo){
+		if(currency.equalsIgnoreCase(currencyTo))
+			return 1.0;
+		
 		Rates currencyRates = RATES.get(currency);
 		if(currencyRates == null || currencyRates.getRates().isEmpty()){
 			currencyRates = getRates( REST_TEMPLATE, FX_RATE_URL, Rates.class, currency);

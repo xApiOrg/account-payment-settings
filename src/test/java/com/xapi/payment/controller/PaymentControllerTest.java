@@ -1,5 +1,8 @@
 package com.xapi.payment.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -20,10 +23,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.jayway.jsonpath.JsonPath;
 import com.xapi.AccountPaymentSettingsServerApplication;
 
 @SpringBootTest
@@ -50,7 +55,7 @@ public class PaymentControllerTest {
 		
 		mockMvc.perform(MockMvcRequestBuilders.get("/payment/1")
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect( jsonPath("$", hasSize( 1 ) ) )
+				.andExpect( jsonPath("$", hasSize( 2 ) ) )
 				.andExpect( jsonPath("$[ 0 ].id").exists() )
 				.andExpect( jsonPath("$[ 0 ].id").value( 1 ) )
 				.andExpect( status().isOk() )
@@ -67,23 +72,29 @@ public class PaymentControllerTest {
 	@Test
 	public void verifyPlacePayment() throws Exception {
 		Date now = new Date();
-		mockMvc.perform(MockMvcRequestBuilders.post("/payment")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/payment")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"id\" : \"1\" }") )
+				.content("{\"id\" : \"2\" }") )
 		.andExpect( jsonPath( "$.id").exists() )
-		.andExpect( jsonPath( "$.id").value( 1 ) )
+		.andExpect( jsonPath( "$.id").value( 2 ) )
 		.andExpect( jsonPath( "$.placed").exists() )
 		.andExpect( jsonPath( "$.placed").value( true ) )
 		.andExpect( jsonPath( "$.datePlaced").exists() )
-//		.andExpect( jsonPath( "$.datePlaced").value(new BaseMatcher<Date>(){
-//			@Override public boolean matches(Object datePlaced) {
-////				return (new Date( (long) datePlaced) ).after(now);
+		.andExpect( jsonPath( "$.datePlaced").value(new BaseMatcher<Date>(){
+			@Override public boolean matches(Object datePlaced) {
+				return (new Date( (long) datePlaced) ).after(now);
 //				return ( (long) datePlaced > now.getTime() );
-//			}
-//
-//			@Override public void describeTo(Description description) {}
-//		} ) )
-				.andDo( print() );		
+			}
+
+			@Override public void describeTo(Description description) {}
+		} ) )
+				.andDo( print() );
+		
+		Long datePlacedNew = ((long) JsonPath.read( resultActions.andReturn().getResponse().getContentAsString(), "$.datePlaced"));
+		Long delay = now.getTime() - new Date(datePlacedNew).getTime()	;
+		System.out.println("\n\n\n\n delay = " + delay + "\nnow = " + now.getTime() + "\ndatePlaced = " + datePlacedNew + "\n\n\n\n");
+		assertTrue( delay <= 0.0 );
+		
 	}
 	
 	@Test
@@ -92,12 +103,42 @@ public class PaymentControllerTest {
 	}
 	
 	@Test
+	public void verifyCalculatePayment() throws Exception {
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/payment/2/7/8")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"amount\": 500,\"paymentCurrency\": \"GBP\",\"payeeCurrency\": \"EUR\"}") )
+						.andDo( print() );
+		
+		String content = resultActions.andReturn().getResponse().getContentAsString();
+		Object id = JsonPath.read( content, "$.id");		
+			resultActions.andExpect(jsonPath( "$.id").value( id ));
+// 	""
+		mockMvc.perform(MockMvcRequestBuilders.post("/payment/calculation?calculatePayee=true")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"id\": 3,\"amount\": 500.0,\"calculatedAmount\": 0,\"paymentCurrency\": \"EUR\",\"payeeCurrency\": \"EUR\"}") )
+		.andExpect( jsonPath( "$.id").value(id) )
+		.andExpect( jsonPath( "$.amount").value( 500.0 ) )
+		.andExpect( jsonPath( "$.calculatedAmount").value( 500.0 ) );
+			
+		mockMvc.perform(MockMvcRequestBuilders.post("/payment/calculation?calculatePayee=false")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"id\": 3,\"amount\": 0.0,\"calculatedAmount\": 500.0,\"paymentCurrency\": \"EUR\",\"payeeCurrency\": \"EUR\"}") )
+		.andExpect( jsonPath( "$.id").value(id) )
+		.andExpect( jsonPath( "$.amount").value( 500.0 ) )
+		.andExpect( jsonPath( "$.calculatedAmount").value( 500.0 ) );
+		
+		assertTrue( true );
+			
+		System.out.println("\n\n\n\nid = " + id + "\n\n\n\n");
+	}
+	
+	@Test
 	public void verifyCreatePayment() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/payment/2/7/8")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"amount\": 500,\"paymentCurrency\": \"GBP\",\"payeeCurrency\": \"EUR\"}") )
 		.andExpect( jsonPath( "$.id").exists() )
-		.andExpect( jsonPath( "$.id").value( 2 ) )
+		.andExpect( jsonPath( "$.id").value( 4 ) )
 		.andExpect( jsonPath( "$.amount").exists() )
 		.andExpect( jsonPath( "$.amount").value( 500.0 ) )
 		.andExpect( jsonPath( "$.paymentCurrency").exists() )
@@ -117,10 +158,5 @@ public class PaymentControllerTest {
 		.andExpect( jsonPath( "$.payee.id").exists() )
 		.andExpect( jsonPath( "$.payee.id").value( 8 ) )
 				.andDo( print() );
-	}
-	
-	@Test
-	public void verifyCalculatePayment() throws Exception {
-		
 	}
 }
