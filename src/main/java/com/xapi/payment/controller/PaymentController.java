@@ -92,6 +92,9 @@ public class PaymentController {
 				"paymentCurrency": "GBP",
 				"payeeCurrency": "EUR"
 			}
+			
+		paymentCurrency overrides account's currency
+		payeeCurrency overrides payee's country currency
 	 * */
 	
 	@CrossOrigin
