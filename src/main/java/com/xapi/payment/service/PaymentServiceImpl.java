@@ -128,7 +128,8 @@ public class PaymentServiceImpl implements PaymentService {
 		Double amount = calculatePayee? payment.getAmount() * fxRate - charge: 
 							payment.getCalculatedAmount()/fxRate + charge;
 			amount = amount > payment.getAccount().getBalance() + payment.getAccount().getOverDraft()? 0: amount;
-			
+		
+		payment.setDateCalculated(new Date());
 		if(calculatePayee)
 			payment.setCalculatedAmount(amount);
 		else

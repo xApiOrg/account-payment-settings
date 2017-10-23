@@ -46,7 +46,7 @@ public class Payment implements Serializable{
 	@Column(name="DATE_CANCELLED", nullable=false)	private Date dateCancelled = new Date();
 	@Column(name="SETTLED", nullable=false)			private Boolean settled = false;
 	@Column(name="DATE_SETTLED", nullable=false)	private Date dateSettled = new Date();
-//	@Column(name="DATE_CALCULATED", nullable=false)	private Date dateCalculated = new Date();
+	@Column(name="DATE_CALCULATED", nullable=false)	private Date dateCalculated = new Date();
 	
 	public Payment(){ 
 		this.user = new User(); this.account = new Account(); this.payee = new Payee();
@@ -204,13 +204,13 @@ public class Payment implements Serializable{
 		this.paymentDate = paymentDate;
 	}
 
-//	public Date getDateCalculated() {
-//		return dateCalculated;
-//	}
-//
-//	public void setDateCalculated(Date dateCalculated) {
-//		this.dateCalculated = dateCalculated;
-//	}
+	public Date getDateCalculated() {
+		return dateCalculated;
+	}
+
+	public void setDateCalculated(Date dateCalculated) {
+		this.dateCalculated = dateCalculated;
+	}
 }
 
 /*
