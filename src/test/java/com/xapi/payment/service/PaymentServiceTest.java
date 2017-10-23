@@ -21,6 +21,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xapi.data.model.Account;
+import com.xapi.data.model.AccountType;
 import com.xapi.data.model.Payee;
 import com.xapi.data.model.Payment;
 import com.xapi.data.model.User;
@@ -63,8 +64,10 @@ public class PaymentServiceTest {
 		TEST_PAYEE.setId( 1l );
 		
 		TEST_ACCOUNT.setId( 1l );
+		TEST_ACCOUNT.setCurrency("EUR");
 		TEST_ACCOUNT.setBalance( 1000.00 );
 		TEST_ACCOUNT.setOverDraft( 100.00 );
+		TEST_ACCOUNT.setType(AccountType.CURRENT);
 	}
 	
 	@Test
