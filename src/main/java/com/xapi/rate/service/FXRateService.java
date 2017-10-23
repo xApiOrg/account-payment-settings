@@ -58,6 +58,12 @@ public class FXRateService implements RateService{
 	}
 	
 	public Double getRate(String currency, String currencyTo){
+		if(currency == null || currencyTo == null || currency.isEmpty() || currencyTo.isEmpty()){
+			System.out.println("Invalid Currency: currency = " + currency + ", currencyTo = " + currencyTo);
+			return 1.0;
+		}
+//			throw new Exception(); // TODO FIXME, Change above block with this and create new CurrencyException
+		
 		if(currency.equalsIgnoreCase(currencyTo))
 			return 1.0;
 		
