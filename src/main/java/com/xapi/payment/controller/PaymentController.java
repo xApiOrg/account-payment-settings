@@ -117,6 +117,34 @@ public class PaymentController {
 	
 	/*
 	 * Example:
+	 * METHOD: POST
+	 * URL: http://localhost:10001/ipay/payment/2/7/8/500.00 
+	 * BODY: NO BODY, QUICK Payment forming with default elements.
+	 * */
+	
+	@CrossOrigin
+	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}/{amount}", method = RequestMethod.POST)
+	public ResponseEntity<Payment> createPayment( @PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, 
+			@PathVariable("payee_id") Long payeeId, @PathVariable("amount") Double amount ){ 
+		
+		Payment ammountPaymentDto = new Payment();
+			ammountPaymentDto.setAmount(amount);
+			
+		String info = "\nMetod createPayment( Long userId, Long accountId, Long payeeId, Double amount )" + // "\nNOT IMPLEMENTED YET" + 
+				"\n Parameters, amount = " + amount.toString() + ", userId = " + userId + ", accountId = " + accountId + ", payeeId = " + payeeId;		
+		logger.info(info);
+		
+		Payment calculatedResult = paymentService.createPayment(userId, accountId, payeeId, ammountPaymentDto);
+		logger.info(calculatedResult != null && calculatedResult.getId() != null &&
+				(calculatedResult.getAmount() == 0.0 || calculatedResult.getCalculatedAmount() == 0.0)? calculatedResult.toString():
+				"Payment NOT CREATED!!!\n" + calculatedResult.toString());
+		
+		return new ResponseEntity<Payment>(calculatedResult, 
+				calculatedResult != null && calculatedResult.getId() != null? HttpStatus.OK: HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	/*
+	 * Example:
 	 * METHOD: PATCH
 	 * URL: http://localhost:10001/ipay/payment
 	 * BODY: minimal
