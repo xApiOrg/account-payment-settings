@@ -68,8 +68,19 @@ public class PaymentServiceTest {
 	}
 	
 	@Test
-	public void testGetAllPlaced(){
-		assertEquals(1,1);
+	public void testPlacePayment(){	
+		TEST_PAYMENT.setPlaced( false );			
+		TEST_PAYMENT.setSettled( false );		
+		TEST_PAYMENT.setCancelled( false );
+
+		when(paymentRepository.findById( TEST_PAYMENT.getId() )).thenReturn( TEST_PAYMENT );
+		Payment resultPayment = paymentService.placePayment(TEST_PAYMENT);
+
+		assertTrue(resultPayment.getPlaced());
+		assertFalse(resultPayment.getSettled());
+		assertFalse(resultPayment.getCancelled());
+		
+		assertTrue(resultPayment.getDatePlaced().after(NOW));
 	}
 	
 	@Test
@@ -89,43 +100,32 @@ public class PaymentServiceTest {
 	}
 	
 	@Test
-	public void testPlacePayment(){	
-		TEST_PAYMENT.setPlaced( false );			
-		TEST_PAYMENT.setSettled( false );		
-		TEST_PAYMENT.setCancelled( false );
-
-		when(paymentRepository.findById( TEST_PAYMENT.getId() )).thenReturn( TEST_PAYMENT );
-		Payment resultPayment = paymentService.placePayment(TEST_PAYMENT);
-
-		assertTrue(resultPayment.getPlaced());
-		assertFalse(resultPayment.getSettled());
-		assertFalse(resultPayment.getCancelled());
-		
-		assertTrue(resultPayment.getDatePlaced().after(NOW));
-	}
-	
-	@Test
 	public void testCalculate(){
 		assertEquals(1,1);
 	}
 	
 	@Test
-	public void testCreatePaymentOverTheAvailable(){
+	public void testCreatePaymentOverBalanceAndDraft(){
 		TEST_PAYMENT.setAmount( 1500.00 );
 		when(userRepository.findById( TEST_USER.getId() )).thenReturn( TEST_USER );
 		when(accountRepository.findById( TEST_ACCOUNT.getId() )).thenReturn( TEST_ACCOUNT );
 		when(payeeRepository.findPayeeByIdandUserId( TEST_PAYEE.getId(), TEST_USER.getId() ) ).thenReturn( TEST_PAYEE );
 		when(fxRateService.getRate("EUR", "GBP")).thenReturn( 0.89283 );
 		
+		System.out.println(accountRepository.count());
 		Payment paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
 		assertEquals(null, paymentCreated.getId());
-		assertEquals( new Double( -15 ) , paymentCreated.getCalculatedAmount()); // FIXME, SHOULD BE 0.00
-		assertTrue( paymentCreated.getCalculatedAmount() == -15.0 );
+		assertEquals( new Double( 0.0 ) , paymentCreated.getCalculatedAmount()); 
 				
 		TEST_PAYMENT.setAmount( 0.00 );		
 		paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
 		assertEquals(null, paymentCreated.getId());
 		assertTrue( paymentCreated.getCalculatedAmount() == 0.0 );
+	}
+	
+	@Test
+	public void testGetAllPlaced(){
+		assertEquals(1,1);
 	}
 	
 	@Test
@@ -147,7 +147,7 @@ public class PaymentServiceTest {
 		TEST_PAYMENT.setAmount( 600.00 );
 		Payment paymentCreated = paymentService.createPayment( 1l, 1l, 1l, TEST_PAYMENT);
 		
-		assertEquals( null, paymentCreated.getId()); //TODO, FIXME SHOULD BE 1, not null // new Long( 1 )
+		assertEquals(  new Long( 1 ) , paymentCreated.getId()); 
 		assertTrue( paymentCreated.getCalculatedAmount() != 0.0 );
 		assertTrue( paymentCreated.getAmount() != 0.0 );
 	}
