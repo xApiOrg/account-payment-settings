@@ -159,4 +159,11 @@ public class PaymentControllerTest {
 		.andExpect( jsonPath( "$.payee.id").value( 8 ) )
 				.andDo( print() );
 	}
+	
+	// TODO, FIXME Fix the test 
+//	@Test // TODO FIXME Complete the expect section
+//	public void verifyCreateQuickPayment() throws Exception {
+//		mockMvc.perform(MockMvcRequestBuilders.post("/payment/2/7/8/500.00")
+//				.contentType(MediaType.APPLICATION_JSON) );
+//	}
 }
