@@ -46,6 +46,33 @@ public class PaymentServiceImpl implements PaymentService {
 //	}
 
 	@Override
+//	@HystrixCommand(fallbackMethod="updatePaymentFallback")
+	public Payment updatePayment(Payment payment) {
+		Payment paymentToUpdate = paymentRepository.findById(payment.getId());
+		Date now = new Date();
+		
+		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() 
+				&& paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()){
+			paymentToUpdate.setCancelled(true);
+			paymentToUpdate.setDateCancelled(now);
+			
+			paymentToUpdate.setPlaced( false );
+			paymentToUpdate.setDatePlaced(now);
+			
+			paymentToUpdate.setPaymentDate(new Date( 0 ));
+			paymentRepository.save(paymentToUpdate);			
+		}
+		
+		return paymentToUpdate;
+	}
+	
+//	@HystrixCommand
+//	private Object updatePaymentFallback(Object payment) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+	@Override
 //	@HystrixCommand(fallbackMethod="cancelPaymentFallback")
 	public Payment cancelPayment(Long id) {
 		Payment payment = paymentRepository.findById(id);
