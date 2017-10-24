@@ -188,7 +188,7 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH) //value = "", 
-	public ResponseEntity<Payment> cancelPayment(@PathVariable("user_id") Long id){ 			
+	public ResponseEntity<Payment> cancelPayment(@PathVariable("id") Long id){ 			
 		String info = "\nMetod cancelPayment( Long id )  NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
 				"\nParameters, id: " + id;		

@@ -51,12 +51,15 @@ public class PaymentServiceImpl implements PaymentService {
 		Payment payment = paymentRepository.findById(id);
 		Date now = new Date();
 		
-		if(payment != null && ! payment.getSettled() && payment.getPaymentDate().after(now) && payment.getPlaced()){
+		if(payment != null && ! payment.getCancelled()  && ! payment.getSettled() 
+				&& payment.getPaymentDate().after(now) && payment.getPlaced()){
 			payment.setCancelled(true);
 			payment.setDateCancelled(now);
 			
 			payment.setPlaced( false );
 			payment.setDatePlaced(now);
+			
+			payment.setPaymentDate(new Date( 0 ));
 			paymentRepository.save(payment);			
 		}
 		
