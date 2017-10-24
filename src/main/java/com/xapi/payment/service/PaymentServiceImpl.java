@@ -51,6 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
 		Payment paymentToUpdate = paymentRepository.findById(payment.getId());
 		Date now = new Date();
 		
+		// N.B. FIXME, TODO To be analysed what elements and under what circumstances can be updated
+		
 		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() 
 				&& paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()){
 			paymentToUpdate.setCancelled(true);

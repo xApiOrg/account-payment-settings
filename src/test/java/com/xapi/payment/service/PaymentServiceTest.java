@@ -87,6 +87,27 @@ public class PaymentServiceTest {
 	}
 	
 	@Test
+	public void testUpdatePayment(){	
+		// FIXME, TODO To be analysed what elements and under what circumstances can be updated
+		assertTrue( true );
+	}
+	
+	@Test
+	public void testCancelPlacedPayment(){	
+		// FIXME, TODO Cancel already placed payment
+		assertTrue( true );
+	}
+	
+	@Test
+	public void testCancelUncancellabledPayment(){	
+		// FIXME, TODO Cancel payment which CANNOT be cancelled, i.e.
+		// 1. payment doesn't exists; 2. payment already cancelled; 3. payment already settled and paid
+		// 4. payment date in the past; 5. payment already placed in the payment queue for payment
+		
+		assertTrue( true );
+	}
+		
+	@Test
 	public void testCancelPayment(){			
 		TEST_PAYMENT.setPlaced( true );
 		TEST_PAYMENT.setSettled( false );
