@@ -47,8 +47,8 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 //	@HystrixCommand(fallbackMethod="cancelPaymentFallback")
-	public Payment cancelPayment(Payment payment) {
-		payment = paymentRepository.findById(payment.getId());
+	public Payment cancelPayment(Long id) {
+		Payment payment = paymentRepository.findById(id);
 		Date now = new Date();
 		
 		if(payment != null && ! payment.getSettled() && payment.getPaymentDate().after(now) && payment.getPlaced()){

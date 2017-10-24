@@ -92,7 +92,7 @@ public class PaymentServiceTest {
 		TEST_PAYMENT.setSettled( false );
 			
 		when(paymentRepository.findById( TEST_PAYMENT.getId() )).thenReturn( TEST_PAYMENT );
-		Payment resultPayment = paymentService.cancelPayment(TEST_PAYMENT);
+		Payment resultPayment = paymentService.cancelPayment(TEST_PAYMENT.getId());
 		
 		assertEquals(true, resultPayment.getCancelled());
 		assertEquals(false, resultPayment.getPlaced());

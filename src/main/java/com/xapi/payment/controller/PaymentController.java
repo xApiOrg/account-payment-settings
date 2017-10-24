@@ -41,8 +41,17 @@ public class PaymentController {
 		
 		NEW!!! Create and calculate (recalculate) payment Object to ease re calculation and payment confirmation 
 		
-		/payment/{user_id}/{account_id}/{payee_id}	POST	createPayment
-		/payment									PATCH	cancelPayment	
+		/payment/{user_id}/{account_id}/{payee_id}		POST	createPayment					http://localhost:8080/ipay/payment/1/1/1 
+																					MINIMAL		{ "amount": 555.00 }
+																					OPTIONAL	{ "amount": 1000, "paymentCurrency": "GBP", "payeeCurrency": "EUR" }
+																					
+		/payment/{user_id}/{account_id}/{payee_id}		POST	create Quick Payment			http://localhost:8080/ipay/payment/1/1/1/555.00
+																								No POST body or element. Payment with default elements
+																								
+		/payment										PATCH	cancelPayment					http://localhost:8080/ipay/payment
+																					MINIMAL		{ "id": 1 }
+																or
+		/payment/{id}									PATCH	cancelPayment					http://localhost:8080/ipay/payment/1
 			
 
 	 */	
@@ -154,16 +163,40 @@ public class PaymentController {
 	 * */
 	
 	@CrossOrigin
-	@RequestMapping(method = RequestMethod.PATCH) //value = "", 
+	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<Payment> cancelPayment(@RequestBody Payment paymentRef){ 
 		String info = "\nMetod cancelPayment( JSONObject payment)  NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
 				"\nParameters, payment:\n" + paymentRef.toString();		
 		logger.info(info);
 		
-		Payment payment = paymentService.cancelPayment(paymentRef);
+		Payment payment = paymentService.cancelPayment(paymentRef.getId());
 		logger.info(payment != null && payment.getCancelled()? payment.toString(): 
 			"\nNOT CANCELLED Payment:\n" + paymentRef.toString());
+		
+		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
+			payment.getCancelled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
+	}
+	
+	/*
+	 * Cancel payment. No body. The above functionality is more appropriate for UPDATE payment
+	 * Example:
+	 * METHOD: PATCH
+	 * URL: http://localhost:10001/ipay/payment/6
+	 * BODY: NO BODY
+	 * */
+	
+	@CrossOrigin
+	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH) //value = "", 
+	public ResponseEntity<Payment> cancelPayment(@PathVariable("user_id") Long id){ 			
+		String info = "\nMetod cancelPayment( Long id )  NOT IMPLEMENTED YET" + 
+				// "\nPlace to execute User's placed PAYMENT by payment object" + 
+				"\nParameters, id: " + id;		
+		logger.info(info);
+		
+		Payment payment = paymentService.cancelPayment(id);
+		logger.info(payment != null && payment.getCancelled()? payment.toString(): 
+			"\nNOT CANCELLED Payment Id:" + id);
 		
 		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
 			payment.getCancelled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
