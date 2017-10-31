@@ -3,6 +3,13 @@ CREATE TABLE user (
   ID bigint(20) NOT NULL AUTO_INCREMENT,
   NAME varchar(255) NOT NULL,
   PRIMARY KEY (ID)
+);	
+
+drop table currency if exists;
+create table currency (
+	ISO varchar(3) not null primary key, 
+	NAME varchar(60) not null unique,
+	SYMBOL varchar(3) 
 );
 
 drop table country if exists;
@@ -11,7 +18,9 @@ create table country (
 	NAME varchar(60) not null unique,
 	CODE varchar(2) not null unique,
 	FLAG varchar(2) not null unique, 
-	CURRENCY varchar(3) not null unique);
+	CURRENCY varchar(3) not null unique,
+	FOREIGN KEY (CURRENCY) REFERENCES currency (ISO)
+);
 	
 drop table account if exists;
 CREATE TABLE account(
@@ -79,12 +88,15 @@ CREATE TABLE payment (
   FOREIGN KEY ( ACCOUNT_ID ) REFERENCES account ( ID )
 );
 
+INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('EUR', 'EURO', '€'), ('USD', 'US Dollar', '$'), ('GBP', 'British Pound', '£'), 
+	('INR', 'Indian Rupee', 'Rp'), ('BGN', 'Bulgarian Lev', 'bgn'), ('RON', 'Romanian Lei', 'lei');
+
 insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Spain', 'ES', 'es', 'EUR');
 insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('United States', 'US', 'us', 'USD');
 insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('United Kingdom', 'GB', 'gb', 'GBP');
 insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('India', 'IN', 'in', 'INR');
 insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Bulgaria', 'BG', 'bg', 'BGN');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Romania', 'RO', 'ro', 'ROL');
+insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Romania', 'RO', 'ro', 'RON');
 
 insert into user (NAME) values ('Keri Lee');
 insert into user (NAME) values ('Dollie R. Schnidt');
