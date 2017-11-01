@@ -5,23 +5,29 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="country")
 public class Country implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-//	private long id; // NO NEED, as far as it's not Entity and persisted on this stage
-	private String name;
-	private String code;
-	private String flag;
-	private String currency;
-	private List<Section> sections = new LinkedList<>();
-	
-//	public long getId() {
-//		return id;
-//	}
-//	public void setId(long id) {
-//		this.id = id;
-//	}
-	
+	@Id
+	@Column(name="CODE", nullable=false, unique=true) 	private String code;
+	@Column(name="NAME", nullable=false, unique=true) 	private String name;
+	@Column(name="FLAG", nullable=false, unique=true) 	private String flag;
+
+	@OneToOne(fetch=FetchType.EAGER) @JoinColumn(name="ISO")
+	 													private Currency currency;
+	  
+	private transient List<Section> sections = new LinkedList<>();
+		
 	public String getName() {
 		return name;
 	}
@@ -41,11 +47,11 @@ public class Country implements Serializable{
 		this.flag = flag;
 	}
 
-	public String getCurrency() {
+	public Currency getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(String currency) {
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 	
@@ -85,7 +91,7 @@ public class Country implements Serializable{
 			cloneCountry.setCode(this.code);
 			cloneCountry.setFlag(this.flag);
 			cloneCountry.setCurrency(this.currency);
-			cloneCountry.setSections(this.sections);
+//			cloneCountry.setSections(this.sections);
 			
 		return cloneCountry;
 	}
