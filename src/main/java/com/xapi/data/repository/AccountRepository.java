@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.xapi.data.model.Account;
 import com.xapi.data.model.AccountType;
-import com.xapi.data.model.Payment;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 	public static final Collection<AccountType> PAYABLE_ACCOUNT_TYPES = 
