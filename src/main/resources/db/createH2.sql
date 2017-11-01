@@ -14,9 +14,8 @@ create table currency (
 
 drop table country if exists;
 create table country (
-	ID bigint identity primary key, 
 	NAME varchar(60) not null unique,
-	CODE varchar(2) not null unique,
+	CODE varchar(2) not null primary key,
 	FLAG varchar(2) not null unique, 
 	CURRENCY varchar(3) not null unique,
 	FOREIGN KEY (CURRENCY) REFERENCES currency (ISO)
