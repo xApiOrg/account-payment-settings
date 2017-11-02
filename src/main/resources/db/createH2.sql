@@ -20,6 +20,18 @@ create table country (
 	CURRENCY varchar(3) not null unique,
 	FOREIGN KEY (CURRENCY) REFERENCES currency (ISO)
 );
+
+drop table bank if exists;
+create table bank (
+	ID bigint NOT NULL identity primary key,
+    BBAN VARCHAR(255) NOT NULL,
+    BBAN_CHECK_DIGITS TINYINT,
+    BANK_IDENTIFIER VARCHAR(255) NOT NULL,
+    SEPA_MEMBER BOOLEAN NOT NULL,
+    SWIFT_BIC VARCHAR(255) NOT NULL,
+    COUNTRY_CODE VARCHAR(2),
+	FOREIGN KEY (COUNTRY_CODE) REFERENCES country (CODE)
+);
 	
 drop table account if exists;
 CREATE TABLE account(
@@ -87,15 +99,24 @@ CREATE TABLE payment (
   FOREIGN KEY ( ACCOUNT_ID ) REFERENCES account ( ID )
 );
 
-INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('EUR', 'EURO', '€'), ('USD', 'US Dollar', '$'), ('GBP', 'British Pound', '£'), 
-	('INR', 'Indian Rupee', 'Rp'), ('BGN', 'Bulgarian Lev', 'bgn'), ('RON', 'Romanian Lei', 'lei');
+INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('EUR', 'EURO', '€'), ('USD', 'US Dollar', '$'), ('GBP', 'British Pound', '£')
+, ('INR', 'Indian Rupee', 'Rp'), ('BGN', 'Bulgarian Lev', 'bgn'), ('RON', 'Romanian Lei', 'lei')
+, ('RUB', 'Russian Ruble', 'руб'), ('CHF', 'Swiss Franc', 'CHF'), ('RON', 'Romanian Lei', 'lei')
+;
 
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Spain', 'ES', 'es', 'EUR');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('United States', 'US', 'us', 'USD');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('United Kingdom', 'GB', 'gb', 'GBP');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('India', 'IN', 'in', 'INR');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Bulgaria', 'BG', 'bg', 'BGN');
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Romania', 'RO', 'ro', 'RON');
+insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values 
+('Spain', 'ES', 'es', 'EUR'), ('United States', 'US', 'us', 'USD'), ('United Kingdom', 'GB', 'gb', 'GBP')
+, ('India', 'IN', 'in', 'INR'), ('Bulgaria', 'BG', 'bg', 'BGN'), ('Romania', 'RO', 'ro', 'RON')
+, ('Russia', 'RU', 'ru', 'RUB'), ('Switzerland', 'CH', 'ch', 'CHF')
+;
+
+insert into BANK (BBAN, SWIFT_BIC, BBAN_CHECK_DIGITS, BANK_IDENTIFIER, SEPA_MEMBER, COUNTRY_CODE ) values
+ ('CITI 9250 440C 9TEI AI', 'CITI', '44', 'CITI', 1, 'BG')
+,('RZBB 9155 4027 1608 04', 'RZBB', '40', 'RZBB', 1, 'BG')
+,('0076 7000 S521 7090 4', '00767', null, '00767', 1, 'CH')
+,('BARC 2004 1568 0883 06', 'BARC', null, 'BARC', 1, 'GB')
+,('LOYD 3094 6610 4015 60', 'LOYD', null, 'LOYD', 1, 'GB')
+;
 
 insert into user (NAME) values ('Keri Lee');
 insert into user (NAME) values ('Dollie R. Schnidt');
