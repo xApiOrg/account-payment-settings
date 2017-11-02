@@ -15,7 +15,7 @@ public class Currency  implements Serializable{
 	@Id
 	@Column(name="ISO", nullable=false, unique=true) private String iso;
 	@Column(name="NAME", nullable=false, unique=true) private String name;
-	@Column(name="SYMBOL", nullable=false, unique=true) private String symbol;
+	@Column(name="SYMBOL", nullable=false, unique=false) private String symbol;
 	
 	public String getIso() {
 		return iso;
