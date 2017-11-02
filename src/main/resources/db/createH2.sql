@@ -99,16 +99,30 @@ CREATE TABLE payment (
   FOREIGN KEY ( ACCOUNT_ID ) REFERENCES account ( ID )
 );
 
-INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('EUR', 'EURO', '€'), ('USD', 'US Dollar', '$'), ('GBP', 'British Pound', '£')
-, ('INR', 'Indian Rupee', 'Rp'), ('BGN', 'Bulgarian Lev', 'bgn'), ('RON', 'Romanian Lei', 'lei')
-, ('RUB', 'Russian Ruble', 'руб'), ('CHF', 'Swiss Franc', 'CHF'), ('RON', 'Romanian Lei', 'lei')
+INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('AUD', 'Australian Dollar', '$'), ('BGN', 'Bulgarian Lev', 'bgn'), ('BRL', 'Brazilian Real', 'R$')
+, ('CAD', 'Canadian Dollar', '$'), ('CHF', 'Swiss Franc', 'CHF'), ('CNY', 'Chinese Yuan', '¥')
+, ('CZK', 'Czech Republic Koruna', 'Kč'), ('DKK', 'Danish Krone', 'kr'), ('GBP', 'British Pound', '£')
+, ('HKD', 'Hong Kong Dollar', '$'), ('HRK', 'Croatioan Kuna', 'kn'), ('HUF', 'Hungarian Forint', 'Ft')
+, ('IDR', 'Indonesian Rupiah', 'Rp'), ('ILS', 'Israeli Shekel', '₪'), ('INR', 'Indian Rupee', 'Rp')
+, ('JPY', 'Japanese Yen', '¥'), ('KRW', '(South) Korean Won', '₩'), ('MXN', 'Mexican Peso', '$')
+, ('MYR', 'Malaysian Ringgit', 'RM'), ('NOK', 'Norwegian Kroner', 'kr'), ('NZD', 'New Zealand Dollar', '$')
+, ('PHP', 'Philippine Peso', 'Php'), ('PLN', 'Polish Zloty', 'zł'), ('RON', 'Romanian Lei', 'lei')
+, ('RUB', 'Russian Ruble', 'руб'), ('SEK', 'Swedish Krona', 'kr'), ('SGD', 'Singapore Dollar', '$')
+, ('THB', 'Thai Baht', '฿'), ('TRY', 'Turkish Lira', 'TL'), ('USD', 'US Dollar', '$')
+, ('ZAR', 'South African Rand', 'R'), ('EUR', 'EURO', '€');
 ;
 
-insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values 
-('Spain', 'ES', 'es', 'EUR'), ('United States', 'US', 'us', 'USD'), ('United Kingdom', 'GB', 'gb', 'GBP')
-, ('India', 'IN', 'in', 'INR'), ('Bulgaria', 'BG', 'bg', 'BGN'), ('Romania', 'RO', 'ro', 'RON')
-, ('Russia', 'RU', 'ru', 'RUB'), ('Switzerland', 'CH', 'ch', 'CHF')
-;
+insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Australia', 'AU', 'au', 'AUD'), ('Brazil', 'BR', 'br', 'BRL'), ('Bulgaria', 'BG', 'bg', 'BGN')
+, ('Canada', 'CA', 'ca', 'CAD'), ('China', 'CN', 'cn', 'CNY'), ('Croatia', 'HR', 'hr', 'HRK')
+, ('Czech Republic', 'CZ', 'cz', 'CZK'), ('Denmark', 'DK', 'dk', 'DKK'), ('Hong Kong', 'HK', 'hk', 'HKD')
+, ('Hungary', 'HU', 'hu', 'HUF'), ('Indonesia', 'ID', 'id', 'IDR'), ('Israel', 'IL', 'il', 'ILS')
+, ('Japan', 'JP', 'jp', 'JPY'), ('Malaysia', 'MY', 'my', 'MYR'), ('Mexico', 'MX', 'mx', 'MXN')
+, ('Norway', 'NO', 'no', 'NOK'), ('New Zealand', 'NZ', 'nz', 'NZD'), ('Philippines', 'PH', 'ph', 'PHP')
+, ('Poland', 'PL', 'pl', 'PLN'), ('Romania', 'RO', 'ro', 'RON'), ('Russia', 'RU', 'ru', 'RUB')
+, ('Singapore', 'SG', 'sg', 'SGD'), ('South Africa', 'ZA', 'zr', 'ZAR'), ('South Korea', 'KR', 'kr', 'KRW')
+, ('Spain', 'ES', 'es', 'EUR'), ('Sweden', 'SE', 'se', 'SEK'), ('Switzerland', 'CH', 'ch', 'CHF')
+, ('Thailand', 'TH', 'th', 'THB'), ('Turkey', 'TR', 'tr', 'TRY'), ('United Kingdom', 'GB', 'gb', 'GBP')
+, ('United States', 'US', 'us', 'USD'), ('India', 'IN', 'in', 'INR');
 
 insert into BANK (BBAN, SWIFT_BIC, BBAN_CHECK_DIGITS, BANK_IDENTIFIER, SEPA_MEMBER, COUNTRY_CODE ) values
  ('CITI 9250 440C 9TEI AI', 'CITI', '44', 'CITI', 1, 'BG')
