@@ -28,20 +28,20 @@ public class Account  implements Serializable{
 	
 	@Id @GeneratedValue 								private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID") 
-    @JsonBackReference(value="user")					private final User user;
+    	@JoinColumn(name = "USER_ID") 
+    	@JsonBackReference(value="user")				private final User user;
+    
 	@Column(name="CREATED", nullable=false)				private final Date created = new Date();
 	@Column(name="CURRENCY",nullable=false) 			private String currency;
 	@Column(name="BALANCE",nullable=false) 				private Double balance = 0.0;
 	@Column(name="OVERDRAFT",nullable=false) 			private Double overDraft = 0.0;
+	
 	@Column(name="TYPE", nullable = false)
 		@Enumerated(EnumType.STRING)					private AccountType type;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonBackReference(value="payments")				private Set<Payment> payments;
+		@JsonBackReference(value="payments")			private Set<Payment> payments;
 	
-//	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
-		// WRONG!!! Generates referenced property unknown: com.xapi.data.model.AccountDetails.account
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
 														private AccountDetails accountDetails;
@@ -52,11 +52,7 @@ public class Account  implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="USER_ID")
 	public User getUser() { return user; }
-	
-//	public Account(){ this.userId = 0l;}
-//	public Account(Long userId){ this.userId = userId;}
-//	public Long getUserId() { return userId; }
-	
+		
 	public Long getId() {
 		return id;
 	}

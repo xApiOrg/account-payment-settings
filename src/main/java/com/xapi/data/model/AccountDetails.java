@@ -24,14 +24,7 @@ public class AccountDetails implements Serializable {
 	
 	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BRANCH_ID", nullable=false )
 													private final Bank branch;	
-	// SEEMS OBSOLETE
-/*	
-    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "account_id", nullable=true)
-    												private Account account;
-	
-    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "payee_id", nullable=true)
-    												private Payee payee;
-*/	
+
 	public AccountDetails(){ 
 		this.accountNumber = "EMPTY"; this.bank = new Bank(); this.branch = new Bank();}
 	
