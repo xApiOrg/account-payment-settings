@@ -40,7 +40,10 @@ public class Account  implements Serializable{
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference(value="payments")				private Set<Payment> payments;
 	
-	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+		// WRONG!!! Generates referenced property unknown: com.xapi.data.model.AccountDetails.account
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
 														private AccountDetails accountDetails;
 														
 	public Account(){ this.user = new User();}

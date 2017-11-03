@@ -32,11 +32,28 @@ create table bank (
     COUNTRY_CODE VARCHAR(2),
 	FOREIGN KEY (COUNTRY_CODE) REFERENCES country (CODE)
 );
+
+drop table account_details if exists;
+CREATE TABLE account_details (
+    ID bigint NOT NULL identity primary key,
+    ACCOUNT_NUMBER VARCHAR(255) NOT NULL,
+    BANK_ID BIGINT NOT NULL,
+    BRANCH_ID BIGINT NOT NULL,
+	PRIMARY KEY (ID),
+  	FOREIGN KEY (BANK_ID) REFERENCES bank (ID),
+  	FOREIGN KEY (BRANCH_ID) REFERENCES bank (ID),
+  	UNIQUE( ACCOUNT_NUMBER, BRANCH_ID) /*,
+    ACCOUNT_ID BIGINT,
+	PAYEE_ID BIGINT,
+  	FOREIGN KEY (ACCOUNT_ID) REFERENCES account (ID),
+  	FOREIGN KEY (PAYEE_ID) REFERENCES payee (ID) */
+);
 	
 drop table account if exists;
 CREATE TABLE account(
   ID bigint NOT NULL identity primary key,
   USER_ID bigint NOT NULL,
+  ACCOUNT_DETAILS_ID bigint NOT NULL,
   CREATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CURRENCY varchar(3) NOT NULL,
   BALANCE decimal(8,2) NOT NULL DEFAULT 0.0,
@@ -44,18 +61,23 @@ CREATE TABLE account(
   TYPE varchar(255) NOT NULL DEFAULT 'CURRENT',
   PRIMARY KEY (ID),
   FOREIGN KEY (USER_ID) REFERENCES user (ID),
-  UNIQUE( USER_ID, CURRENCY, TYPE)
+  FOREIGN KEY (ACCOUNT_DETAILS_ID) REFERENCES account_details (ID),
+  UNIQUE( USER_ID, CURRENCY, TYPE),
+  UNIQUE(ACCOUNT_DETAILS_ID)
 );
-
 
 drop table payee if exists;
 CREATE TABLE payee (
   ID bigint(20) NOT NULL AUTO_INCREMENT,
   NAME varchar(255) UNIQUE NOT NULL,  
   ACTIVE bit(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (ID)
+  ACCOUNT_DETAILS_ID bigint NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (ACCOUNT_DETAILS_ID) REFERENCES account_details (ID),
+  UNIQUE(ACCOUNT_DETAILS_ID)
 );
 ALTER TABLE payee ALTER ACTIVE bit(1) NOT NULL DEFAULT 1;
+
 
 drop table user_payee if exists;
 CREATE TABLE user_payee (
@@ -125,11 +147,18 @@ insert into COUNTRY (NAME, CODE, FLAG, CURRENCY) values ('Australia', 'AU', 'au'
 , ('United States', 'US', 'us', 'USD'), ('India', 'IN', 'in', 'INR');
 
 insert into BANK (BBAN, SWIFT_BIC, BBAN_CHECK_DIGITS, BANK_IDENTIFIER, SEPA_MEMBER, COUNTRY_CODE ) values
- ('CITI 9250 440C 9TEI AI', 'CITI', '44', 'CITI', 1, 'BG')
-,('RZBB 9155 4027 1608 04', 'RZBB', '40', 'RZBB', 1, 'BG')
-,('0076 7000 S521 7090 4', '00767', null, '00767', 1, 'CH')
-,('BARC 2004 1568 0883 06', 'BARC', null, 'BARC', 1, 'GB')
+ ('CITI 9250 440C 9TEI AI', 'CITI', '44', 'CITI', 1, 'BG') ,('RZBB 9155 4027 1608 04', 'RZBB', '40', 'RZBB', 1, 'BG')
+,('0076 7000 S521 7090 4', '00767', null, '00767', 1, 'CH') ,('BARC 2004 1568 0883 06', 'BARC', null, 'BARC', 1, 'GB')
 ,('LOYD 3094 6610 4015 60', 'LOYD', null, 'LOYD', 1, 'GB')
+;
+
+insert into account_details(ACCOUNT_NUMBER, BANK_ID, BRANCH_ID) values
+  ('111', 1, 1), ('211', 1, 1), ('311', 1, 1), ('411', 1, 1), ('511', 1, 1), ('611', 1, 1), ('711', 1, 1), ('811', 1, 1), ('911', 1, 1)
+, ('122', 2, 2), ('222', 2, 2), ('322', 2, 2), ('422', 2, 2), ('522', 2, 2), ('622', 2, 2), ('722', 2, 2), ('822', 2, 2), ('922', 2, 2)
+, ('133', 3, 3), ('233', 3, 3), ('333', 3, 3), ('433', 3, 3), ('533', 3, 3), ('633', 3, 3), ('733', 3, 3), ('833', 3, 3), ('933', 3, 3)
+, ('144', 4, 4), ('244', 4, 4), ('344', 4, 4), ('444', 4, 4), ('544', 4, 4), ('644', 4, 4), ('744', 4, 4), ('844', 4, 4), ('944', 4, 4)
+, ('155', 5, 5), ('255', 5, 5), ('355', 5, 5), ('455', 5, 5), ('555', 5, 5), ('655', 5, 5), ('755', 5, 5), ('855', 5, 5), ('955', 5, 5)
+, ('154', 5, 4), ('254', 5, 4), ('354', 5, 4), ('454', 5, 4), ('545', 5, 4), ('546', 5, 4), ('754', 5, 4), ('854', 5, 4), ('954', 5, 4)
 ;
 
 insert into user (NAME) values ('Keri Lee');
@@ -154,90 +183,44 @@ insert into user (NAME) values ('Julia DeLong');
 insert into user (NAME) values ('Mark T. Rizzoli');
 insert into user (NAME) values ('Maria J. Angelo');
 
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'GBP', 1000, 100, 'CURRENT', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'EUR', 1000, 100, 'CASH', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'EUR', 1000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'RUB', 1000, 0, 'FX', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'GBP', 1000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 1, 'USD', 1000, 0, 'CASH', current_timestamp);
 
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'GBP', 2000, 200, 'CURRENT', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'EUR', 2000, 200, 'CASH', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'EUR', 2000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'RUB', 2000, 0, 'FX', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'GBP', 2000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 2, 'USD', 2000, 0, 'CASH', current_timestamp);
+insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOUNT_DETAILS_ID) values 
+  ( 1, 'GBP', 1000, 100, 'CURRENT', current_timestamp, 1), ( 1, 'EUR', 1000, 100, 'CASH', current_timestamp, 2)
+, ( 1, 'EUR', 1000, 0, 'ISA', current_timestamp, 3), ( 1, 'RUB', 1000, 0, 'FX', current_timestamp, 4)
+, ( 1, 'GBP', 1000, 0, 'ISA', current_timestamp, 5), ( 1, 'USD', 1000, 0, 'CASH', current_timestamp, 6);
 
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'GBP', 3000, 300, 'CURRENT', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'EUR', 3000, 300, 'CASH', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'EUR', 3000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'RUB', 3000, 0, 'FX', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'GBP', 3000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 3, 'USD', 3000, 0, 'CASH', current_timestamp);
+insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOUNT_DETAILS_ID) values 
+  ( 2, 'GBP', 2000, 200, 'CURRENT', current_timestamp, 7), ( 2, 'EUR', 2000, 200, 'CASH', current_timestamp, 8)
+, ( 2, 'EUR', 2000, 0, 'ISA', current_timestamp, 9), ( 2, 'RUB', 2000, 0, 'FX', current_timestamp, 10)
+, ( 2, 'GBP', 2000, 0, 'ISA', current_timestamp, 11), ( 2, 'USD', 2000, 0, 'CASH', current_timestamp, 12);
 
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'GBP', 4000, 400, 'CURRENT', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'EUR', 4000, 400, 'CASH', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'EUR', 4000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'RUB', 4000, 0, 'FX', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'GBP', 4000, 0, 'ISA', current_timestamp);
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 4, 'USD', 4000, 0, 'CASH', current_timestamp);
+insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOUNT_DETAILS_ID) values
+  ( 3, 'GBP', 3000, 300, 'CURRENT', current_timestamp, 13), ( 3, 'EUR', 3000, 300, 'CASH', current_timestamp, 14)
+, ( 3, 'EUR', 3000, 0, 'ISA', current_timestamp, 15), ( 3, 'RUB', 3000, 0, 'FX', current_timestamp, 16)
+, ( 3, 'GBP', 3000, 0, 'ISA', current_timestamp, 17), ( 3, 'USD', 3000, 0, 'CASH', current_timestamp, 18);
 
-insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED) values ( 5, 'GBP', 5000, 500, 'CURRENT', current_timestamp);
+insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOUNT_DETAILS_ID) values
+  ( 4, 'GBP', 4000, 400, 'CURRENT', current_timestamp, 19), ( 4, 'EUR', 4000, 400, 'CASH', current_timestamp, 20)
+, ( 4, 'EUR', 4000, 0, 'ISA', current_timestamp, 21), ( 4, 'RUB', 4000, 0, 'FX', current_timestamp, 22)
+, ( 4, 'GBP', 4000, 0, 'ISA', current_timestamp, 23), ( 4, 'USD', 4000, 0, 'CASH', current_timestamp, 24);
+
+insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOUNT_DETAILS_ID) values
+  ( 5, 'GBP', 5000, 500, 'CURRENT', current_timestamp, 25);
 
 
-insert into payee (NAME) values ('Ferdinand Burgazov');
-insert into payee (NAME) values ('Manuel Ferran');
-insert into payee (NAME) values ('Nuno Duque');
-insert into payee (NAME) values ('Maria Merino');
-insert into payee (NAME) values ('Gustav Haraldson');
-insert into payee (NAME) values ('Hans Zimmerman');
-insert into payee (NAME) values ('Jeff Redcheeck');
-insert into payee (NAME) values ('Robert DeBurg');
-insert into payee (NAME) values ('Ivan Ivanov');
-insert into payee (NAME) values ('Peter Petrov');
-insert into payee (NAME) values ('Ganyo Balkanski');
-insert into payee (NAME) values ('Hasan Kassas');
-insert into payee (NAME) values ('Redjeb Mutlu');
-insert into payee (NAME) values ('Vladimir Esenin');
-insert into payee (NAME) values ('Alexandra Kostenko');
-insert into payee (NAME) values ('Ilya Grechko');
-insert into payee (NAME) values ('Efrem Kossigin');
-insert into payee (NAME) values ('Petar Hitrev');
-insert into payee (NAME) values ('Alil Chaush');
-insert into payee (NAME) values ('Osama Osman');
-insert into payee (NAME) values ('Yurii Izotzadze');
+insert into payee (NAME, ACCOUNT_DETAILS_ID) values
+  ('Ferdinand Burgazov', 26), ('Manuel Ferry', 27), ('Duno Nuque', 28), ('Maria Merry', 29)
+, ('Gustav Haraldson', 30), ('Hans Zimmerman', 31), ('Jeff Redcheeck', 32), ('Robert DeBurg', 33)
+, ('Ivan Ivanov', 34), ('Peter Petrov', 35), ('Ganyo Balkanski', 36), ('Hasan Kassas', 37)
+, ('Redjeb Mutlu', 38), ('Vladimir Esenin', 39), ('Alexandra Kostenko', 40), ('Ilya Grechko', 41)
+, ('Efrem Kossigin', 42), ('Petar Hitrev', 43), ('Alil Chaush', 44), ('Osama Osman', 45), ('Yurii Izotzadze', 46)
+;
 
-insert into user_payee (user_id, payee_id) values( 1, 1 );
-insert into user_payee (user_id, payee_id) values( 1, 2 );
-insert into user_payee (user_id, payee_id) values( 1, 3 );
-insert into user_payee (user_id, payee_id) values( 1, 4 );
-insert into user_payee (user_id, payee_id) values( 1, 5 );
-insert into user_payee (user_id, payee_id) values( 1, 6 );
-insert into user_payee (user_id, payee_id) values( 1, 7 );
-
-insert into user_payee (user_id, payee_id) values( 2, 8 );
-insert into user_payee (user_id, payee_id) values( 2, 9 );
-insert into user_payee (user_id, payee_id) values( 2, 10 );
-insert into user_payee (user_id, payee_id) values( 2, 11 );
-insert into user_payee (user_id, payee_id) values( 2, 12 );
-insert into user_payee (user_id, payee_id) values( 2, 13 );
-insert into user_payee (user_id, payee_id) values( 2, 14 );
-
-insert into user_payee (user_id, payee_id) values( 3, 15 );
-insert into user_payee (user_id, payee_id) values( 3, 16 );
-insert into user_payee (user_id, payee_id) values( 3, 17 );
-insert into user_payee (user_id, payee_id) values( 3, 18 );
-insert into user_payee (user_id, payee_id) values( 3, 19 );
-insert into user_payee (user_id, payee_id) values( 3, 20 );
-insert into user_payee (user_id, payee_id) values( 3, 21 );
-
-insert into user_payee (user_id, payee_id) values( 4, 2 );
-insert into user_payee (user_id, payee_id) values( 4, 3 );
-insert into user_payee (user_id, payee_id) values( 4, 4 );
-insert into user_payee (user_id, payee_id) values( 4, 5 );
-insert into user_payee (user_id, payee_id) values( 4, 6 );
-insert into user_payee (user_id, payee_id) values( 4, 7 );
-insert into user_payee (user_id, payee_id) values( 4, 8 );
+insert into user_payee (user_id, payee_id) values
+ ( 1, 1 ),( 1, 2 ),( 1, 3 ),( 1, 4 ),( 1, 5 ),( 1, 6 ),( 1, 7 )
+,( 2, 8 ),( 2, 9 ),( 2, 10 ),( 2, 11 ),( 2, 12 ),( 2, 13 ),( 2, 14 )
+,( 3, 15 ),( 3, 16 ),( 3, 17 ),( 3, 18 ),( 3, 19 ),( 3, 20 ),( 3, 21 )
+,( 4, 2 ),( 4, 3 ),( 4, 4 ),( 4, 5 ),( 4, 6 ),( 4, 7 ),( 4, 8 );
 
 
 insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PAYEE_CURRENCY) 

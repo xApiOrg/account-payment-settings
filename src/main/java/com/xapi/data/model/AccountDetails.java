@@ -17,19 +17,33 @@ public class AccountDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue 							private Long id;
-	@Column(name="BANK_IDENTIFIER",nullable=false)	private final String bankIdentifier;
-	@Column(name="BRANCH_IDENTIFIER",nullable=false)private final String branchIdentifier;
 	@Column(name="ACCOUNT_NUMBER",nullable=false)	private final String accountNumber;
 	
-    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "account_id")
+	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BANK_ID", nullable=false )
+													private final Bank bank;
+	
+	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BRANCH_ID", nullable=false )
+													private final Bank branch;	
+	// SEEMS OBSOLETE
+/*	
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "account_id", nullable=true)
     												private Account account;
 	
-    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "payee_id")
+    @OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "payee_id", nullable=true)
     												private Payee payee;
+*/	
+	public AccountDetails(){ 
+		this.accountNumber = "EMPTY"; this.bank = new Bank(); this.branch = new Bank();}
 	
-	public AccountDetails(	String bankIdentifier, String branchIdentifier, String accountNumber ){ 
-		this.bankIdentifier = bankIdentifier; this.branchIdentifier = branchIdentifier;
-		this.accountNumber = accountNumber; 
+	public AccountDetails(String accountNumber, Bank bank, Bank branch){
+		this.accountNumber = accountNumber; this.bank = bank; this.branch = branch; 
+	}
+	
+	public AccountDetails(String accountNumber, Long bankId, Long branchId){ 
+		this.accountNumber = accountNumber;
+		Bank bank = new Bank(); bank.setId(bankId); 
+		Bank branch = new Bank(); branch.setId(branchId);
+		this.bank = bank; this.branch = branch; 
 	}
 
 	public Long getId() {
@@ -40,12 +54,12 @@ public class AccountDetails implements Serializable {
 		this.id = id;
 	}
 
-	public String getBankIdentifier() {
-		return bankIdentifier;
+	public Bank getBank() {
+		return bank;
 	}
 
-	public String getBranchIdentifier() {
-		return branchIdentifier;
+	public Bank getBranch() {
+		return branch;
 	}
 
 	public String getAccountNumber() {
