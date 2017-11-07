@@ -79,8 +79,8 @@ public class AccountController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getUserPayeeAccounts(@PathVariable("user_id") Long userId){ //ResponseEntity<Collection<PaymentAccounts>>
-		String info = //"\nMetod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
+	public ResponseEntity<?> getUserPayeeAccounts(@PathVariable("user_id") Long userId){ 
+		String info = "\nMetod getAllUserPayeeAccounts( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
 		
@@ -94,8 +94,7 @@ public class AccountController {
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getPayeeAccountById(
 			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){ 
-
-		String info = //"Metod getPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = "Metod getPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nGet User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id = " + payeeId;		
 		logger.info(info);
@@ -111,7 +110,7 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/payee/{user_id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> createUserPayeeAccount(@RequestBody PayeeDto account, @PathVariable("user_id") Long userId){//, @RequestBody Object account
-		String info = // "\nMetod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod createUserPayeeAccount( Integer userId) NOT IMPLEMENTED YET" + 
 				"\nCreate User's PAYEE account by user Id" + "\n Parameters, user Id = " + userId + ", parameter account: " + account;
 			logger.info(info);
 		
@@ -127,7 +126,7 @@ public class AccountController {
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.PATCH)
 	public ResponseEntity<?> updateUserPayeeAccount(  @RequestBody Payee payeeDto,
 			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){//
-		String info = // "\nMetod updateUserPayeeAccount( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod updateUserPayeeAccount( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nUpdate User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id" + payeeId + ", parameter account " + payeeDto;
 			logger.info(info);
@@ -142,7 +141,7 @@ public class AccountController {
 	@RequestMapping(value = "/payee/{user_id}/{payee_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteUserPayeeAccountById(
 			@PathVariable("user_id") Long userId, @PathVariable("payee_id") Long payeeId){
-		String info = // "\nMetod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
+		String info = "\nMetod deleteUserPayeeAccountById( Integer userId, Integer payeeI) NOT IMPLEMENTED YET" + 
 			"\nDelete User's PAYEE account by user Id and payee Id" + 
 			"\n Parameters, user Id = " + userId + ", payee Id = " + payeeId;
 			logger.info(info);

@@ -1,6 +1,7 @@
 package com.xapi.data.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,9 @@ public class AccountDetails implements Serializable {
 													private final Bank bank;
 	
 	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BRANCH_ID", nullable=false )
-													private final Bank branch;	
+													private final Bank branch;		
+
+	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
 
 	public AccountDetails(){ 
 		this.accountNumber = "EMPTY"; this.bank = new Bank(); this.branch = new Bank();}
