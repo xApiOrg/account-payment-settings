@@ -42,6 +42,8 @@ public class Account  implements Serializable{
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 		@JsonBackReference(value="payments")			private Set<Payment> payments;
 	
+	// TODO FIXME Remove it. Detach Account from Account details 
+	// include new elements sort code, account number
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
 														private AccountDetails accountDetails;

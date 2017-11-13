@@ -30,7 +30,9 @@ create table bank (
     SEPA_MEMBER BOOLEAN NOT NULL,
     SWIFT_BIC VARCHAR(255) NOT NULL,
     COUNTRY_CODE VARCHAR(2),
-	FOREIGN KEY (COUNTRY_CODE) REFERENCES country (CODE)
+    BANK_ID BIGINT REFERENCES bank (ID),
+	FOREIGN KEY (COUNTRY_CODE) REFERENCES country (CODE),
+  	UNIQUE( ID, BANK_ID)
 );
 
 drop table account_details if exists;

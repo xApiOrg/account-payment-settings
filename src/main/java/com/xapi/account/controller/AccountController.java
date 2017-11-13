@@ -37,7 +37,7 @@ public class AccountController {
 	/account/payee/{user_id}				PUT		- createUserPayeeAccount		Create new payee account		http://localhost:10001/account/payee/100
 	/account/payee/{user_id}/{payee_id}		PATCH	- updateUserPayeeAccount		Update payee account			http://localhost:10001/account/payee/100/10
 	/account/payee/{user_id}/{payee_id}		DELETE	- deleteUserPayeeAccountById	Delete payee account			http://localhost:10001/account/payee/100/10
-	/account/validation/{iban}				GET		- payeeAccountValidation		IBAN, IFSC, validation check	http://localhost:10001/account/validation/GB48LOYD30963846959260
+	/account/validation/{iban}				GET		- payeeAccountValidation		IBAN, IFSC, validation check	http://52.56.203.3:10001/ipay/account/validation/GB48LOYD30963846959260?type=iban
 	
 	OBSOLETE, See /account/validation/{iban}	GET
 	/account/validation							POST	- payeeAccountValidation		IBAN, IFSC, validation check	http://localhost:10001/account

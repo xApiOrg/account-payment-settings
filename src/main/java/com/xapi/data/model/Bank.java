@@ -1,14 +1,17 @@
 package com.xapi.data.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,6 +30,11 @@ public class Bank implements Serializable {
     
     @OneToOne(fetch=FetchType.EAGER) @JoinColumn(name="COUNTRY_CODE")
     																private Country country;
+    @ManyToOne(fetch = FetchType.EAGER)	// @JsonBackReference
+		@JoinColumn(name = "BANK_ID")								private Bank parent;    
+	
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // @JsonBackReference(value="payments")
+																	private Set<Bank> branches;
 
 //  private List<Bank> branches;
 //  private Set<AccountDetails> accounts;
@@ -85,6 +93,22 @@ public class Bank implements Serializable {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public Bank getParent() {
+		return parent;
+	}
+
+	public void setParent(Bank parent) {
+		this.parent = parent;
+	}
+
+	public Set<Bank> getBranches() {
+		return branches;
+	}
+
+	public void setBranches(Set<Bank> branches) {
+		this.branches = branches;
 	}   
 
 }

@@ -132,7 +132,7 @@ public class PaymentController {
 	 * */
 	
 	@CrossOrigin
-	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}/{amount}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{user_id}/{account_id}/{payee_id}/{amount}", method = RequestMethod.PUT)
 	public ResponseEntity<Payment> createPayment( @PathVariable("user_id") Long userId, @PathVariable("account_id") Long accountId, 
 			@PathVariable("payee_id") Long payeeId, @PathVariable("amount") Double amount ){ 
 		

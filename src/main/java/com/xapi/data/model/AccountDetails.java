@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name="account_details")
 public class AccountDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+	// TODO FIXME Move the whole class towards Payee parent
 	@Id @GeneratedValue 							private Long id;
 	@Column(name="ACCOUNT_NUMBER",nullable=false)	private final String accountNumber;
 	
@@ -26,7 +26,7 @@ public class AccountDetails implements Serializable {
 	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BRANCH_ID", nullable=false )
 													private final Bank branch;		
 
-	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
+	@Column(name="CREATED", nullable=false)			private final Date created = new Date();// 
 
 	public AccountDetails(){ 
 		this.accountNumber = "EMPTY"; this.bank = new Bank(); this.branch = new Bank();}
