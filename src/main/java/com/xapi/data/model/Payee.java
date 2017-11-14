@@ -75,7 +75,7 @@ public class Payee implements Serializable{
 		return "id = " + id + ", name = " + name + ", active = " + active  + 
 				", users = " + users.toString() 
 //				+ ", payments = " + payments
-				+ ", accountDetails = " + accountDetails.toString()
+				+ ", accountDetails = " + (accountDetails != null? accountDetails.toString(): "" )
 				;
 	}
 
