@@ -27,15 +27,14 @@ public class Payee implements Serializable{
 	@Column(name="NAME",nullable=false) 		private final String name;
 	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
+												private AccountDetails accountDetails;	
 	@ManyToMany(mappedBy = "payees") 			
 		@JsonBackReference(value="users")		private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 		@JsonBackReference(value="payments")	private Set<Payment> payments;
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
-		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
-												private AccountDetails accountDetails;
 	
 	public Payee(){ this.name = "SYSTEM"; this.users = new HashSet<>(); this.payments = new HashSet<>();}
 	
@@ -76,6 +75,7 @@ public class Payee implements Serializable{
 		return "id = " + id + ", name = " + name + ", active = " + active  + 
 				", users = " + users.toString() 
 //				+ ", payments = " + payments
+				+ ", accountDetails = " + accountDetails.toString()
 				;
 	}
 
@@ -85,5 +85,13 @@ public class Payee implements Serializable{
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public AccountDetails getAccountDetails() {
+		return accountDetails;
+	}
+
+	public void setAccountDetails(AccountDetails accountDetails) {
+		this.accountDetails = accountDetails;
 	}
 }
