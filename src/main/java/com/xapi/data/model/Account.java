@@ -18,11 +18,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="account")
+@Table(name="account", uniqueConstraints={
+		@UniqueConstraint(columnNames = { "USER_ID", "CURRENCY", "TYPE" }, name="USER_ID_CURRENCY_TYPE_Unique_Index")
+	,	@UniqueConstraint(columnNames = { "ACCOUNT_DETAILS_ID" }, name="ACCOUNT_DETAILS_ID_Unique_Index")
+})
 public class Account  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

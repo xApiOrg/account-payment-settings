@@ -11,9 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="account_details")
+@Table(name="account_details", uniqueConstraints={
+		@UniqueConstraint(columnNames = { "ACCOUNT_NUMBER", "BRANCH_ID" }, name="ACCOUNT_NUMBER_BRANCH_ID_Unique_Index")
+})
 public class AccountDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 	// TODO FIXME Move the whole class towards Payee parent

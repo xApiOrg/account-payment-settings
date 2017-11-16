@@ -15,20 +15,23 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="payee")
+@Table(name="payee", uniqueConstraints={
+		@UniqueConstraint(columnNames = { "ACCOUNT_DETAILS_ID" }, name="ACCOUNT_DETAILS_ID_Unique_Index")
+})
 public class Payee implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue 						private Long id;
-	@Column(name="NAME",nullable=false) 		private final String name;
+	@Column(name="NAME",nullable=false, unique=true) 		private final String name;
 	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
-		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false)
+		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false, unique=true)
 												private AccountDetails accountDetails;	
 	@ManyToMany(mappedBy = "payees") 			
 		@JsonBackReference(value="users")		private Set<User> users;
