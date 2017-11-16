@@ -32,21 +32,34 @@ public class Payment implements Serializable{
 //	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
     @ManyToOne(fetch = FetchType.EAGER)	// @JsonBackReference
 		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
-	@Column(name="CREATED", nullable=false)			private final Date created = new Date();
-	@Column(name="AMOUNT", nullable=false)			private Double amount = 0.00; 
+	@Column(name="CREATED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)			
+													private final Date created = new Date();
+	@Column(name="AMOUNT", columnDefinition="DOUBLE NOT NULL DEFAULT 0.00", nullable=false)			
+													private Double amount = 0.00; 
 	@Column(name="PAYMENT_CURRENCY",nullable=false) private String paymentCurrency;
-	@Column(name="RATE", nullable=false)			private Double rate = 1.00;
-	@Column(name="CHARGE", nullable=false)			private Double charge = 0.00;
-	@Column(name="CALCULATED_AMOUNT",nullable=false)private Double calculatedAmount = 0.00;
+	@Column(name="RATE", columnDefinition="DOUBLE NOT NULL DEFAULT 1.00", nullable=false)			
+													private Double rate = 1.00;
+	@Column(name="CHARGE", columnDefinition="DOUBLE NOT NULL DEFAULT 0.00", nullable=false)			
+													private Double charge = 0.00;
+	@Column(name="CALCULATED_AMOUNT", columnDefinition="DOUBLE NOT NULL DEFAULT 0.00", nullable=false)
+													private Double calculatedAmount = 0.00;
 	@Column(name="PAYEE_CURRENCY", nullable=false)	private String payeeCurrency;
-	@Column(name="PAYMENT_DATE", nullable=false)	private Date paymentDate = new Date();
-	@Column(name="PLACED", nullable=false)			private Boolean placed = false;
-	@Column(name="DATE_PLACED", nullable=false)		private Date datePlaced = new Date();
-	@Column(name="CANCELLED", nullable=false)		private Boolean cancelled = false;
-	@Column(name="DATE_CANCELLED", nullable=false)	private Date dateCancelled = new Date();
-	@Column(name="SETTLED", nullable=false)			private Boolean settled = false;
-	@Column(name="DATE_SETTLED", nullable=false)	private Date dateSettled = new Date();
-	@Column(name="DATE_CALCULATED", nullable=false)	private Date dateCalculated = new Date();
+	@Column(name="PAYMENT_DATE", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)	
+													private Date paymentDate = new Date();
+	@Column(name="PLACED", columnDefinition="BIT(1) NOT NULL DEFAULT 0", nullable=false)			
+													private Boolean placed = false;
+	@Column(name="DATE_PLACED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)		
+													private Date datePlaced = new Date();
+	@Column(name="CANCELLED", columnDefinition="BIT(1) NOT NULL DEFAULT 0", nullable=false)		
+													private Boolean cancelled = false;
+	@Column(name="DATE_CANCELLED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)	
+													private Date dateCancelled = new Date();
+	@Column(name="SETTLED", columnDefinition="BIT(1) NOT NULL DEFAULT 0", nullable=false)			
+													private Boolean settled = false;
+	@Column(name="DATE_SETTLED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)	
+													private Date dateSettled = new Date();
+	@Column(name="DATE_CALCULATED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)	
+													private Date dateCalculated = new Date();
 	
 	public Payment(){ 
 		this.user = new User(); this.account = new Account(); this.payee = new Payee();
