@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -29,7 +31,8 @@ public class AccountDetails implements Serializable {
 	@OneToOne(fetch = FetchType.EAGER) @JoinColumn(name = "BRANCH_ID", nullable=false )
 													private final Bank branch;		
 
-	@Column(name="CREATED", nullable=false)			private final Date created = new Date();// 
+	@Column(name="CREATED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false, insertable=false, updatable=false)
+													private final Date created = new Date();// 
 
 	public AccountDetails(){ 
 		this.accountNumber = "EMPTY"; this.bank = new Bank(); this.branch = new Bank();}
