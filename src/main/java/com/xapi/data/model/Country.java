@@ -24,7 +24,7 @@ public class Country implements Serializable{
 	@Column(name="FLAG", nullable=false, unique=true) 	private String flag;
 
 	@OneToOne(fetch=FetchType.EAGER) 
-		@JoinColumn(name="CURRENCY")					private Currency currency;
+		@JoinColumn(name="CURRENCY", unique=true)		private Currency currency;
 	  
 	private transient List<Section> sections = new LinkedList<>();
 		
