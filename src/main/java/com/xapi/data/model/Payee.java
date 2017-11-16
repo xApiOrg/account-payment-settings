@@ -28,8 +28,8 @@ public class Payee implements Serializable{
 	
 	@Id @GeneratedValue 						private Long id;
 	@Column(name="NAME",nullable=false, unique=true) 		private final String name;
-	@Column(name="ACTIVE",nullable=false) 		private Boolean active;
-	
+	@Column(name="ACTIVE", columnDefinition="BIT(1) NOT NULL DEFAULT 1", nullable=false, insertable=false) 		
+												private Boolean active;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false, unique=true)
 												private AccountDetails accountDetails;	
