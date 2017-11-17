@@ -179,11 +179,12 @@ public class PaymentServiceImpl implements PaymentService {
 		Account userAccount = accountRepository.findByUserIdAndId(userId, accountId);
 		
 		Payment payment = new Payment(user, account, payee);
-			payment.setAmount(paymentTransferred.getAmount());
+			payment.setAmount(paymentTransferred.getAmount()); 
 			payment.setPaymentCurrency(paymentTransferred.getPaymentCurrency() == null || paymentTransferred.getPaymentCurrency().isEmpty() ?
 					account.getCurrency(): paymentTransferred.getPaymentCurrency() );
 			payment.setPayeeCurrency(paymentTransferred.getPayeeCurrency() == null || paymentTransferred.getPayeeCurrency().isEmpty() ? 
-					paymentTransferred.getPayeeCurrency(): paymentTransferred.getPayeeCurrency() ); // payee.getCountry().getCurrency() // TODO FIXME, First case
+					payee.getAccountDetails().getBank().getCountry().getCurrency().getIso(): 
+						paymentTransferred.getPayeeCurrency() );
 			
 		boolean calculatePayee = payment.getAmount() != null ? true: false;
 //				&& (paymentTransferred.getCalculatedAmount() == null || calculatedResult.getCalculatedAmount().intValue() == 0 )? true: false;
