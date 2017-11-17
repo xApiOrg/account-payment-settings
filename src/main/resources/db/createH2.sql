@@ -212,7 +212,7 @@ insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOU
 
 
 insert into payee (NAME, ACCOUNT_DETAILS_ID) values
-  ('Ferdinand Burgazov', 26), ('Manuel Ferry', 27), ('Duno Nuque', 28), ('Maria Merry', 29)
+  ('Frederick Braun', 26), ('Manuel Ferry', 27), ('Dino Nuno', 28), ('Maria Merry', 29)
 , ('Gustav Haraldson', 30), ('Hans Zimmerman', 31), ('Jeff Redcheeck', 32), ('Robert DeBurg', 33)
 , ('Ivan Ivanov', 34), ('Peter Petrov', 35), ('Ganyo Balkanski', 36), ('Hasan Kassas', 37)
 , ('Redjeb Mutlu', 38), ('Vladimir Esenin', 39), ('Alexandra Kostenko', 40), ('Ilya Grechko', 41)

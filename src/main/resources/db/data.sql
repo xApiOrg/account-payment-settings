@@ -1,3 +1,4 @@
+
 INSERT INTO currency (ISO, NAME, SYMBOL) VALUES ('AUD', 'Australian Dollar', '$'), ('BGN', 'Bulgarian Lev', 'bgn'), ('BRL', 'Brazilian Real', 'R$')
 , ('CAD', 'Canadian Dollar', '$'), ('CHF', 'Swiss Franc', 'CHF'), ('CNY', 'Chinese Yuan', '¥')
 , ('CZK', 'Czech Republic Koruna', 'Kč'), ('DKK', 'Danish Krone', 'kr'), ('GBP', 'British Pound', '£')
@@ -86,7 +87,7 @@ insert into account (USER_ID, CURRENCY, BALANCE, OVERDRAFT, TYPE, CREATED, ACCOU
 
 
 insert into payee (NAME, ACCOUNT_DETAILS_ID) values
-  ('Ferdinand Burgazov', 26), ('Manuel Ferry', 27), ('Duno Nuque', 28), ('Maria Merry', 29)
+  ('Frederick Braun', 26), ('Manuel Ferry', 27), ('Dino Nuno', 28), ('Maria Merry', 29)
 , ('Gustav Haraldson', 30), ('Hans Zimmerman', 31), ('Jeff Redcheeck', 32), ('Robert DeBurg', 33)
 , ('Ivan Ivanov', 34), ('Peter Petrov', 35), ('Ganyo Balkanski', 36), ('Hasan Kassas', 37)
 , ('Redjeb Mutlu', 38), ('Vladimir Esenin', 39), ('Alexandra Kostenko', 40), ('Ilya Grechko', 41)
@@ -107,3 +108,4 @@ insert into payment (USER_ID, ACCOUNT_ID, PAYEE_ID, AMOUNT, PAYMENT_CURRENCY, PA
 			values ( 1, 2, 2, 100.00, 'EUR', 'EUR', '2067-03-10' );
 			
 update payment set placed = 1 where id = 1;
+/* */
