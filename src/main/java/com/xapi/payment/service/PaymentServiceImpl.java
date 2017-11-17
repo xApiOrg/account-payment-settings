@@ -194,6 +194,11 @@ public class PaymentServiceImpl implements PaymentService {
 				payment = paymentRepository.save(payment);
 			
 		return payment;
+	}
+
+	@Override
+	public Collection<Payment> getAll() {
+		return paymentRepository.findAll();
 	}	
 }
 

@@ -52,6 +52,8 @@ public class PaymentController {
 																					MINIMAL		{ "id": 1 }
 																or
 		/payment/{id}									PATCH	cancelPayment					http://localhost:8080/ipay/payment/1
+		
+		// NEW!!! Development use, list all payments
 			
 
 	 */	
@@ -241,6 +243,23 @@ public class PaymentController {
 		
 		return new ResponseEntity<Collection<Payment>>(placedPayments, 
 				placedPayments != null && ! placedPayments.isEmpty()? HttpStatus.OK: HttpStatus.NO_CONTENT);
-	}	
+	}
+	
+	@CrossOrigin
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Collection<Payment>> getAllPayments(){ 
+		String info = "\nMetod getAllPayments( Long userId )" + //" NOT IMPLEMENTED YET" + 
+				"\nGet ALL User's placed PAYMENTS by user Id" + "\n NO Parameters";
+		logger.info(info);
+		
+		Collection<Payment> payments = paymentService.getAll();
+		logger.info( payments != null && ! payments.isEmpty()? payments.toString(): 
+				"NO PAYMENTS AT ALL" );		
+		
+		return new ResponseEntity<Collection<Payment>>(payments, 
+				payments != null && ! payments.isEmpty()? HttpStatus.OK: HttpStatus.NO_CONTENT);
+	}
+	
+	
 }
 
