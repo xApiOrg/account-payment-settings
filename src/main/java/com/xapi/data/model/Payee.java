@@ -26,18 +26,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Payee implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id @GeneratedValue 						private Long id;
-	@Column(name="NAME",nullable=false, unique=true) 		private final String name;
+	@Id @GeneratedValue 								private Long id;
+	@Column(name="NAME",nullable=false, unique=true) 	private final String name;
 	@Column(name="ACTIVE", columnDefinition="BIT(1) NOT NULL DEFAULT 1", nullable=false, insertable=false) 		
-												private Boolean active;
+														private Boolean active;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 		@JoinColumn(name = "ACCOUNT_DETAILS_ID", nullable=false, unique=true)
-												private AccountDetails accountDetails;	
+														private AccountDetails accountDetails;	
 	@ManyToMany(mappedBy = "payees") 			
-		@JsonBackReference(value="users")		private Set<User> users;
+		@JsonBackReference(value="users")				private Set<User> users;
 	
 	@OneToMany(mappedBy = "payee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-		@JsonBackReference(value="payments")	private Set<Payment> payments;
+		@JsonBackReference(value="payments")			private Set<Payment> payments;
 	
 	public Payee(){ this.name = "SYSTEM"; this.users = new HashSet<>(); this.payments = new HashSet<>();}
 	
