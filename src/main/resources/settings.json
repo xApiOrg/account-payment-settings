@@ -2,7 +2,8 @@
     "name": "Spain",
     "code": "ES",
     "flag": "es",
-    "sections": [{
+    "currency": "EUR",
+	"sections": [{
       "name": "payee",
       "fields": [{
         "id": "payee-name",
@@ -33,7 +34,8 @@
     "name": "India",
     "code": "IN",
     "flag": "in",
-    "sections": [{
+    "currency": "INR",
+	"sections": [{
       "name": "payee",
       "fields": [{
         "id": "payee-name",
@@ -71,7 +73,8 @@
     "name": "United States",
     "code": "US",
     "flag": "us",
-    "sections": [{
+    "currency": "USD",
+	"sections": [{
       "name": "payee",
       "fields": [{
         "id": "payee-name",
@@ -110,7 +113,8 @@
     "name": "United Kingdom",
     "code": "UK",
     "flag": "gb",
-    "sections": [{
+    "currency": "GBP",
+	"sections": [{
       "name": "payee",
       "fields": [{
         "id": "payee-name",
@@ -149,7 +153,8 @@
     "name": "APPLICATION",
     "code": "XP",
     "flag": "xp",
-    "sections": [{
+    "currency": "EUR",
+	"sections": [{
       "name": "payee",
       "fields": [{
         "id": "payee-name",
