@@ -155,6 +155,7 @@ public class PaymentController {
 	}
 	
 	/*
+	 * Update Payment. Mutable elements ( paymentDate, cancelled, placed ) should NOT involve recalculate
 	 * Example:
 	 * METHOD: PATCH
 	 * URL: http://localhost:10001/ipay/payment
@@ -166,13 +167,13 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.PATCH)
-	public ResponseEntity<Payment> cancelPayment(@RequestBody Payment paymentRef){ 
-		String info = "\nMetod cancelPayment( JSONObject payment)  NOT IMPLEMENTED YET" + 
+	public ResponseEntity<Payment> updatePayment(@RequestBody Payment paymentRef){ 
+		String info = "\nMetod updatePayment( JSONObject payment)  NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
 				"\nParameters, payment:\n" + paymentRef.toString();		
 		logger.info(info);
 		
-		Payment payment = paymentService.cancelPayment(paymentRef.getId());
+		Payment payment = paymentService.updatePayment(paymentRef);
 		logger.info(payment != null && payment.getCancelled()? payment.toString(): 
 			"\nNOT CANCELLED Payment:\n" + paymentRef.toString());
 		
