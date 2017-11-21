@@ -128,12 +128,17 @@ public class PaymentServiceImpl implements PaymentService {
 	public Payment calculate(Payment payment, Boolean calculatePayee) {
 		Payment calculatedPayment = paymentRepository.findById(payment.getId());// paymentRepository.getOne(payment.getId());// paymentRepository.findById(payment.getId())
 		
+		// TODO FIXME Check is the payment placed or settled. Settled and placed payments should not be recalculated
+		
 		// TODO, FIXME Check for 0 amounts
 		if(calculatedPayment != null){
 			calculatedPayment.setAmount(payment.getAmount());
 			calculatedPayment.setCalculatedAmount(payment.getCalculatedAmount());
-			calculatedPayment.setPaymentCurrency(payment.getPaymentCurrency());
-			calculatedPayment.setPayeeCurrency(payment.getPayeeCurrency());
+			if(payment.getPaymentCurrency() != null && ! payment.getPaymentCurrency().isEmpty())
+				calculatedPayment.setPaymentCurrency(payment.getPaymentCurrency()); // TODO FIXME Validate the CURRENCY against DB
+			
+			if(payment.getPayeeCurrency() != null && ! payment.getPayeeCurrency().isEmpty())
+				calculatedPayment.setPayeeCurrency(payment.getPayeeCurrency());  // TODO FIXME Validate the CURRENCY against DB
 		}else
 			calculatedPayment = payment;
 		
@@ -156,6 +161,8 @@ public class PaymentServiceImpl implements PaymentService {
 			calculatePayee ? payment.getAmount(): payment.getCalculatedAmount());
 		payment.setRate(fxRate);
 		payment.setCharge(charge);
+		
+		// TODO, FIXME Check for 0 amounts
 		
 		Double amount = calculatePayee? payment.getAmount() * fxRate - charge: 
 							payment.getCalculatedAmount()/fxRate + charge;
