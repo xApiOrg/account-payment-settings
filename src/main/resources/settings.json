@@ -2,9 +2,11 @@
     "name": "Spain",
     "code": "ES",
     "flag": "es",
-    "currency": "EUR",
+    "currency": {"iso": "EUR"},
 	"sections": [{
       "name": "payee",
+      "tabs": [ "corporate", "retail" ],
+      "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "payee-name",
         "title": "Payee's full name",
@@ -21,6 +23,8 @@
       }]
     }, {
       "name": "payment",
+      "tabs": [ "corporate", "retail" ],
+      "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "iban",
         "title": "IBAN",
@@ -34,9 +38,11 @@
     "name": "India",
     "code": "IN",
     "flag": "in",
-    "currency": "INR",
+    "currency": {"iso": "INR"},
 	"sections": [{
       "name": "payee",
+      "tabs": [ "corporate", "retail" ],
+      "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "payee-name",
         "title": "Payee's full name",
@@ -73,7 +79,7 @@
     "name": "United States",
     "code": "US",
     "flag": "us",
-    "currency": "USD",
+    "currency": {"iso": "USD"},
 	"sections": [{
       "name": "payee",
       "fields": [{
@@ -113,7 +119,7 @@
     "name": "United Kingdom",
     "code": "UK",
     "flag": "gb",
-    "currency": "GBP",
+    "currency": {"iso": "GBP"},
 	"sections": [{
       "name": "payee",
       "fields": [{
@@ -153,7 +159,7 @@
     "name": "APPLICATION",
     "code": "XP",
     "flag": "xp",
-    "currency": "EUR",
+    "currency": {"iso": "EUR"},
 	"sections": [{
       "name": "payee",
       "fields": [{

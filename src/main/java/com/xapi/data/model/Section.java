@@ -1,15 +1,19 @@
 package com.xapi.data.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Section  implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	String name;
+	Set<String> tabs = new HashSet<>();
+	Set<String> regexes = new HashSet<>();
 	List<Map<String, String>> fields = new LinkedList<>(); 
 //	LinkedHashMap<String, String>[] fields; // Alternative way, slightly unmanageable
 	
@@ -49,5 +53,21 @@ public class Section  implements Serializable{
 	
 	public boolean removeFields(Map<String, String> fields){
 		return this.fields == null? false: this.fields.remove( fields );
+	}
+
+	public Set<String> getTabs() {
+		return tabs;
+	}
+
+	public void setTabs(Set<String> tabs) {
+		this.tabs = tabs;
+	}
+
+	public Set<String> getRegexes() {
+		return regexes;
+	}
+
+	public void setRegexes(Set<String> regexes) {
+		this.regexes = regexes;
 	}
 }
