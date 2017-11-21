@@ -4,14 +4,20 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="country")
@@ -25,6 +31,12 @@ public class Country implements Serializable{
 
 	@OneToOne(fetch=FetchType.EAGER) 
 		@JoinColumn(name="CURRENCY", unique=true)		private Currency currency;
+	
+//	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+//    @JoinTable(name = "country_currency", 
+//    	joinColumns = @JoinColumn(name = "code", referencedColumnName = "code"), 
+//    	inverseJoinColumns = @JoinColumn(name = "iso", referencedColumnName = "iso"))
+//														private Set<Currency> currencies; // @JsonBackReference(value="currencies")
 	  
 	private transient List<Section> sections = new LinkedList<>();
 		
