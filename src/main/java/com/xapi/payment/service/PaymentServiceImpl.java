@@ -52,16 +52,25 @@ public class PaymentServiceImpl implements PaymentService {
 		Date now = new Date();
 		
 		// N.B. FIXME, TODO To be analysed what elements and under what circumstances can be updated
+		// So far paymentDate, cancelled, placed ONLY. Any else should be through Calculate/Recalculate
 		
-		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() 
-				&& paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()){
-			paymentToUpdate.setCancelled(true);
-			paymentToUpdate.setDateCancelled(now);
+		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled()){ 
+// Old conditions! TODO FIXME Revise it!!!			
+// paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() && paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()			
+			if(payment.getCancelled() != null){
+				paymentToUpdate.setCancelled(payment.getCancelled());
+				paymentToUpdate.setDateCancelled(now);				
+			}
 			
-			paymentToUpdate.setPlaced( false );
-			paymentToUpdate.setDatePlaced(now);
+			if(payment.getPlaced() != null){
+				paymentToUpdate.setPlaced( payment.getPlaced() );
+				paymentToUpdate.setDatePlaced(now);
+			}
 			
-			paymentToUpdate.setPaymentDate(new Date( 0 ));
+			if(payment.getPaymentDate() != null){
+				paymentToUpdate.setPaymentDate(payment.getPaymentDate());				
+			}
+			
 			paymentRepository.save(paymentToUpdate);			
 		}
 		
