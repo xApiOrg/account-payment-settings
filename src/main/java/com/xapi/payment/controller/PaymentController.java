@@ -174,11 +174,10 @@ public class PaymentController {
 		logger.info(info);
 		
 		Payment payment = paymentService.updatePayment(paymentRef);
-		logger.info(payment != null && payment.getCancelled()? payment.toString(): 
-			"\nNOT CANCELLED Payment:\n" + paymentRef.toString());
+		logger.info(payment != null? payment.toString(): "\nPayment NOT FOUND :\n" + paymentRef.toString());
 		
-		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: 
-			payment.getCancelled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<Payment>( payment, payment == null? HttpStatus.NOT_FOUND: HttpStatus.OK);
+//			payment.getCancelled()? HttpStatus.OK: HttpStatus.NOT_MODIFIED);
 	}
 	
 	/*
