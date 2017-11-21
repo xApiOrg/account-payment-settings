@@ -57,12 +57,12 @@ public class PaymentServiceImpl implements PaymentService {
 		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled()){ 
 // Old conditions! TODO FIXME Revise it!!!			
 // paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() && paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()			
-			if(payment.getCancelled() != null){
+			if(payment.getCancelled() != paymentToUpdate.getCancelled()){
 				paymentToUpdate.setCancelled(payment.getCancelled());
 				paymentToUpdate.setDateCancelled(now);				
 			}
 			
-			if(payment.getPlaced() != null){
+			if(payment.getPlaced() != paymentToUpdate.getPlaced()){
 				paymentToUpdate.setPlaced( payment.getPlaced() );
 				paymentToUpdate.setDatePlaced(now);
 			}
