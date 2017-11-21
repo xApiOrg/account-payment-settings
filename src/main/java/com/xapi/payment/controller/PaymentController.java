@@ -215,7 +215,7 @@ public class PaymentController {
 	 * */
 	
 	@CrossOrigin
-	@RequestMapping(method = RequestMethod.POST) //value = "", 
+	@RequestMapping(method = RequestMethod.POST) // TODO FIXME Reconsider which request method POST or PATCH!!!
 	public ResponseEntity<Payment> placePayment(@RequestBody Payment paymentRef){ 
 		String info = "\nMetod placePayment( JSONObject payment) // NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
@@ -246,7 +246,7 @@ public class PaymentController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET) // TODO FIXME Remove it later. Its' ONLY for development use
 	public ResponseEntity<Collection<Payment>> getAllPayments(){ 
 		String info = "\nMetod getAllPayments( Long userId )" + //" NOT IMPLEMENTED YET" + 
 				"\nGet ALL User's placed PAYMENTS by user Id" + "\n NO Parameters";
