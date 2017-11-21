@@ -28,10 +28,10 @@ public class Payment implements Serializable{
 		@JoinColumn(name = "USER_ID")				private final User user;
 //	@Column(name="ACCOUNT_ID", nullable=false) 		private final Long accountId;
     @ManyToOne(fetch = FetchType.EAGER)
-		@JoinColumn(name = "ACCOUNT_ID")			private final Account account;
+		@JoinColumn(name = "ACCOUNT_ID")			private final Account account; // TODO FIXME Why it should be FINAL!?!?!?
 //	@Column(name="PAYEE_ID", nullable=false) 		private final Long payeeId;
     @ManyToOne(fetch = FetchType.EAGER)	// @JsonBackReference
-		@JoinColumn(name = "PAYEE_ID")				private final Payee payee;
+		@JoinColumn(name = "PAYEE_ID")				private final Payee payee; // TODO FIXME Both go FINAL with Account (MF)
 	@Column(name="CREATED", columnDefinition="datetime NOT NULL DEFAULT CURRENT_TIMESTAMP", nullable=false)			
 													private final Date created = new Date();
 	@Column(name="AMOUNT", columnDefinition="DOUBLE NOT NULL DEFAULT 0.00", nullable=false)			
