@@ -5,7 +5,7 @@
     "currency": {"iso": "EUR"},
 	"sections": [{
       "name": "payee",
-      "tabs": [ "corporate", "retail" ],
+      "channels": [ "corporate", "retail" ],
       "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "payee-name",
@@ -23,7 +23,7 @@
       }]
     }, {
       "name": "payment",
-      "tabs": [ "corporate", "retail" ],
+      "channels": [ "corporate", "retail" ],
       "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "iban",
@@ -41,7 +41,7 @@
     "currency": {"iso": "INR"},
 	"sections": [{
       "name": "payee",
-      "tabs": [ "corporate", "retail" ],
+      "channels": [ "corporate", "retail" ],
       "regexes": [ "^[A-Za-z ]{1,1024}$" ],
       "fields": [{
         "id": "payee-name",
