@@ -44,6 +44,11 @@ public class PaymentServiceImpl implements PaymentService {
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
+	
+	public Payment newUpdatePayment(Object payment) {
+		System.out.println(payment.toString());
+		return null;
+	}
 
 	@Override
 //	@HystrixCommand(fallbackMethod="updatePaymentFallback")
@@ -54,15 +59,15 @@ public class PaymentServiceImpl implements PaymentService {
 		// N.B. FIXME, TODO To be analysed what elements and under what circumstances can be updated
 		// So far paymentDate, cancelled, placed ONLY. Any else should be through Calculate/Recalculate
 		
-		if(paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled()){ 
+		if(paymentToUpdate != null && ! paymentToUpdate.getSettled()){ // ! paymentToUpdate.getCancelled()  && 
 // Old conditions! TODO FIXME Revise it!!!			
 // paymentToUpdate != null && ! paymentToUpdate.getCancelled()  && ! paymentToUpdate.getSettled() && paymentToUpdate.getPaymentDate().after(now) && paymentToUpdate.getPlaced()			
-			if(payment.getCancelled() != paymentToUpdate.getCancelled()){
+			if(payment.getCancelled() != null){
 				paymentToUpdate.setCancelled(payment.getCancelled());
 				paymentToUpdate.setDateCancelled(now);				
 			}
 			
-			if(payment.getPlaced() != paymentToUpdate.getPlaced()){
+			if(payment.getPlaced() != null){
 				paymentToUpdate.setPlaced( payment.getPlaced() );
 				paymentToUpdate.setDatePlaced(now);
 			}
@@ -192,7 +197,7 @@ public class PaymentServiceImpl implements PaymentService {
 		User user = userRepository.findById(userId);
 		Account account = accountRepository.findById(accountId);
 		Payee payee = payeeRepository.findPayeeByIdandUserId( payeeId, userId);
-		Account userAccount = accountRepository.findByUserIdAndId(userId, accountId);
+//		Account userAccount = accountRepository.findByUserIdAndId(userId, accountId); // Seems obsolete!!!
 		
 		Payment payment = new Payment(user, account, payee);
 			payment.setAmount(paymentTransferred.getAmount()); 

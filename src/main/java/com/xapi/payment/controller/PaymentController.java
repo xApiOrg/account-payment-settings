@@ -1,13 +1,9 @@
 package com.xapi.payment.controller;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashSet;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xapi.data.model.Payment;
-import com.xapi.data.model.User;
 import com.xapi.payment.service.PaymentService;
 
 
@@ -167,7 +162,8 @@ public class PaymentController {
 	
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.PATCH)
-	public ResponseEntity<Payment> updatePayment(@RequestBody Payment paymentRef){ 
+	public ResponseEntity<Payment> updatePayment(@RequestBody PaymentUpdateDto paymentDto){ 
+		Payment paymentRef = paymentDto.copyToPayment();
 		String info = "\nMetod updatePayment( JSONObject payment)  NOT IMPLEMENTED YET" + 
 				// "\nPlace to execute User's placed PAYMENT by payment object" + 
 				"\nParameters, payment:\n" + paymentRef.toString();		
@@ -261,5 +257,54 @@ public class PaymentController {
 	}
 	
 	
+}
+
+class PaymentUpdateDto implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+	private Long id;
+	private Date paymentDate;
+	private Boolean cancelled;
+	private Boolean placed;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+	public Boolean getCancelled() {
+		return cancelled;
+	}
+	public void setCancelled(Boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+	public Boolean getPlaced() {
+		return placed;
+	}
+	public void setPlaced(Boolean placed) {
+		this.placed = placed;
+	}
+	
+	public Payment copyToPayment(){
+		Payment newPayment = new Payment();
+		for(Field dtoField: this.getClass().getDeclaredFields()){
+			for(Field paymentField: newPayment.getClass().getDeclaredFields())
+				if(dtoField.getName().equals(paymentField.getName()) && dtoField.getType().equals(paymentField.getType()))
+					try {
+						paymentField.setAccessible(true);
+						paymentField.set(newPayment, dtoField.get( this ));
+						paymentField.setAccessible(false);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						PaymentController.logger.error(dtoField.getName() + "\nIllegalAccessException | IllegalArgumentException" + "\n" + e.getMessage());
+					}
+		}
+		return newPayment;
+	}
 }
 
