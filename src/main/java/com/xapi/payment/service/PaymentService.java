@@ -1,7 +1,6 @@
 package com.xapi.payment.service;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.xapi.data.model.Payment;
 
