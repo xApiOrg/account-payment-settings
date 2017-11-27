@@ -55,9 +55,9 @@ public class PaymentControllerTest {
 		
 		mockMvc.perform(MockMvcRequestBuilders.get("/payment/1")
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect( jsonPath("$", hasSize( 1 ) ) )
+				.andExpect( jsonPath("$", hasSize( 2 ) ) )
 				.andExpect( jsonPath("$[ 0 ].id").exists() )
-				.andExpect( jsonPath("$[ 0 ].id").value( 2 ) ) // TODO FIXME Check it! Sound suspicious
+				.andExpect( jsonPath("$[ 0 ].id").value( 1 ) ) // TODO FIXME Check it! Sound suspicious
 				.andExpect( status().isOk() )
 				.andExpect( content().contentType(MediaType.APPLICATION_JSON_UTF8) )
 				.andDo( print() );
