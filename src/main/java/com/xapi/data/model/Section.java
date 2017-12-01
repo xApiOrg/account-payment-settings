@@ -9,7 +9,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"regexes", "channels"})
+//@JsonIgnoreProperties({"regexes", "channels"})
 public class Section  implements Serializable{
 	private static final long serialVersionUID = 1L;
 
