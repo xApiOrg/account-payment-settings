@@ -3,6 +3,7 @@ package com.xapi.account.service;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -48,7 +49,7 @@ public class AccountServiceTest {
 	@Test
 	public final void testGetAll() {
 //		fail("Not yet implemented"); // TODO
-		List<Account> accounts = accountService.getAll( 1l );
+		Set<Account> accounts = accountService.getAll( 1l );
 		System.out.println(accounts.size());
 	}
 

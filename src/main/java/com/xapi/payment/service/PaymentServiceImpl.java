@@ -3,6 +3,7 @@ package com.xapi.payment.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 //	@HystrixCommand(fallbackMethod="getAllPaymentFallback")
 	public Collection<Payment> getAllPlaced(Long userId) {
-		List<Payment> payments = paymentRepository.findByUserIdAndPlaced(userId, true);
+		Set<Payment> payments = paymentRepository.findByUserIdAndPlaced(userId, true);
 		return payments;
 	}
 	

@@ -3,6 +3,7 @@ package com.xapi.account.controller;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +55,10 @@ public class AccountController {
 				"\nGet ALL User's PAYMENT accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
 		
-		List<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
+		Set<Account> accounts = accountService.getAllPayableAccounts(userId);// .getAll( userId );
 		logger.info(accounts != null  && ! accounts.isEmpty() ? accounts.toString(): "NO AccountS FOUND!!!");
 		
-		return new ResponseEntity<List<Account>>(accounts, accounts != null && ! accounts.isEmpty()?  HttpStatus.OK: HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Set<Account>>(accounts, accounts != null && ! accounts.isEmpty()?  HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
 	
 	@CrossOrigin
@@ -84,10 +85,10 @@ public class AccountController {
 				"\nGet ALL User's PAYEE accounts by user Id" + "\n Parameters, user Id = " + userId;		
 		logger.info(info);
 		
-		List<Payee> accounts = accountService.getUserPayeeAccounts( userId );
+		Set<Payee> accounts = accountService.getUserPayeeAccounts( userId );
 		logger.info(accounts != null? accounts.toString(): "NO AccountS FOUND!!!");
 		
-		return new ResponseEntity<List<Payee>>(accounts, accounts != null && ! accounts.isEmpty()? HttpStatus.OK: HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Set<Payee>>(accounts, accounts != null && ! accounts.isEmpty()? HttpStatus.OK: HttpStatus.NOT_FOUND);
 	}	
 	
 	@CrossOrigin

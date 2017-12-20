@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -32,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
 		put("micr", AccountService.MICR_VALIDATOR); put("rtn", AccountService.ABA_RTN_VALIDATOR);}};
 	
 	@Override
-	public List<Account> getAll(Long userId) {
+	public Set<Account> getAll(Long userId) {
 		return accountRepository.findByUserId(userId);
 	}
 
@@ -48,12 +49,12 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 	@Override
-	public List<Account> getAllPayableAccounts(Long userId) {
+	public Set<Account> getAllPayableAccounts(Long userId) {
 		return accountRepository.findByUserIdAndTypeIn(userId, AccountRepository.PAYABLE_ACCOUNT_TYPES);
 	}
 
 	@Override
-	public List<Payee> getUserPayeeAccounts(Long userId) {
+	public Set<Payee> getUserPayeeAccounts(Long userId) {
 		return payeeRepository.findByUserId(userId);
 	}
 

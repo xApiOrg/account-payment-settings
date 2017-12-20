@@ -1,6 +1,7 @@
 package com.xapi.account.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.xapi.data.model.Account;
 import com.xapi.data.model.AccountDetails;
@@ -15,11 +16,11 @@ public interface AccountService {
 	
 	public static final String ABA_RTN_VALIDATOR = "http://www.routingnumbers.info/api/name.json?rn="; // http://www.routingnumbers.info/api/name.json?rn=324377516
 	
-	public List<Account> getAll(Long userId);
+	public Set<Account> getAll(Long userId);
 	public Account getAccountById(Long id);
 	public Account getUserAccountById(Long userId, Long id);
-	public List<Account> getAllPayableAccounts(Long userId);
-	public List<Payee> getUserPayeeAccounts(Long userId);
+	public Set<Account> getAllPayableAccounts(Long userId);
+	public Set<Payee> getUserPayeeAccounts(Long userId);
 	public Payee getPayeeByIdAndUserId(Long userId, Long payeeId);
 	public Payee createNewPayee(Payee payee, Long userId);
 	public Payee updatePayee(Payee payee, Long payeeId, Long userId);
