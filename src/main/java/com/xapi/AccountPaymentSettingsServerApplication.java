@@ -27,7 +27,7 @@ import org.springframework.core.io.support.PropertySourceFactory;
 @PropertySources({
 @PropertySource(value = { "classpath:/settings.json" }, factory=AccountPaymentSettingsServerApplication.JsonLoader.class ) 	}) // from PropertySource value , "", ""
 
-@SpringBootApplication(scanBasePackages={"com.xapi.account","com.xapi.payment","com.xapi.settings","com.xapi.rate"})
+@SpringBootApplication(scanBasePackages={"com.xapi.account","com.xapi.payment","com.xapi.settings","com.xapi.rate","com.xapi.swagger"})
 public class AccountPaymentSettingsServerApplication extends SpringBootServletInitializer{
 	
 	@Override
